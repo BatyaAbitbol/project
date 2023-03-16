@@ -3,7 +3,7 @@ import { Button } from 'primereact/button';
 import "primereact/resources/primereact.min.css";
 import 'primereact/resources/primereact.css';
 
-import SignIn from './SignIn';
+import SignIn from './signIn/SignIn';
 
 export default function Start(props) {
     const [signIn, setSignIn] = useState(false);
