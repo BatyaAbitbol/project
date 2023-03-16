@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "primereact": "^9.2.1",
+    "react-router-dom": "^6.9.0"
+  }
+}
