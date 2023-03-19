@@ -1,17 +1,28 @@
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+
 import 'primereact/resources/themes/lara-light-indigo/theme.css';   // theme
 import 'primereact/resources/primereact.css';                       // core css
 import 'primeicons/primeicons.css';                                 // icons
 import 'primeflex/primeflex.css';                                   // css utility
-import Start from './Components/Start';
+import './index.css';
 
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Start from './Components/Start';
+import SignIn from './Components/signIn/SignIn';
+import Home from './Components/Home/Home';
+import SignUpTeachers from './Components/sign-up/SignUpTeachers';
+import SignUpStudents from './Components/sign-up/SignUpStudents';
 
 function App() {
   return (
     <Router>
       <div className="App">
         <Routes>
-          <Route exact path='/' element={<Start/>}></Route>
+          <Route exact path='/' element={<Start />}></Route>
+          <Route exact path='/home-page' element={<Home/>}/>
+          <Route exact path='/sign-in' element={<SignIn/>}/>
+          <Route exact path='/sign-up/teacher' element={<SignUpTeachers/>}/>
+          <Route exact path='/sign-up/student' element={<SignUpStudents/>}/>
+
         </Routes>
       </div>
     </Router>
