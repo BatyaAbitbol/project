@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken')
 exports.register = async (req, res) => {
 
     const { firstName, lastName, idNumber, email, password, image } = req.body;
+    console.log(req.body);
     //confirm data
     if (!idNumber || !email || !password) {
         return res.status(400).json({ message: "all fields are required" });

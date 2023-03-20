@@ -68,7 +68,7 @@ exports.createTest = async (req, res) => {
     const questions = await question_dal.findAll({ where: { courseId: courseId } })
     if (!questions) return res.status(500).send('No questions found');
     const testCourse = await test_course_dal.findOne({ where: { courseId: courseId } });
-    const numOfClosedQuestions = testCourse.numOfQuestions;
+    const numOfQuestions = testCourse.numOfQuestions;
     let rand = 0;
     let idx = [];
     for (let i = 0; i < numOfQuestions; i++) {
@@ -228,92 +228,3 @@ exports.getTestsToCheck = async (req, res) => {
     console.log(questions);
     res.send(arrTest);//מחזיר את מערך המבחנים של הקורס 
 };
-
-// for teachers
-/*exports.getTestsToCheck = async (req, res) => {
-    const courseId = req.params.id;
-    let questions = [];
-    await course_student_dal.findAll({ where: { courseId: courseId } })//מביא את כל התלמידים שרשומים לקורס המסויים
-        .then(async data => {
-            console.log(data);
-            for (let i = 0; i < data.length; i++) {
-                await dal.findOne({ where: { courseStudentId: data[i].id } })//מביא את כל המבחן של התלמיד המסויים
-                    .then(async test => {
-                        console.log(test);
-                        await question_test_dal.findAll({ where: { testId: test.id, isChecked: 0 } })//מחזיר את השאלות שאינן בדוקות עוד של המבחן של התלמיד
-                            .then(async questionsTest => {
-                                console.log(questionsTest);
-                                for (let i = 0; i < questionsTest.length; i++) {
-                                    await question_dal.findOne({ where: { id: questionsTest[i].questionId, isClosed: false } })
-                                        .then(async question => {
-                                            questions.push(questionsTest[i]);
-                                            console.log(questions);
-                                        })
-                                }
-                            })
-                    })
-            }
-            let arrTest = [];
-            for (let i = 0; i < questions.length; i++) {
-                await question_dal.findOne({ where: { id: questions[i].questionId } })
-                    .then(async question => {
-                        arrTest.push(question);
-                        await answer_dal.findOne({ where: { questionId: question.id, isCorrect: true } })
-                            .then(async answer => {
-                                arrTest.push(answer);
-                            })
-                    })
-                while (i < questions.length - 1 && questions[i].questionId == questions[i + 1].questionId) {
-                    arrTest.push(questions[i++]);
-                }
-                console.log(`ArrTest`);
-                console.log(arrTest);
-                arrTest.push(questions[i]);
-            }
-            console.log(questions);
-            res.send(arrTest);//מחזיר את מערך המבחנים של הקורס 
-        });
-}
-*/
-
-// const autoCheckTest = async (req, res) => {
-//     const questionsTest = req.body.test;
-//     if (!questionsTest) {
-//         res.send(`test cannot be empty`);
-//         return;
-//     }
-//     console.log(questionsTest);
-//     const testId = questionsTest[0].testId;
-//     let scores = 0;
-//     await dal.findOne({ where: { id: testId } })
-//         .then(async test => {
-//             console.log(questionsTest.length);
-//             for (let i = 0; i < questionsTest.length; i++) {
-//                 await question_dal.findOne({ where: { id: questionsTest[i].questionId } })
-//                     .then(async question => {
-
-//                         if (question.isClosed) {
-//                             const studentAnswer = questionsTest[i].answerText;
-//                             await answer_dal.findOne({ where: { questionId: question.id, isCorrect: true } })
-//                                 .then(async correctAnswer => {
-//                                     if (studentAnswer == correctAnswer.text) {
-//                                         scores += question.scores;
-//                                     }
-//                                 });
-//                             await question_test_dal.update({ id: questionsTest[i].id, testId: questionsTest[i].testId, questionId: questionsTest[i].questionId, answerText: questionsTest[i].answerText, isChecked: true },
-//                                 questionsTest[i].id);
-//                         }
-
-//                     });
-//             }
-//             scores = scores / test.maxScores * 100;
-//             console.log(`scores: ${scores}`);
-//             await dal.update({ id: test.id, courseStudentId: test.courseStudentId, date: test.date, scores: scores, maxScores: test.maxScores, secureVideo: test.secureVideo }, test.id)
-//                 .then(num => {
-//                     if (num == 1) {
-//                         res.json({ message: `Your scores: ${scores}` });
-//                     }
-//                     else res.send(`error in Checking this test`);
-//                 })
-//         })
-// }

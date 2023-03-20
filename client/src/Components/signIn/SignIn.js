@@ -5,6 +5,7 @@ import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import { classNames } from 'primereact/utils';
 import { Password } from 'primereact/password';
+import { UseLogin } from '../../Hooks/UseGetStudent';
 
 export default function SignIn(props) {
     const toast = useRef(null);
@@ -42,6 +43,7 @@ export default function SignIn(props) {
         },
         onSubmit: (data) => {
             data && show(data);
+            console.log(data);
             formik.resetForm();
         },
     });
@@ -93,21 +95,13 @@ export default function SignIn(props) {
                 {getFormErrorMessage('error')}
                 {getFormErrorMessage('value')}
                 {getFormErrorMessage('password')}
-                <Button type="sign-in" label="Sign In" icon="pi pi-sign-in" />
+                <Button type="submit" label="Sign In" icon="pi pi-sign-in" onClick={(e) => {handleClick({idNumber: formik.value, password: formik.password})}}/>
             </form>
         </div>
     );
 }
-    // const user = {
-    //     idNumber: "214185019",//props.idNumber,
-    //     password: "B123"//props.password
-    // }
-    // const profile = "students"//props.profile;
-    // const url = `https://localhost:8000/${profile}/login`;
-    // const data = useGetStudent(url, user);
-    // return (
-    //     <>
-    //         <h1>Sign In</h1>
-    //         <div>{data.data}</div>
-    //     </>
-    // )
+
+function handleClick(obj) {
+    console.log(obj);
+    UseLogin(obj);
+}
