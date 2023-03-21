@@ -14,7 +14,7 @@ export default function Start(props) {
         <>
             <div className="card flex flex-wrap justify-content-center gap-3">
                 <Button onClick={() => { navigate('/sign-in') }} label="Sign In" text raised />
-                <Button onClick={() => { navigate('/sign-up/student') }} label="Sign Up" text raised />
+                <Button onClick={() => { navigate('/sign-up') }} label="Sign Up" text raised />
             </div>
         </>
     )

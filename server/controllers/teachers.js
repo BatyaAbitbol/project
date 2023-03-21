@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 
 exports.register = async (req, res) => {
 
-    const { name, idNumber, email, password, image } = req.body
+    const { name, idNumber, email, password } = req.body
     if (!idNumber || !email || !password) {
         return res.status(400).json({ message: "All fields are required" });
     }
@@ -16,7 +16,7 @@ exports.register = async (req, res) => {
         return res.status(400).json({ message: "Duplicate teacher" })
     }
     const hashedPwd = await bcrypt.hash(password, 10);
-    const teacherObject = { name, idNumber, email, password: hashedPwd, image }
+    const teacherObject = { name, idNumber, email, password: hashedPwd }
     const teacher = await dal.create(teacherObject);
     if (teacher) {
         const subject = 'Welcome to our school';
@@ -28,8 +28,11 @@ exports.register = async (req, res) => {
             .catch(error => {
                 return res.status(500).send('Failed to send email');
             });
+        return res.status(201).json({
+            message: `New teacher ${name} created`
+        })
     }
-    return res.status(400).json({ message: 'Invalid student data received' })
+    return res.status(400).json({ message: 'Invalid teacher data received' })
 }
 
 exports.login = async (req, res) => {
@@ -97,25 +100,25 @@ exports.delete = async (req, res) => {
     //לבדוק האם יש קורס בתוקף בבעלות המורה
     const id = req.params.id;
     if (activeCourses(id))
-    return res.status(500).json({message: `There are active courses for teacher with id ${id}.\nHe cannot be deleted!`})
-        await dal.delete(id)
-            .then(num => {
-                if (num == 1) {
-                    res.send({ message: `Teacher was deleted successfully! 👍` });
-                    const to = req.body.email;
-                    const subject = 'Deleted Successfully';
-                    const body = 'You will be required to sign up again, \nif you want to upload a new course or anything else.\n\nGood Luck!';
-                    mailer.sendEmail(to, subject, body)
-                        .then(info => {
-                            console.log('Email sent: ', info.response);
-                        })
-                        .catch(error => {
-                            console.log('Error sending email: ', error);
-                            res.status(500).send('Failed to send email');
-                        });
-                }
-                else res.status(404).send({ message: `Cannot delete teacher with id ${id}` })
-            })
+        return res.status(500).json({ message: `There are active courses for teacher with id ${id}.\nHe cannot be deleted!` })
+    await dal.delete(id)
+        .then(num => {
+            if (num == 1) {
+                res.send({ message: `Teacher was deleted successfully! 👍` });
+                const to = req.body.email;
+                const subject = 'Deleted Successfully';
+                const body = 'You will be required to sign up again, \nif you want to upload a new course or anything else.\n\nGood Luck!';
+                mailer.sendEmail(to, subject, body)
+                    .then(info => {
+                        console.log('Email sent: ', info.response);
+                    })
+                    .catch(error => {
+                        console.log('Error sending email: ', error);
+                        res.status(500).send('Failed to send email');
+                    });
+            }
+            else res.status(404).send({ message: `Cannot delete teacher with id ${id}` })
+        })
 }
 
 const activeCourses = async (id) => {

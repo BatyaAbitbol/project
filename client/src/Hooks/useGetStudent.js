@@ -11,13 +11,18 @@ export async function UseGetData() {
     }
 }
 
-export async function UseLogin(params) {
-   try {
-        const res = await axios.get(`http://localhost:8000/students/login`, params);
+export async function UseSignIn(profile, params) {
+    console.log(params);
+    let url;
+    if (profile == 'Teacher')
+        url = 'http://localhost:8000/teachers/login';
+    else if (profile == 'Student') url = 'http://localhost:8000/students/login'
+    try {
+        const res = await axios.get(url, params);
         console.log(res);
-   } catch (error) {
-    console.log(error);
-}
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 // useEffect(() => {

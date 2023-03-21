@@ -1,19 +1,17 @@
 import { TabView, TabPanel } from 'primereact/tabview';
-import SignUpStudents from './SignUpStudents';
-import SignUpTeachers from './SignUpTeachers';
-import './signup.css';
+import { SignInByProfile } from './SignInByProfile';
 
-export function SignUp(props) {
+export function SignIn(props) {
 
     return (
         <>
             <div className='flex align-items-center flex-column pt-6 px-3'>
                 <TabView>
                     <TabPanel rightIcon='pi pi-user'>
-                        <SignUpStudents/>
+                        <SignInByProfile profile='Student'/>
                     </TabPanel>
                     <TabPanel rightIcon='pi pi-user-plus'>
-                        <SignUpTeachers/>
+                    <SignInByProfile  profile='Teacher'/>
                     </TabPanel>
                 </TabView>
             </div>

@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
                 }
             },
             password: {
-                type: DataTypes.STRING(12),
+                type: DataTypes.STRING(255),
                 unique: "compositeIndex",
                 allowNull: false
             }
