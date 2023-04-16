@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSignUp } from '../../Hooks/usePostAxios';
 import './signup.css';
 
-const  SignUpTeachers = (props) => {
+export default function SignUpTeachers(props) {
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [showMessage, setShowMessage] = useState(false);
@@ -52,7 +52,7 @@ const  SignUpTeachers = (props) => {
         return isFormFieldValid(meta) && <small className="p-error">{meta.error}</small>;
     };
 
-    const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => {setShowMessage(false); navigate('/home-page');}} /></div>;
+    const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => {setShowMessage(false); navigate('/home/home-teacher');}} /></div>;
     const errorDialodFooter = <div className='flex justify-content-center'><Button label='OK' className='p-button-text' autoFocus onClick={() => setShowErrorMessage(false)} /></div>;
     const passwordHeader = <h6>Pick a password</h6>;
     const passwordFooter = (
@@ -171,4 +171,3 @@ const  SignUpTeachers = (props) => {
         </div>
     );
 }
-export default SignUpTeachers;

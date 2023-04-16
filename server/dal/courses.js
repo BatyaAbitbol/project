@@ -11,7 +11,7 @@ exports.findOneByName = async (courseName) => {
     return await Courses.findOne({ where: { name: courseName } })
 }
 exports.findAll = async () => {
-    return await Courses.findAll();
+    return await Courses.findAll({});
 }
 exports.findAllByTeacherId = async (teacherId) => {
     return await Courses.findAll({ where: { teacherId: teacherId } });

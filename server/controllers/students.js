@@ -30,16 +30,22 @@ exports.register = async (req, res) => {
             .catch(error => {
                 return res.status(500).send('Failed to send email');
             });
+
+        const studentInfo = { id: student.id, firstName: student.firstName, lastName: student.lastName, idNumber: student.idNumber, email: student.email };
+        const accessToken = jwt.sign(studentInfo, process.env.ACCESS_TOKEN_SECRET);
+        
         return res.status(201).json({
-            message: `New student ${firstName} ${lastName} created`
+            message: `New student ${firstName} ${lastName} created`,
+            data: student,
+            token: accessToken
         })
     }
     return res.status(400).json({ message: 'Invalid student data received' })
 };
 
 exports.login = async (req, res) => {
-
-    const { password, idNumber } = req.body;
+    console.log(req.query);
+    const { password, idNumber } = req.query;
     if (!idNumber || !password) {
         return res.status(400).send({ message: "All fields are required" })
     }
@@ -85,7 +91,7 @@ exports.findOneByPassword = async (req, res) => {
 }
 
 exports.findOneByIdNumber = async (req, res) => {
-    const idNumber = req.body.idNumber;
+    const idNumber = req.query.idNumber;
     await dal.findOneByIDNumber(idNumber)
         .then(data => {
             if (data) {

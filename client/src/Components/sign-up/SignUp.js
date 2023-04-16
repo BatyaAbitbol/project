@@ -10,10 +10,10 @@ export function SignUp(props) {
             <div className='flex align-items-center flex-column pt-6 px-3'>
                 <TabView>
                     <TabPanel rightIcon='pi pi-user'>
-                        <SignUpStudents/>
+                        <SignUpStudents />
                     </TabPanel>
                     <TabPanel rightIcon='pi pi-user-plus'>
-                        <SignUpTeachers/>
+                        <SignUpTeachers />
                     </TabPanel>
                 </TabView>
             </div>

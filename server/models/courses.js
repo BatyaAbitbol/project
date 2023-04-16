@@ -34,9 +34,6 @@ module.exports = (sequelize, Sequelize) => {
                     model: 'prices',
                     key: 'id'
                 }
-            },
-            untilDate:{
-                type: Sequelize.DATE
             }
         },
         {

@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 import 'primereact/resources/themes/lara-light-indigo/theme.css';   // theme
@@ -25,7 +26,6 @@ function App() {
       <div className="App">
         <Routes>
           <Route exact path='/' element={<Start />}></Route>
-          <Route exact path='/home-page' element={<Home />} />
           <Route exact path='/sign-in' element={<SignIn />} />
           <Route exact path='/sign-up' element={<SignUp />} />
 

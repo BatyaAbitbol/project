@@ -5,23 +5,23 @@ export async function UseGetData() {
 
     try {
         const res = await axios.get(`http://localhost:8000/students`)
-        console.log(res.data);
+        //  console.log(res.data);
     } catch (error) {
         console.log(error);
     }
 }
 
-export async function UseSignIn(profile, params) {
-    console.log(params);
+export async function UseSignIn(profile, obj) {
     let url;
-    if (profile == 'Teacher')
-        url = 'http://localhost:8000/teachers/login';
-    else if (profile == 'Student') url = 'http://localhost:8000/students/login'
+    console.log(obj);
+    url = `http://localhost:8000/${profile}/login`;
     try {
-        const res = await axios.get(url, params);
-        console.log(res);
+        const res = await axios.get(url, { params: { idNumber: obj.idNumber, password: obj.password } });
+        return res;
     } catch (error) {
+        console.log("Error");
         console.log(error);
+        return error;
     }
 }
 

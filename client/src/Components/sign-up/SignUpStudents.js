@@ -1,3 +1,4 @@
+// בסיעתא דשמיא
 import React, { useState, useEffect } from 'react';
 import { Form, Field } from 'react-final-form';
 import { InputText } from 'primereact/inputtext';
@@ -11,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSignUp } from '../../Hooks/usePostAxios';
 import './signup.css';
 
-const SignUpStudents = (props) => {
+export default function SignUpStudents(props) {
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [showMessage, setShowMessage] = useState(false);
@@ -32,14 +33,12 @@ const SignUpStudents = (props) => {
         else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.email)) {
             errors.email = 'Invalid email address. E.g. example@email.com';
         }
-
         if (!data.password) {
             errors.password = 'Password is required.';
         }
         else if (data.password.length < 8 || data.password.length > 12) {
             errors.password = 'Password length is at least 8 and at most 12.';
         }
-
         if (!data.idNumber) {
             errors.idNumber = 'ID number is required.';
         }
@@ -63,8 +62,8 @@ const SignUpStudents = (props) => {
         return isFormFieldValid(meta) && <small className="p-error">{meta.error}</small>;
     };
 
-    const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => {setShowMessage(false); navigate('/home-page');}} /></div>;
-    const errorDialodFooter = <div className='flex justify-content-center'><Button label='OK' className='p-button-text' autoFocus onClick={() => setShowErrorMessage(false)} /></div>;
+    const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => { setShowMessage(false); navigate('/home/home-student'); }} /></div>;
+    const errorDialodFooter = <div className='flex justify-content-center'><Button label='OK' className='p-button-text' autoFocus onClick={() => { setShowErrorMessage(false); navigate('/sign-in') }} /></div>;
     const passwordHeader = <h6>Pick a password</h6>;
     const passwordFooter = (
         <React.Fragment>
@@ -90,27 +89,38 @@ const SignUpStudents = (props) => {
             image: data.image
         }
         const res = await useSignUp('students', obj);
+
         if (res.status && res.status === 201) {
+            localStorage.setItem('token', JSON.stringify(res.data.accessToken));
             setMessage(<>
                 <h5>Registration Successful!</h5>
-                    <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
-                        Your account is registered under name <b>{data.firstName} {data.lastName}</b>.<br />Please check <b>{data.email}</b> for activation instructions.
-                    </p>
+                <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
+                    Your account is registered under name <b>{data.firstName} {data.lastName}</b>.<br />Please check <b>{data.email}</b> for activation instructions.
+                </p>
             </>)
             setShowMessage(true);
+        }
+        else if (res.status && res.status === 200) {
+            setMessage(<>
+                <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
+                    There are duplicate students.<br />
+                    Instead, you can try to sign in.
+                </p>
+            </>)
+            setShowErrorMessage(true);
         }
         // why - ??? it still does not work out.
         else if (res.response && res.response.data.message === 'Duplicate student') {
             setMessage(<>
                 <h5>You Are Signed Up already!</h5>
-            </>)       
+            </>)
         }
         else {
             setErrorMessage(res.data.message);
             setShowErrorMessage(true);
         }
     };
-    
+
     return (
         <div className="form-demo">
             <Dialog visible={showMessage} onHide={() => setShowMessage(false)} position="top" footer={dialogFooter} showHeader={false} breakpoints={{ '960px': '80vw' }} style={{ width: '30vw' }}>
@@ -124,7 +134,8 @@ const SignUpStudents = (props) => {
                     <i className="pi pi-undo" style={{ fontSize: '5rem', color: 'var(--red-500)' }}></i>
                     <h5>Failed Registration</h5>
                     <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
-                        Your registration failed because of some errors that occured. Error Description: <b>{errorMessage}</b><br />You should try again.
+                        {/* Your registration failed because of some errors that occured. Error Description: <b>{errorMessage}</b><br />You should try again. */}
+                        {message}
                     </p>
                 </div>
             </Dialog>
@@ -195,5 +206,3 @@ const SignUpStudents = (props) => {
         </div>
     );
 }
-
-export default SignUpStudents;
