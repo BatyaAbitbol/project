@@ -25,7 +25,7 @@ exports.findAll = async (req, res) => {
 // According to studentID
 exports.findAllByStudentId = async (req, res) => {
     const studentId = req.params.id;
-    await dal.findAll({ where: { studentId: studentId } })
+    await dal.findAll(studentId)
         .then(data => { res.send(data); })
         .catch(err => {
             res.status(404).send({ message: err.message || "Failed retrieving courses for students." })
@@ -33,7 +33,7 @@ exports.findAllByStudentId = async (req, res) => {
 }
 exports.findOne = async (req, res) => {
     const id = req.params.id;
-    await dal.findOne({ where: { id: id } })
+    await dal.findOne(id)
         .then(data => {
             if (data)
                 res.send(data);
@@ -63,23 +63,23 @@ exports.viewDetails = async (req, res) => {
     const courseStudentId = req.params.id;
     let details = [];
     let numOfLectures = 0;
-    const courseStudent = await dal.findOne({ where: { id: courseStudentId } });
+    const courseStudent = await dal.findOneById(courseStudentId);
     if (courseStudent) {
         const nextLectureNum = courseStudent.nextLectureNum;
-        const lectures = await lectures_dal.findAll({ where: { courseId: courseStudent.courseId } });
+        const lectures = await lectures_dal.findAllByCourseId(courseStudent.courseId);
         if (lectures) {
             numOfLectures = lectures.length;
             for (let i = 0; i < lectures.length; i++) {
-                const task = await tasks_dal.findOne({ where: { lectureId: lectures[i].id } });
+                const task = await tasks_dal.findOneByLectureId(lectures[i].id);
                 if (!task) {
                     details.push({ lectureNum: i + 1, existTask: false, isDone: false, isViewed: i < nextLectureNum });
                 }
                 else {
-                    const taskStudent = await task_student_dal.findOne({ where: { taskId: task.id } });
+                    const taskStudent = await task_student_dal.findOneByTaskId(task.id);
                     if (taskStudent)
                         details.push({ lectureNum: i + 1, existTask: true, isDone: taskStudent.isDone, isViewed: i < nextLectureNum });
                     if (numOfLectures <= nextLectureNum) {
-                        const test = await test_dal.findOne({ where: { courseStudentId: courseStudentId } });
+                        const test = await test_dal.findOneByCourseStudentId(courseStudentId);
                         if (test) {
                             details.push({ testScores: test.scores });
                         }
@@ -98,7 +98,7 @@ exports.canTest = async (courseStudentId) => {
     const courseStudent = await dal.findOne({ where: { id: courseStudentId } });
     if (courseStudent) {
         const nextLectureNum = courseStudent.nextLectureNum;
-        const lectures = lectures_dal.findAll({ where: { courseId: courseStudent.courseId } });
+        const lectures = lectures_dal.findAllByCourseId(courseStudent.courseId);
         if (lectures) {
             if (nextLectureNum > lectures.length)
                 return true;

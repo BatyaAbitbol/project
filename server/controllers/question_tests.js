@@ -1,7 +1,4 @@
 const dal = require('../dal/question_tests');
-const questions_dal = require('../dal/questions');
-const test_courses_dal = require('../dal/test_courses');
-const course_student_dal = require('../dal/course_students');
 
 exports.create = async (req, res) => {
     if (!req.body) {
@@ -23,7 +20,7 @@ exports.findAll = async (req, res) => {
 }
 exports.findAllByCourseStudent = async (req, res) => {
     const courseStudentId = req.params.id;
-    await dal.findAll({ where: { courseStudentId: courseStudentId } })
+    await dal.findAllByCourseStudentId(courseStudentId)
         .then(data => { res.send(data); })
         .catch(err => {
             res.status(500).send({ message: err.message || `Some Errors occured while retriving answers for students for courseStudentId ${courseStudentId}.` })
@@ -31,7 +28,7 @@ exports.findAllByCourseStudent = async (req, res) => {
 }
 exports.findAllByQuestionId = async (req, res) => {
     const questionId = req.params.id;
-    await dal.findAll({ where: { questionId: questionId } })
+    await dal.findAllByQuestionId(questionId)
         .then(data => {
             if (data)
                 res.send(data);
@@ -40,7 +37,7 @@ exports.findAllByQuestionId = async (req, res) => {
 }
 exports.findOne = async (req, res) => {
     const id = req.params.id;
-    await dal.findOne({ where: { id: id } })
+    await dal.findOneById(id)
         .then(data => {
             if (data)
                 res.send(data);

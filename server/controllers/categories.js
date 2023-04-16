@@ -13,7 +13,7 @@ exports.create = async (req, res) => {
 }
 exports.findByName = async (req, res) => {
     const name = req.body.name;
-    await dal.findOne({ where: { name: name } })
+    await dal.findOneByName(name)
         .then(data => {
             if (data)
                 res.send(data);
@@ -22,7 +22,7 @@ exports.findByName = async (req, res) => {
 }
 exports.findById = async (req, res) => {
     const id = req.params.id;
-    await dal.findOne({ where: { id: id } })
+    await dal.findOneById(id)
         .then(data => {
             if (data)
                 res.send(data);

@@ -35,7 +35,7 @@ exports.findAll = async (req, res) => {
 //{ attributes: { exclude: ['id'] } }
 exports.findOne = async (req, res) => {
     const id = req.params.id;
-    await dal.findOne({ where: { id: id } })
+    await dal.findOneById(id)
         .then(data => {
             if (data) {
                 res.send(data);
@@ -50,7 +50,7 @@ exports.findOne = async (req, res) => {
 
 exports.findByPrice = async (req, res) => {
     const price = req.body.price;
-    await dal.findOne({ where: { price: price } })
+    await dal.findOneByPrice(price)
         .then(data => {
             if (data)
                 res.send(data);

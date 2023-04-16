@@ -20,21 +20,14 @@ exports.findAll = async (req, res) => {
 }
 exports.findAllByCourseId = async (req, res) => {
     const courseId = req.body.courseId;
-    await dal.findAll({ where: { courseId: courseId } })
+    await dal.findAllByCourseId(courseId)
         .then(data => { res.send(data) })
         .catch(err =>
             res.status(500).send({ message: err.message || "Some errors occured while retrieving questions." }))
 }
-exports.findAllByType = async (req, res) => {
-    const id = req.params.id;
-    await dal.findAll({ where: { typeId: id } })
-        .then(data => { res.send(data) })
-        .catch(err =>
-            res.status(500).send({ message: err.message || `Some errors occured while retrieving questions by typeId ${id}.` }))
-}
 exports.findOne = async (req, res) => {
     const id = req.params.id;
-    await dal.findOne({ where: { id: id } })
+    await dal.findOneById(id)
         .then(data => {
             if (data)
                 res.send(data);

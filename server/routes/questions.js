@@ -6,7 +6,6 @@ const router = express.Router();
 router.use(verifyJWT);
 
 router.get('/course/:id', question.findAllByCourseId)
-router.get('/type/:id', question.findAllByType)
 
 router.route('/:id')
     .get(question.findOne)

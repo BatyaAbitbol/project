@@ -54,7 +54,7 @@ export function SignInByProfile(props) {
                         <i className="pi pi-check-circle" style={{ fontSize: '5rem', color: 'var(--green-500)' }}></i>
                         <h5>You are in!</h5>
                     </div>
-                </Dialog>
+                </Dialog> 
 
                 <div className="flex justify-content-center">
                     <div className="card">

@@ -17,7 +17,7 @@ exports.create = async (req, res) => {
 // find a course by its name
 exports.findByName = async (req, res) => {
     const courseName = req.params.name;
-    await dal.findOne({ where: { name: courseName } })
+    await dal.findOneByName(courseName)
         .then(course => {
             if (course) {
                 res.send(course);
@@ -32,7 +32,7 @@ exports.findByName = async (req, res) => {
 // find a course by its id 
 exports.findById = async (req, res) => {
     const id = req.params.id;
-    await dal.findOne({ where: { id: id } })
+    await dal.findOneById(id)
         .then(data => {
             if (data)
                 res.send(data);
@@ -50,7 +50,7 @@ exports.findAll = async (req, res) => {
 }
 exports.findByCategoryId = async (req, res) => {
     const categoryId = req.params.id;
-    await dal.findAll({ where: { categoryId: categoryId } })
+    await dal.findAll(categoryId)
         .then(data => { res.send(data); })
         .catch(err => {
             res.status(500).send({ message: "Some error occurred while retrieving courses." });
@@ -58,7 +58,7 @@ exports.findByCategoryId = async (req, res) => {
 }
 exports.findByTeacherId = async (req, res) => {
     const teacherId = req.params.id;
-    await dal.findAll({ where: { teacherId: teacherId } })
+    await dal.findAllByTeacherId(teacherId)
         .then(data => { res.send(data) })
         .catch(err => {
             res.status(500).send({ message: "Some error occurred while retrieving courses." });

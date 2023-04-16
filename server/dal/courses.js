@@ -4,11 +4,20 @@ const Courses = db.Courses;
 exports.findOne = async (condition) => {
     return await Courses.findOne(condition);
 }
+exports.findOneById = async (id) => {
+    return await Courses.findOne({ where: { id: id } });
+}
+exports.findOneByName = async (courseName) => {
+    return await Courses.findOne({ where: { name: courseName } })
+}
 exports.findAll = async () => {
     return await Courses.findAll();
 }
-exports.findAll = async (condition) => {
-    return await Courses.findAll(condition);
+exports.findAllByTeacherId = async (teacherId) => {
+    return await Courses.findAll({ where: { teacherId: teacherId } });
+}
+exports.findAllByCategoryId = async (categoryId) => {
+    return await Courses.findAll({ where: { categoryId: categoryId } });
 }
 exports.create = async (course) => {
     return await Courses.create(course);

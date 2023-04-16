@@ -10,6 +10,15 @@ exports.findAll = async () => {
 exports.findOne = async (condition) => {
     return await Students.findOne(condition);
 }
+exports.findOne = async (id) => {
+    return await Students.findOne({ where: { id: id } });
+}
+exports.findOneByIDNumber = async (idNumber) => {
+    return await Students.findOne({ where: { idNumber: idNumber } });
+}
+exports.findOneByPassword = async (password) => {
+    return await Students.findOne({ where: { password: password } });
+}
 exports.update = async (student, id) => {
     return await Students.update(student, { where: { id: id } });
 }

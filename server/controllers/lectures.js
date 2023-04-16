@@ -17,7 +17,7 @@ exports.create = async (req, res) => {
 //findAllByCourseId = כל השיעורים לקורס מסויים
 exports.findAll = async (req, res) => {
     const courseId = req.body.courseId;
-    await dal.findAll({ where: { courseId: courseId } })
+    await dal.findAllByCourseId(courseId)
         .then(data => { res.send(data); })
         .catch(err => {
             res.status(500).send({ message: `Some error occurred while retrieving courses for courseId ${courseId}.` });
@@ -27,7 +27,7 @@ exports.findAll = async (req, res) => {
 exports.findByNum = async (req, res) => {
     const courseId = req.body.courseId;
     const lectureNum = req.body.lectureNum;
-    await dal.findOne({ where: { courseId: courseId, lectureNum: lectureNum } })
+    await dal.findByLectureNumOfCourse(courseId, lectureNum)
         .then(data => {
             if (data)
                 res.send(data);
@@ -37,7 +37,7 @@ exports.findByNum = async (req, res) => {
 // שיעורים מקורס מסויים לתלמיד עד מספר השיעור הבא של התלמיד בקורס הזה
 exports.findUntilNum = async (req, res) => {
     const courseStudentId = req.body.courseStudentId;
-    await course_student_dal.findOne({ where: { id: courseStudentId } })
+    await course_student_dal.findOneById(courseStudentId)
         .then(async (data) => {
             if (data) {
                 const course_student = data.dataValues;
@@ -47,7 +47,7 @@ exports.findUntilNum = async (req, res) => {
                 console.log(course_student);
                 // await course_student_dal.update(data, courseStudentId);
                 console.log(num);
-                await dal.findAll({ where: { nextLectureNum: { lt: num } } })
+                await dal.findAllInCourseUntilLectureNum(course_student.courseId, num)
                     .then(data => {
                         if (data)
                             res.send(data);
@@ -58,19 +58,10 @@ exports.findUntilNum = async (req, res) => {
             else res.status(500).send('Error findUntilNum')
 
         })
-
-
-    // const lectureNum = req.body.lectureNum;
-    // await dal.findOne({ where: { courseId: courseId, lectureNum < lectureNum } })
-    //     .then(data => {
-    //         if (data)
-    //             res.send(data);
-    //         else res.status(404).send({ message: `Cannot find lecture no.${lectureNum} of courseID ${courseId}` })
-    //     });
 }
 exports.findById = async (req, res) => {
     const id = req.params.id;
-    await dal.findAll({ where: { id: id } })
+    await dal.findOneById(id)
         .then(data => {
             if (data)
                 res.send(data);

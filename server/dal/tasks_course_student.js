@@ -13,6 +13,9 @@ exports.findAll = async () => {
 exports.findOne = async (condition) => {
     return await Tasks_atudent.findOne(condition);
 }
+exports.findOneByTaskId = async (taskId) => {
+    return await Tasks_atudent.findOne({ where: { taskId: taskId } });
+}
 exports.update = async (task, id) => {
     return await Tasks_atudent.update(task, { where: { id: id } });
 }

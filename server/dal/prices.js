@@ -13,6 +13,12 @@ exports.findAll = async (condition) => {
 exports.findOne = async (condition) => {
     return await Prices.findOne(condition);
 }
+exports.findOneById = async (id) => {
+    return await Prices.findOne({ where: { id: id } });
+}
+exports.findOneByPrice = async (price) => {
+    return await Prices.findOne({ where: { price: price } });
+}
 exports.update = async (price, id) => {
     return await Prices.update(price, { where: { id: id } });
 }

@@ -13,6 +13,9 @@ exports.findAll = async (condition) => {
 exports.findOne = async (condition) => {
     return await Tests.findOne(condition);
 }
+exports.findOneByCourseStudentId = async (courseStudentId) => {
+    return await Tests.findOne({ where: { courseStudentId: courseStudentId } });
+}
 exports.update = async (test, id) => {
     return await Tests.update(test, { where: { id: id } });
 }

@@ -4,14 +4,17 @@ const Lectures = db.Lectures;
 exports.create = async (lecture) => {
     return await Lectures.create(lecture);
 }
-exports.findAll = async () => {
-    return await Lectures.findAll();
+exports.findAllByCourseId = async (courseId) => {
+    return await Lectures.findAll({ where: { courseId: courseId } });
 }
-exports.findAll = async (condition) => {
-    return await Lectures.findAll(condition);
+exports.findAllInCourseUntilLectureNum = async (courseId, lectureNum) => {
+    return await Lectures.findAll({ where: { courseId: courseId, nextLectureNum: { lt: lectureNum } } });
 }
-exports.findOne = async (condition) => {
-    return await Lectures.findOne(condition)
+exports.findOneById = async (id) => {
+    return await Lectures.findOne({ where: { id: id } })
+}
+exports.findByLectureNumOfCourse = async (courseId, lectureNum) => {
+    return await Lectures.findOne({ where: { courseId: courseId, lectureNum: lectureNum } })
 }
 exports.update = async (lecture, id) => {
     return await Lectures.update(lecture, { where: { id: id } })

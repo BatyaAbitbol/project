@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSignUp } from '../../Hooks/usePostAxios';
 import './signup.css';
 
-export default function SignUpTeachers(props) {
+const  SignUpTeachers = (props) => {
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [showMessage, setShowMessage] = useState(false);
@@ -171,3 +171,4 @@ export default function SignUpTeachers(props) {
         </div>
     );
 }
+export default SignUpTeachers;

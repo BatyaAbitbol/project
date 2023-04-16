@@ -43,7 +43,7 @@ exports.login = async (req, res) => {
     if (!idNumber || !password) {
         return res.status(400).send({ message: "All fields are required" })
     }
-    const finduser = await dal.findOne({ where: { idNumber: idNumber } })
+    const finduser = await dal.findOneByIDNumber(idNumber)
     if (!finduser) {
         return res.status(401).send({ message: 'Unauthorized' });
     }
@@ -71,7 +71,7 @@ exports.findAll = async (req, res) => {
 
 exports.findOneByPassword = async (req, res) => {
     const password = req.body.password;
-    await dal.findOne({ where: { password: password } })
+    await dal.findOneByPassword(password)
         .then(data => {
             if (data) {
                 res.send(data);
@@ -86,7 +86,7 @@ exports.findOneByPassword = async (req, res) => {
 
 exports.findOneByIdNumber = async (req, res) => {
     const idNumber = req.body.idNumber;
-    await dal.findOne({ where: { idNumber: idNumber } })
+    await dal.findOneByIDNumber(idNumber)
         .then(data => {
             if (data) {
                 res.send(data);
@@ -101,7 +101,7 @@ exports.findOneByIdNumber = async (req, res) => {
 
 exports.findOne = async (req, res) => {
     const id = req.params.id;
-    await dal.findOne({ where: { id: id } })
+    await dal.findOneById(id)
         .then((data) => {
             if (data) {
                 res.send(data);

@@ -19,8 +19,8 @@ exports.findAll = async (req, res) => {
         });
 }
 exports.findAllByQestionId = async (req, res) => {
-    const qestionId = req.params.id;
-    await dal.findAll({ where: { qestionId: qestionId } })
+    const questionId = req.params.id;
+    await dal.findAllByQestionId(questionId)
         .then(data => { res.send(data); })
         .catch(err => {
             res.status(500).send({ message: err.message || `Some Errors occured while retriving answers for questionId ${questionId}` })
@@ -28,7 +28,7 @@ exports.findAllByQestionId = async (req, res) => {
 }
 exports.findOne = async (req, res) => {
     const id = req.params.id;
-    await dal.findOne({ where: { id: id } })
+    await dal.findOneById(id)
         .then(data => {
             if (data)
                 res.send(data);
@@ -37,7 +37,7 @@ exports.findOne = async (req, res) => {
 }
 exports.findCorrectAnswer = async (req, res) => {
     const questionId = req.body.qestionId;
-    await dal.findOne({ where: { questionId: questionId, isCorrect: true } })
+    await dal.findCorrectAnswer(questionId);
 }
 exports.update = async (req, res) => {
     const id = req.body.id;

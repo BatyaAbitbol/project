@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSignUp } from '../../Hooks/usePostAxios';
 import './signup.css';
 
-export default function SignUpStudents(props) {
+const SignUpStudents = (props) => {
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [showMessage, setShowMessage] = useState(false);
@@ -43,7 +43,7 @@ export default function SignUpStudents(props) {
         if (!data.idNumber) {
             errors.idNumber = 'ID number is required.';
         }
-        else if (data.idNumber.length != 9 || !/^\d+$/.test(data.idNumber)) {
+        else if (data.idNumber.length !== 9 || !/^\d+$/.test(data.idNumber)) {
             errors.idNumber = 'ID Number is invalid.'
         }
         if (!data.accept) {
@@ -90,17 +90,17 @@ export default function SignUpStudents(props) {
             image: data.image
         }
         const res = await useSignUp('students', obj);
-        if (res.status && res.status == 201) {
+        if (res.status && res.status === 201) {
             setMessage(<>
                 <h5>Registration Successful!</h5>
                     <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
-                        Your account is registered under name <b>{formData.firstName} {formData.lastName}</b>.<br />Please check <b>{formData.email}</b> for activation instructions.
+                        Your account is registered under name <b>{data.firstName} {data.lastName}</b>.<br />Please check <b>{data.email}</b> for activation instructions.
                     </p>
             </>)
             setShowMessage(true);
         }
         // why - ??? it still does not work out.
-        else if (res.response && res.response.data.message == 'Duplicate student') {
+        else if (res.response && res.response.data.message === 'Duplicate student') {
             setMessage(<>
                 <h5>You Are Signed Up already!</h5>
             </>)       
@@ -196,3 +196,4 @@ export default function SignUpStudents(props) {
     );
 }
 
+export default SignUpStudents;
