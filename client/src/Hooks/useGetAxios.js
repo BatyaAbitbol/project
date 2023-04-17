@@ -9,4 +9,15 @@ export async function GetAllCourses(url){
         return err;
     }
 }
+
+export async function UseGetAll(url){
+    try {
+        debugger
+        const res = await axios.get(`http://localhost:8000/${url}`, {headers: {Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`}})
+        return res;
+    } catch(err) {
+        console.log(err);
+        return err;
+    }
+}
 // export async function useGetAll

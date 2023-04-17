@@ -20,116 +20,116 @@ import { Button } from 'primereact/button';
     // { label: 'Sign In', icon: 'pi pi-user' }
   ];
 */
-   const items = [
-    { label: 'Home', icon: 'pi pi-fw pi-home' },
-    { label: 'Courses', icon: 'pi pi-bookmark' },
-    { label: 'Tests', icon: 'pi pi-fw pi-pencil' },
-    { label: 'Tasks', icon: 'pi pi-fw pi-file' },
-    // { label: 'Sign In', icon: 'pi pi-user' }
-  ];
-  
-  const images = [
-  
-    {
-      url: examImg,
-      title: 'exam',
-      width: '33%',
+const items = [
+  { label: 'Home', icon: 'pi pi-fw pi-home' },
+  { label: 'Courses', icon: 'pi pi-bookmark' },
+  { label: 'Tests', icon: 'pi pi-fw pi-pencil' },
+  { label: 'Tasks', icon: 'pi pi-fw pi-file' },
+  // { label: 'Sign In', icon: 'pi pi-user' }
+];
+
+const images = [
+
+  {
+    url: examImg,
+    title: 'exam',
+    width: '33%',
+  },
+  {
+    url: learnImg,
+    title: 'Learning',
+    width: '34%',
+  },
+  {
+    url: courseImg,
+    title: 'Courses',
+    width: '33%',
+  },
+];
+
+const ImageButton = styled(ButtonBase)(({ theme }) => ({
+  position: 'relative',
+  height: 200,
+  [theme.breakpoints.down('sm')]: {
+    width: '100% !important', // Overrides inline-style
+    height: 100,
+
+  },
+  '&:hover, &.Mui-focusVisible': {
+    zIndex: 1,
+    '& .MuiImageBackdrop-root': {
+      opacity: 0.15,
     },
-      {
-      url: learnImg,
-      title: 'Learning',
-      width: '34%',
+    '& .MuiImageMarked-root': {
+      opacity: 0,
     },
-    {
-      url: courseImg,
-      title: 'Courses',
-      width: '33%',
+    '& .MuiTypography-root': {
+      border: '4px solid currentColor',
     },
-  ];
-  
-  const ImageButton = styled(ButtonBase)(({ theme }) => ({
-    position: 'relative',
-    height: 200,
-    [theme.breakpoints.down('sm')]: {
-      width: '100% !important', // Overrides inline-style
-      height: 100,
-      
-    },
-    '&:hover, &.Mui-focusVisible': {
-      zIndex: 1,
-      '& .MuiImageBackdrop-root': {
-        opacity: 0.15,
-      },
-      '& .MuiImageMarked-root': {
-        opacity: 0,
-      },
-      '& .MuiTypography-root': {
-        border: '4px solid currentColor',
-      },
-    },
-  }));
-  
-  const ImageSrc = styled('span')({
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center 40%',
-  });
-  
-  const Image = styled('span')(({ theme }) => ({
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: theme.palette.common.white,
-  }));
-  
-  const ImageBackdrop = styled('span')(({ theme }) => ({
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    backgroundColor: theme.palette.common.black,
-    opacity: 0.4,
-    transition: theme.transitions.create('opacity'),
-  }));
-  
-  const ImageMarked = styled('span')(({ theme }) => ({
-    height: 3,
-    width: 18,
-    backgroundColor: theme.palette.common.white,
-    position: 'absolute',
-    bottom: -2,
-    left: 'calc(50% - 9px)',
-    transition: theme.transitions.create('opacity'),
-  })
- 
+  },
+}));
+
+const ImageSrc = styled('span')({
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center 40%',
+});
+
+const Image = styled('span')(({ theme }) => ({
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: theme.palette.common.white,
+}));
+
+const ImageBackdrop = styled('span')(({ theme }) => ({
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
+  backgroundColor: theme.palette.common.black,
+  opacity: 0.4,
+  transition: theme.transitions.create('opacity'),
+}));
+
+const ImageMarked = styled('span')(({ theme }) => ({
+  height: 3,
+  width: 18,
+  backgroundColor: theme.palette.common.white,
+  position: 'absolute',
+  bottom: -2,
+  left: 'calc(50% - 9px)',
+  transition: theme.transitions.create('opacity'),
+})
 
 
-  
-  );
-  
-  export default function ButtonBases() {
-    return (
-      <div >
-        <div style={{display: 'flex'}}>
-      <TabMenu  model={items} />
-      <Stack direction="row" spacing={2}>
-      <Avatar
-        alt="Tamar Streuss"
-        src={profil}
-        sx={{ width: 56, height: 56 }}
-      />
-      <Button style={{ width: 58, height: 58 }}  icon="pi pi-bell" className="p-button-rounded p-button-warning" />
-    </Stack></div>
+
+
+);
+
+export default function ButtonBases() {
+  return (
+    <div >
+      <div style={{ display: 'flex' }}>
+        <TabMenu model={items} />
+        <Stack direction="row" spacing={2}>
+          <Avatar
+            alt="Tamar Streuss"
+            src={profil}
+            sx={{ width: 56, height: 56 }}
+          />
+          <Button style={{ display: 'flex', width: 58, height: 58 }} icon="pi pi-bell" className="p-button-rounded p-button-warning" />
+        </Stack></div>
       <br></br>
       <br></br>
       <br></br>
@@ -141,7 +141,7 @@ import { Button } from 'primereact/button';
       <br></br>
       <br></br>
       <br></br>
-      <Box sx={{  display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
         {images.map((image) => (
           <ImageButton
             focusRipple
@@ -171,15 +171,15 @@ import { Button } from 'primereact/button';
           </ImageButton>
         ))}
       </Box>
-      </div>
-    );
-  }
-  
-
-
- /* return (
-    <div className="card">
-      <TabMenu model={items} />
     </div>
   );
+}
+
+
+
+/* return (
+   <div className="card">
+     <TabMenu model={items} />
+   </div>
+ );
 }*/
