@@ -1,14 +1,12 @@
 import axios from "axios";
 
-export async function useGetAll(url) {
+export async function GetAllCourses(url){
     try {
-        const res = await axios.get(`http://localhost:8000/${url}`, { headers: { Authorization: 'Bearer' + localStorage.getItem('token') } });
-        console.log(res);
+        const res = await axios.get(`http://localhost:8000/${url}`, {headers: {Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`}})
         return res;
-    } catch (error) {
-        console.log(error);
-        return error;
+    } catch(err) {
+        console.log(err);
+        return err;
     }
 }
-
 // export async function useGetAll

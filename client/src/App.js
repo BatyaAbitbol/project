@@ -13,7 +13,7 @@ import SignUpStudents from './Components/sign-up/SignUpStudents';
 
 import HomeStudent from './Components/Home/home-student';
 import HomeTeacher from './Components/Home/home-teacher';
-
+import Courses from './Components/course/Courses';
 import { SignUp } from './Components/sign-up/SignUp';
 import { SignIn } from './Components/sign-in/SignIn';
 
@@ -32,7 +32,7 @@ function App() {
           
           <Route exact path='/sign-up/teacher' element={<SignUpTeachers/>}/>
           <Route exact path='/sign-up/student' element={<SignUpStudents/>}/>
-
+          <Route exact path='/courses' element={<Courses/>}/>
           {/* <Route exact path='/sign-up/teacher' element={<SignUpTeachers />} />
           <Route exact path='/sign-up/student' element={<SignUpStudents />} /> */}
 

@@ -4,10 +4,10 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
-import courseImg from '../../Image/course.jpg'
-import examImg from '../../Image/exam.jpg'
-import learnImg from '../../Image/learning.jpg'
-import profil from '../../Image/profil.JPG';
+import courseImg from '../../images/course.jpg'
+import examImg from '../../images/exam.jpg'
+import learnImg from '../../images/learning.jpg'
+import profil from '../../images/profil.JPG';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { Button } from 'primereact/button';

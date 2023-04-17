@@ -68,9 +68,11 @@ import { useGetAll } from "../../Hooks/useGetAxios"
 export async function Courses (props) {
 
     const res = await useGetAll('courses');
+    console.log(res.data);
     return (
+       
         <>
-            {res.data}
+       !!!!!
         </>
     )
 }
