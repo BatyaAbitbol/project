@@ -55,7 +55,7 @@ exports.login = async (req, res) => {
     }
     const match = await bcrypt.compare(password, finduser.password);
     if (!match) {
-        return res.status(401).send({ message: 'The password is mistake' });
+        return res.status(402).send({ message: 'The password is mistake' });
     }
     const studentInfo = { id: finduser.id, firstName: finduser.firstName, lastName: finduser.lastName, idNumber: finduser.idNumber, email: finduser.email };
 
@@ -100,6 +100,9 @@ exports.findOneByIdNumber = async (req, res) => {
         return res.status(401).send({
             message: `Cannot find student by idNumber = ${idNumber}`
         })
+    }
+    else {
+        return res.status(200).send(found);
     }
 }
 

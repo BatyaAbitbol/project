@@ -2,22 +2,29 @@ import axios from 'axios';
 // import { UseSignIn } from './UseGetStudent';
 
 export async function useSignUp(url, obj) {
-    // const res = await axios.get(`http://localhost:8000/${url}`, {params: {idNumber: obj.idNumber}})
-    const res = await axios.post(`http://localhost:8000/${url}`, obj);
-    console.log(res);
+    console.log("useSignUp 1");
+    try {
+        const res = await axios.get(`http://localhost:8000/${url}`, { params: { idNumber: obj.idNumber } })
+        // const res = await axios.post(`http://localhost:8000/${url}`, obj);
+        // console.log(res);
 
-    if(res.status === 201) return res;
-    // if(res.status != 200) //console.log(res.status);
-    else {
+        // if (res.status === 200) {
+        //     return res;
+        // }
+        return res;
+        // else {
+        // }
+    }
+    catch (err) {
         try {
+            const res = await axios.post(`http://localhost:8000/${url}`, obj);
             console.log(res);
             return res;
         } catch (error) {
             console.log(error);
             return error;
-        }
+        }  
     }
-    return res;
 }
 
 

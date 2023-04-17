@@ -44,7 +44,7 @@ export function SignInByProfile(props) {
     };
     const navigate = useNavigate();
     const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => {  setShowErrorMessage(false); setShowMessage(false);navigate('/home/home-student'); }} /></div>;
-    const errorDialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => { setShowErrorMessage(false);setShowMessage(false); }} /></div>
+    const errorDialogFooter = <div className="flex justify-content-center"></div>
     async function HandleClick(data) {
         const obj = {
             idNumber: data.idNumber,
@@ -70,8 +70,23 @@ export function SignInByProfile(props) {
                         <i className="pi pi-undo" style={{ fontSize: '5rem', color: 'var(--red-500)' }}></i>
                         <h3>Incorrect details.</h3>
                         <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
+                            {res.response.data.message}, you can sign up.
+                        </p>
+                        <Button label="Sign Up" className="p-button-text" autoFocus onClick={() => {  setShowErrorMessage(false); setShowMessage(false);navigate('/sign-up'); }} />
+                    </div>
+                </>)
+                console.log(res.response.data);
+            }
+            else if (res.response.status && res.response.status === 402) {
+                setShowErrorMessage(true);
+                setErrorMessage(<>
+                    <div className="flex align-items-center flex-column pt-6 px-3">
+                        <i className="pi pi-undo" style={{ fontSize: '5rem', color: 'var(--red-500)' }}></i>
+                        <h3>Incorrect details.</h3>
+                        <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
                             {res.response.data.message}, you can try again.
                         </p>
+                        <Button label="OK" className="p-button-text" autoFocus onClick={() => { setShowErrorMessage(false);setShowMessage(false); }} />
                     </div>
                 </>)
                 console.log(res.response.data);
@@ -81,6 +96,7 @@ export function SignInByProfile(props) {
                 setErrorMessage(<>
                     <i className="pi pi-undo" style={{ fontSize: '5rem', color: 'var(--red-500)' }}></i>
                     <h5>Incorrect details.</h5>
+                    <Button label="OK" className="p-button-text" autoFocus onClick={() => { setShowErrorMessage(false);setShowMessage(false); }} />
                 </>)
             }
         } catch (error) {

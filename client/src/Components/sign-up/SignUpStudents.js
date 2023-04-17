@@ -79,7 +79,6 @@ export default function SignUpStudents(props) {
     );
     const navigate = useNavigate();
     async function HandleClick(data) {
-        console.log(data);
         const obj = {
             firstName: data.firstName,
             lastName: data.lastName,
@@ -102,10 +101,7 @@ export default function SignUpStudents(props) {
         }
         else if (res.status && res.status === 200) {
             setMessage(<>
-                <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
-                    There are duplicate students.<br />
-                    Instead, you can try to sign in.
-                </p>
+                <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>There are duplicate students.<br />Instead, you can try to sign in.</p>
             </>)
             setShowErrorMessage(true);
         }
