@@ -4,11 +4,9 @@ import { useNavigate } from 'react-router-dom';
 
 import "primereact/resources/primereact.min.css";
 import 'primereact/resources/primereact.css';
-import { UseGetData } from '../Hooks/UseGetStudent';
 
 export default function Start(props) {
 
-    UseGetData('students');
     const navigate = useNavigate();
     return (
         <>

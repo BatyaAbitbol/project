@@ -33,8 +33,9 @@ export function SignInByProfile(props) {
     const onSubmit = async (data, form) => {
         setFormData(data);
         setShowMessage(true);
-        form.restart();
+        setShowErrorMessage(false);
         await HandleClick(data);
+        form.restart();
     }
 
     const isFormFieldValid = (meta) => !!(meta.touched && meta.error);
@@ -42,8 +43,8 @@ export function SignInByProfile(props) {
         return isFormFieldValid(meta) && <small className="p-error">{meta.error}</small>;
     };
     const navigate = useNavigate();
-    const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => { setShowMessage(false); navigate('/home/home-student'); }
-    } /></div>;
+    const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => {  setShowErrorMessage(false); setShowMessage(false);navigate('/home/home-student'); }} /></div>;
+    const errorDialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => { setShowErrorMessage(false);setShowMessage(false); }} /></div>
     async function HandleClick(data) {
         const obj = {
             idNumber: data.idNumber,
@@ -54,14 +55,28 @@ export function SignInByProfile(props) {
         else if (props.profile === 'Teacher') url = 'teachers';
         try {
             const res = await UseSignIn(url, obj);
-            if(res.status && res.status === 200) {
+            console.log(res);
+            if (res.status && res.status === 200) {
                 localStorage.setItem('token', JSON.stringify(res.data.accessToken));
                 setMessage(<>
-                <i className="pi pi-check-circle" style={{ fontSize: '5rem', color: 'var(--green-500)' }}></i>
+                    <i className="pi pi-check-circle" style={{ fontSize: '5rem', color: 'var(--green-500)' }}></i>
                     <h5>You are in!</h5>
                 </>)
             }
-            else{
+            else if (res.response.status && res.response.status === 401) {
+                setShowErrorMessage(true);
+                setErrorMessage(<>
+                    <div className="flex align-items-center flex-column pt-6 px-3">
+                        <i className="pi pi-undo" style={{ fontSize: '5rem', color: 'var(--red-500)' }}></i>
+                        <h3>Incorrect details.</h3>
+                        <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
+                            {res.response.data.message}, you can try again.
+                        </p>
+                    </div>
+                </>)
+                console.log(res.response.data);
+            }
+            else {
                 setShowErrorMessage(true);
                 setErrorMessage(<>
                     <i className="pi pi-undo" style={{ fontSize: '5rem', color: 'var(--red-500)' }}></i>
@@ -70,18 +85,23 @@ export function SignInByProfile(props) {
             }
         } catch (error) {
             console.log(error);
-            //
         }
     }
     return (
         <>
             <div className="form-demo">
-                <Dialog visible={showMessage} onHide={() => setShowMessage(false)} position='top' footer={dialogFooter} showHeader={false} style={{ width: '30vw' }}>
-                    <div className="flex align-items-center flex-column pt-6 px-3">
-                        {message}
-                    </div>
-                </Dialog>
-
+                {showMessage &&
+                    <Dialog visible={showMessage && !showErrorMessage} onHide={() => setShowMessage(false)} position='top' footer={dialogFooter} showHeader={false} style={{ width: '30vw' }}>
+                        <div className="flex align-items-center flex-column pt-6 px-3">
+                            {message}
+                        </div>
+                    </Dialog>}
+                {showErrorMessage &&
+                    <Dialog visible={showErrorMessage} onHide={() => setShowErrorMessage(false)} position='top' footer={errorDialogFooter} showHeader={false} style={{ width: '30vw' }}>
+                        <div className="flex align-items-center flex-column pt-6 px-3">
+                            {errorMessage}
+                        </div>
+                    </Dialog>}
                 <div className="flex justify-content-center">
                     <div className="card">
                         <h4 className="text-center">Sign In {props.profile}</h4>

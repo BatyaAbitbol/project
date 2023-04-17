@@ -92,17 +92,15 @@ exports.findOneByPassword = async (req, res) => {
 
 exports.findOneByIdNumber = async (req, res) => {
     const idNumber = req.query.idNumber;
-    await dal.findOneByIDNumber(idNumber)
-        .then(data => {
-            if (data) {
-                res.send(data);
-            }
-            else {
-                res.status(404).send({
-                    message: `Cannot find student by idNumber = ${idNumber}`
-                })
-            }
+    if(!idNumber) {
+        return res.status(400).send('ID Number is required!');
+    }
+    const found = await dal.findOneByIDNumber(idNumber);
+    if(!found) {
+        return res.status(401).send({
+            message: `Cannot find student by idNumber = ${idNumber}`
         })
+    }
 }
 
 exports.findOne = async (req, res) => {

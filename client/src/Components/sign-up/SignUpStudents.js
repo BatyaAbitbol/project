@@ -89,7 +89,7 @@ export default function SignUpStudents(props) {
             image: data.image
         }
         const res = await useSignUp('students', obj);
-
+        console.log(res);
         if (res.status && res.status === 201) {
             localStorage.setItem('token', JSON.stringify(res.data.accessToken));
             setMessage(<>
@@ -116,7 +116,7 @@ export default function SignUpStudents(props) {
             </>)
         }
         else {
-            setErrorMessage(res.data.message);
+            setErrorMessage(res.message);
             setShowErrorMessage(true);
         }
     };
