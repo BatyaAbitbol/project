@@ -11,6 +11,7 @@ exports.findAll = async (condition) => {
     return await CourseStudents.findAll(condition);
 }
 exports.findAllByStudentId = async (studentId) => {
+    console.log('findAllByStudentId');
     return await CourseStudents.findAll({ where: { studentId: studentId } });
 }
 exports.findOne = async (condition) => {

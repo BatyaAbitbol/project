@@ -28,7 +28,6 @@ db.Tests = require('./tests')(sequelize, DataTypes);
 db.Courses = require('./courses')(sequelize, DataTypes);
 db.CourseStudents = require('./course_students')(sequelize, DataTypes);
 db.Lectures = require('./lectures')(sequelize, DataTypes);
-db.Prices = require('./prices')(sequelize, DataTypes);
 db.Questions = require('./questions')(sequelize, DataTypes);
 db.QuestionTests = require('./question_tests')(sequelize, DataTypes);
 db.Students = require('./students')(sequelize, DataTypes);

@@ -11,6 +11,7 @@ import profil from '../../images/profil.JPG';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { Button } from 'primereact/button';
+
 /*export default function Home() {
   const items = [
     { label: 'Home', icon: 'pi pi-fw pi-home' },

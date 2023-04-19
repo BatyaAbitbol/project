@@ -61,7 +61,7 @@ exports.login = async (req, res) => {
 
     const accessToken = jwt.sign(studentInfo, process.env.ACCESS_TOKEN_SECRET);
 
-    res.json({ accessToken: accessToken })
+    res.json({ accessToken: accessToken, studentInfo: studentInfo })
 }
 
 exports.findAll = async (req, res) => {

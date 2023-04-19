@@ -33,8 +33,9 @@ function App() {
           <Route exact path='/sign-up/teacher' element={<SignUpTeachers/>}/>
           <Route exact path='/sign-up/student' element={<SignUpStudents/>}/>
           <Route exact path='/courses' element={<Courses/>}/>
-          {/* <Route exact path='/sign-up/teacher' element={<SignUpTeachers />} />
-          <Route exact path='/sign-up/student' element={<SignUpStudents />} /> */}
+          <Route exact path='/course/payment' element={<h1>Buy a course & Pay</h1>}/>
+
+          <Route exact path='/*' element={<h1>Not Found, Sorry 😒</h1>}/>
 
         </Routes>
       </div>

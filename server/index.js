@@ -10,7 +10,6 @@ const testRouter = require('./routes/tests');
 const courseRouter = require('./routes/courses');
 const courseStudentRouter = require('./routes/course_student');
 const lectureRouter = require('./routes/lectures');
-const priceRouter = require('./routes/prices')
 const questionRouter = require('./routes/questions');
 const studentRouter = require('./routes/students');
 const taskRouter = require('./routes/tasks');
@@ -35,7 +34,6 @@ app.use('/categories', categoryRouter);
 app.use('/courses', courseRouter);
 app.use('/course_students', courseStudentRouter);
 app.use('/lectures', lectureRouter);
-app.use('/prices', priceRouter);
 app.use('/questions', questionRouter);
 app.use('/students', studentRouter);
 app.use('/tasks', taskRouter);

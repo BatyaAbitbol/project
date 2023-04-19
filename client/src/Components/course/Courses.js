@@ -1,56 +1,49 @@
-import { useEffect, useState } from "react";
-import  {UseGetAll}  from "../../Hooks/useGetAxios"
-/*import React, { useState, useEffect } from 'react';
-import { ProductService } from './service/ProductService';
+import  {UseGetAll,UseGetPrice}  from "../../Hooks/useGetAxios"
+import React, { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Rating } from 'primereact/rating';
 import { Tag } from 'primereact/tag';
+import learnImg from '../../images/learning.jpg'
+import linearImg from '../../images/linear.jpg'
+import {useNavigate} from 'react-router-dom';
 
-export default function BasicDemo() {
-    const [products, setProducts] = useState([]);
+const Courses =(props)=> {
+   
     const [layout, setLayout] = useState('grid');
+    const [products,setProducts]=useState(null)
 
-    useEffect(() => {
-        ProductService.getProducts().then((data) => setProducts(data.slice(0, 12)));
-    }, []);
+    useEffect(()=>{
+        const fetchData=async()=>{
+            const res = await UseGetAll('courses');
+            console.log(res.data);
+            setProducts(res.data.slice(0,12));
 
-    const getSeverity = (product) => {
-        switch (product.inventoryStatus) {
-            case 'INSTOCK':
-                return 'success';
-
-            case 'LOWSTOCK':
-                return 'warning';
-
-            case 'OUTOFSTOCK':
-                return 'danger';
-
-            default:
-                return null;
         }
-    };
+    fetchData()
+    },[]);
+    const navigate = useNavigate();
 
     const listItem = (product) => {
-        return (
+        return (                       
             <div className="col-12">
                 <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
-                    <img className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={`https://primefaces.org/cdn/primereact/images/product/${product.image}`} alt={product.name} />
+                    <img className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={linearImg} alt={product.name} />
                     <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
                         <div className="flex flex-column align-items-center sm:align-items-start gap-3">
                             <div className="text-2xl font-bold text-900">{product.name}</div>
-                            <Rating value={product.rating} readOnly cancel={false}></Rating>
+                            <div className="text-2xl font-bold">{product.description}</div>
                             <div className="flex align-items-center gap-3">
                                 <span className="flex align-items-center gap-2">
                                     <i className="pi pi-tag"></i>
-                                    <span className="font-semibold">{product.category}</span>
+                                    <span className="font-semibold">{product.categoryId}</span>
                                 </span>
-                                <Tag value={product.inventoryStatus} severity={getSeverity(product)}></Tag>
+                                {/* <Tag value={product.inventoryStatus} severity={getSeverity(product)}></Tag> */}
                             </div>
                         </div>
                         <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-                            <span className="text-2xl font-semibold">${product.price}</span>
-                            <Button icon="pi pi-shopping-cart" className="p-button-rounded" disabled={product.inventoryStatus === 'OUTOFSTOCK'}></Button>
+                        <span className="text-2xl font-semibold">{product.price} $</span>
+                            <Button icon="pi pi-tag" className="p-button-rounded" label="Buy It!" onClick={(e) => {navigate('/course/payment')}}></Button>
                         </div>
                     </div>
                 </div>
@@ -65,18 +58,20 @@ export default function BasicDemo() {
                     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
                         <div className="flex align-items-center gap-2">
                             <i className="pi pi-tag"></i>
-                            <span className="font-semibold">{product.category}</span>
+                            <span className="font-semibold">{product.categoryId}</span>
                         </div>
-                        <Tag value={product.inventoryStatus} severity={getSeverity(product)}></Tag>
+                        {/* <Tag value={product.inventoryStatus} severity={getSeverity(product)}></Tag> */}
                     </div>
                     <div className="flex flex-column align-items-center gap-3 py-5">
-                        <img className="w-9 shadow-2 border-round" src={`https://primefaces.org/cdn/primereact/images/product/${product.image}`} alt={product.name} />
+                    
+                        <img className="w-9 shadow-2 border-round" src={linearImg} alt={product.name} />
                         <div className="text-2xl font-bold">{product.name}</div>
-                        <Rating value={product.rating} readOnly cancel={false}></Rating>
+                        <div className="text-2xl font-bold">{product.description}</div>
+                        {/* <Rating value={product.rating} readOnly cancel={false}></Rating> */}
                     </div>
                     <div className="flex align-items-center justify-content-between">
-                        <span className="text-2xl font-semibold">${product.price}</span>
-                        <Button icon="pi pi-shopping-cart" className="p-button-rounded" disabled={product.inventoryStatus === 'OUTOFSTOCK'}></Button>
+                        <span className="text-2xl font-semibold">{product.price} $</span>
+                        <Button icon="pi pi-tag" className="p-button-rounded" label="Buy It!" onClick={(e) => {navigate('/course/payment'); console.log((e));}}></Button>
                     </div>
                 </div>
             </div>
@@ -102,30 +97,9 @@ export default function BasicDemo() {
 
     return (
         <div className="card">
+          <div  style={{textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold'}}>our courses</div>
             <DataView value={products} itemTemplate={itemTemplate} layout={layout} header={header()} />
         </div>
     )
-}
-        */
-
-
-   const Courses =(props)=> {
-    const [data,setData]=useState(null)
-    useEffect(()=>{
-        const fetchData=async()=>{
-            const res = await UseGetAll('courses');
-            console.log(res.data);
-            setData(res.data);
-
-        }
-fetchData()
-    },[])
-    
-    // console.log(res.data[0].name);
-    return (
-<>
-<h1>{data!==null&&data[0].name}</h1>
-</>
-    )
-}
-export default Courses
+    }
+export default Courses;

@@ -25,7 +25,10 @@ exports.findAll = async (req, res) => {
 // According to studentID
 exports.findAllByStudentId = async (req, res) => {
     const studentId = req.params.id;
-    await dal.findAll(studentId)
+    if(!studentId) {
+        res.status(401).send({message: 'StudentID is required!'})
+    }
+    await dal.findAllByStudentId(studentId)
         .then(data => { res.send(data); })
         .catch(err => {
             res.status(404).send({ message: err.message || "Failed retrieving courses for students." })

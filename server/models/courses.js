@@ -28,12 +28,8 @@ module.exports = (sequelize, Sequelize) => {
                 }
             },
             accessPeriod: Sequelize.INTEGER,
-            priceId: {
-                type: Sequelize.INTEGER,
-                references: {
-                    model: 'prices',
-                    key: 'id'
-                }
+            price: {
+                type: Sequelize.FLOAT
             }
         },
         {

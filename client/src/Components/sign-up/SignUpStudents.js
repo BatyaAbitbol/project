@@ -62,7 +62,7 @@ export default function SignUpStudents(props) {
         return isFormFieldValid(meta) && <small className="p-error">{meta.error}</small>;
     };
 
-    const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => { setShowMessage(false); navigate('/home/home-student'); }} /></div>;
+    const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => { setShowMessage(false); navigate('/sign-in'); }} /></div>;
     const errorDialodFooter = <div className='flex justify-content-center'><Button label='OK' className='p-button-text' autoFocus onClick={() => { setShowErrorMessage(false); navigate('/sign-in') }} /></div>;
     const passwordHeader = <h6>Pick a password</h6>;
     const passwordFooter = (
@@ -91,6 +91,7 @@ export default function SignUpStudents(props) {
         console.log(res);
         if (res.status && res.status === 201) {
             localStorage.setItem('token', JSON.stringify(res.data.accessToken));
+            localStorage.setItem('studentInfo', JSON.stringify(res.data.data));
             setMessage(<>
                 <h5>Registration Successful!</h5>
                 <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
@@ -193,7 +194,6 @@ export default function SignUpStudents(props) {
                                     <label htmlFor="accept" className={classNames({ 'p-error': isFormFieldValid(meta) })}>I agree to the terms and conditions*</label>
                                 </div>
                             )} />
-
                             <Button type="submit" label="Sign Up" className="mt-2" />
                         </form>
                     )} />

@@ -42,7 +42,6 @@ exports.findById = async (req, res) => {
 exports.findAll = async (req, res) => {
     await dal.findAll()
         .then(data => {
-            console.log(data);
             res.send(data);
         })
         .catch(err => {

@@ -58,6 +58,7 @@ export function SignInByProfile(props) {
             console.log(res);
             if (res.status && res.status === 200) {
                 localStorage.setItem('token', JSON.stringify(res.data.accessToken));
+                localStorage.setItem('studentInfo', JSON.stringify(res.data.studentInfo));
                 setMessage(<>
                     <i className="pi pi-check-circle" style={{ fontSize: '5rem', color: 'var(--green-500)' }}></i>
                     <h5>You are in!</h5>
