@@ -3,6 +3,9 @@ const verifyJWT = require('../middleware/verifyJWT');
 const student = require('../controllers/students.js');
 const router = express.Router();
 
+router.route('/courses/:id')
+    .get(verifyJWT, student.findAllCoursesByStudentId)
+
 router.route('/all')
     .get(student.findAll) //? הרשאה רק למנהל המערכת - הכיצד
 

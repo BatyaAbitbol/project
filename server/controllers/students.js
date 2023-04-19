@@ -1,4 +1,7 @@
 const dal = require('../dal/students');
+const course_dal = require('../dal/courses');
+const course_student_dal = require('../dal/course_students');
+
 const mailer = require('../services/mailer');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
@@ -171,4 +174,27 @@ exports.delete = async (req, res) => {
         .catch(err => {
             res.status(500).send({ message: err.message || `Could not delete student with id ${id}` });
         });
+}
+
+exports.findAllCoursesByStudentId = async (req, res) => {
+    const studentId = req.params.id;
+    if(! studentId) {
+        res.status(401).send({message: 'studentId is required!'});
+    }
+    const coursesStudent = await course_student_dal.findAllByStudentId(studentId);
+    console.log(coursesStudent);
+
+    if(!coursesStudent) {
+        res.send({message: `No courses found for studentID: ${studentId}.`})
+    }
+    let courses = [];
+    for (let index = 0; index < coursesStudent.length; index++) {
+        const course = await course_dal.findOneById(coursesStudent[index].courseId);
+        console.log(course);
+        if(course)
+            courses.push(course)
+    }
+    if(courses.length > 0)
+        res.send(courses)
+    res.send({message: 'NO courses found - ERROR'})
 }

@@ -17,8 +17,7 @@ const Courses =(props)=> {
         const fetchData=async()=>{
             const res = await UseGetAll('courses');
             console.log(res.data);
-            setProducts(res.data.slice(0,12));
-
+            setProducts(res.data);
         }
     fetchData()
     },[]);

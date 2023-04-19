@@ -16,6 +16,9 @@ import HomeTeacher from './Components/Home/home-teacher';
 import Courses from './Components/course/Courses';
 import { SignUp } from './Components/sign-up/SignUp';
 import { SignIn } from './Components/sign-in/SignIn';
+import Lectures from './Components/lecture/Lecture';
+import { CoursesForStudent } from './Components/course_student/CoursesForStudent';
+
 
 function App() {
   return (
@@ -27,15 +30,17 @@ function App() {
           <Route exact path='/sign-up' element={<SignUp />} />
 
 
-          <Route exact path='home/home-student' element={<HomeStudent/>}/>
-          <Route exact path='home/home-teacher' element={<HomeTeacher/>}/>
-          
-          <Route exact path='/sign-up/teacher' element={<SignUpTeachers/>}/>
-          <Route exact path='/sign-up/student' element={<SignUpStudents/>}/>
-          <Route exact path='/courses' element={<Courses/>}/>
-          <Route exact path='/course/payment' element={<h1>Buy a course & Pay</h1>}/>
+          <Route exact path='home/home-student' element={<HomeStudent />} />
+          <Route exact path='home/home-teacher' element={<HomeTeacher />} />
 
-          <Route exact path='/*' element={<h1>Not Found, Sorry 😒</h1>}/>
+          <Route exact path='/sign-up/teacher' element={<SignUpTeachers />} />
+          <Route exact path='/sign-up/student' element={<SignUpStudents />} />
+          <Route exact path='/courses' element={<Courses />} />
+          <Route exact path='/lectures' element={<Lectures />} />
+          <Route exact path='/student/courses' element={<CoursesForStudent />} />
+          <Route exact path='/course/payment' element={<h1>Buy a course & Pay</h1>} />
+          {/* <Route exact path='/task' element={<Task/>}/> */}
+          <Route exact path='/*' element={<h1>Not Found, Sorry 😒</h1>} />
 
         </Routes>
       </div>
