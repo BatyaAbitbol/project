@@ -34,6 +34,7 @@ db.Students = require('./students')(sequelize, DataTypes);
 db.Tasks = require('./tasks')(sequelize, DataTypes);
 db.Teachers = require('./teachers')(sequelize, DataTypes);
 db.TestCourse = require('./test_courses')(sequelize, DataTypes);
-db.TaskCourseStudent=require('./task_course_students')(sequelize, DataTypes);
+db.TaskCourseStudent = require('./task_course_students')(sequelize, DataTypes);
 
+db.CourseStudents.belongsTo(db.Courses, { foreignKey: 'courseId' });
 module.exports = db;

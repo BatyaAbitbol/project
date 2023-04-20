@@ -2,60 +2,35 @@ import { UseGetAllById, UseGetOneById } from "../../Hooks/useGetAxios";
 import React, { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
-import { Tag } from 'primereact/tag';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Lectures } from "../lecture/Lecture";
 
 export function CoursesForStudent(props) {
 
     const [data, setData] = useState([]);
-    const [courses, setCourses] = useState([]);
+    const [course, setCourse] = useState(-1);
     const [layout, setLayout] = useState('grid');
 
     const id = JSON.parse(localStorage.getItem('studentInfo')).id;
+
     useEffect(() => {
         const fetchData = async () => {
-            const res = await UseGetAllById('course_students/student', id);
+            const res = await UseGetAllById('students/courses', id);
             setData(res.data);
         }
         fetchData();
     }, [])
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const res  = await data.forEach(async (e) => {
-                const res = await UseGetOneById('students/courses', id);
-            });
-            setCourses(res.data);
-            console.log(res);
-        }
-        fetchData();
-    }, [data])
-
-    console.log(courses);
-    console.log(data);
-
-    const temp = [{"name": "Batya"}];
     const navigate = useNavigate();
-    const listItem = (course) => {
-        return (                       
+    const listItem = (courseJoinedCourseStudent) => {
+        const course = courseJoinedCourseStudent[0].course;
+        return (
             <div className="col-12">
                 <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
-                    {/* <img className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={linearImg} alt={course.name} /> */}
+                    <img className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={course.image} alt={course.name} />
                     <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-                        <div className="flex flex-column align-items-center sm:align-items-start gap-3">
+                        <div className="flex flex-column align-items-center sm:align-items-start gap-3" name={course.name} onClick={navigate(`${course.name}`)}>
                             <div className="text-2xl font-bold text-900">{course.name}</div>
-                            <div className="text-2xl font-bold">{course.description}</div>
-                            <div className="flex align-items-center gap-3">
-                                <span className="flex align-items-center gap-2">
-                                    <i className="pi pi-tag"></i>
-                                    <span className="font-semibold">{course.categoryId}</span>
-                                </span>
-                                {/* <Tag value={course.inventoryStatus} severity={getSeverity(course)}></Tag> */}
-                            </div>
-                        </div>
-                        <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-                        <span className="text-2xl font-semibold">{course.price} $</span>
-                            <Button icon="pi pi-tag" className="p-button-rounded" label="Buy It!" onClick={(e) => {navigate('/course/payment')}}></Button>
                         </div>
                     </div>
                 </div>
@@ -63,27 +38,19 @@ export function CoursesForStudent(props) {
         );
     };
 
-    const gridItem = (course) => {
+    const gridItem = (courseJoinedCourseStudent) => {
+        const course = courseJoinedCourseStudent[0].course;
         return (
-            <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
-                <div className="p-4 border-1 surface-border surface-card border-round">
-                    <div className="flex flex-wrap align-items-center justify-content-between gap-2">
-                        <div className="flex align-items-center gap-2">
-                            <i className="pi pi-tag"></i>
-                            <span className="font-semibold">{course.categoryId}</span>
-                        </div>
-                        {/* <Tag value={course.inventoryStatus} severity={getSeverity(course)}></Tag> */}
-                    </div>
-                    <div className="flex flex-column align-items-center gap-3 py-5">
-                    
-                        {/* <img className="w-9 shadow-2 border-round" src={course.image} alt={course.name} /> */}
-                        <div className="text-2xl font-bold">{course.name}</div>
-                        <div className="text-2xl font-bold">{course.description}</div>
-                        {/* <Rating value={course.rating} readOnly cancel={false}></Rating> */}
-                    </div>
-                    <div className="flex align-items-center justify-content-between">
-                        <span className="text-2xl font-semibold">{course.price} $</span>
-                        <Button icon="pi pi-tag" className="p-button-rounded" label="Buy It!" onClick={(e) => {navigate('/course/payment'); console.log((e));}}></Button>
+            <div data-custom-id={course.id} className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
+                <div data-custom-id={course.id} className="p-4 border-1 surface-border surface-card border-round">
+                    {/* ? איך אני יכולה לקבל מידע על איזה קורס לחצתי ולרנדר לפי זה קורס מתאים */}
+                    <div data-custom-id={course.id} className="flex flex-column align-items-center gap-3 py-5" onClick={(e) => {
+                        console.log(e.target.attributes[0].nodeValue);
+                        const courseId = e.target.attributes[0].nodeValue;
+                        setCourse(courseId);
+                    }}>
+                        <img data-custom-id={course.id} className="w-9 shadow-2 border-round" src={course.image} alt={course.name} />
+                        <div data-custom-id={course.id} className="text-2xl font-bold">{course.name}</div>
                     </div>
                 </div>
             </div>
@@ -108,10 +75,13 @@ export function CoursesForStudent(props) {
     };
 
     return (
-        <div className="card">
-          <div  style={{textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold'}}>our courses</div>
-            <DataView value={courses} itemTemplate={itemTemplate} layout={layout} header={header()} />
-        </div>
+        <>
+            {course != -1 && <Lectures courseId={course} />}
+            <div className="card">
+                <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>My Courses</div>
+                <DataView value={data} itemTemplate={itemTemplate} layout={layout} header={header()} />
+            </div>
+        </>
     )
-    }
-    
+}
+

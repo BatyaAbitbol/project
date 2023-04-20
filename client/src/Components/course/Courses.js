@@ -59,14 +59,12 @@ const Courses =(props)=> {
                             <i className="pi pi-tag"></i>
                             <span className="font-semibold">{product.categoryId}</span>
                         </div>
-                        {/* <Tag value={product.inventoryStatus} severity={getSeverity(product)}></Tag> */}
                     </div>
                     <div className="flex flex-column align-items-center gap-3 py-5">
                     
                         <img className="w-9 shadow-2 border-round" src={linearImg} alt={product.name} />
                         <div className="text-2xl font-bold">{product.name}</div>
                         <div className="text-2xl font-bold">{product.description}</div>
-                        {/* <Rating value={product.rating} readOnly cancel={false}></Rating> */}
                     </div>
                     <div className="flex align-items-center justify-content-between">
                         <span className="text-2xl font-semibold">{product.price} $</span>
@@ -96,7 +94,7 @@ const Courses =(props)=> {
 
     return (
         <div className="card">
-          <div  style={{textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold'}}>our courses</div>
+          <div  style={{textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold'}}>Our Courses</div>
             <DataView value={products} itemTemplate={itemTemplate} layout={layout} header={header()} />
         </div>
     )

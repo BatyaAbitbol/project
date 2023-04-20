@@ -190,11 +190,13 @@ exports.findAllCoursesByStudentId = async (req, res) => {
     let courses = [];
     for (let index = 0; index < coursesStudent.length; index++) {
         const course = await course_dal.findOneById(coursesStudent[index].courseId);
-        console.log(course);
-        if(course)
-            courses.push(course)
+        const joinedCourse = await course_student_dal.joinByCourseId(course.id); 
+        if(joinedCourse)
+            courses.push(joinedCourse)
     }
+    console.log(courses);
+
     if(courses.length > 0)
         res.send(courses)
-    res.send({message: 'NO courses found - ERROR'})
+    else res.send({message: 'NO courses found - ERROR'})
 }

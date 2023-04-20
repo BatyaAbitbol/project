@@ -38,6 +38,8 @@ function App() {
           <Route exact path='/courses' element={<Courses />} />
           <Route exact path='/lectures' element={<Lectures />} />
           <Route exact path='/student/courses' element={<CoursesForStudent />} />
+          <Route exact path='/student/courses/Math' element={<h1>Math</h1>} />
+
           <Route exact path='/course/payment' element={<h1>Buy a course & Pay</h1>} />
           {/* <Route exact path='/task' element={<Task/>}/> */}
           <Route exact path='/*' element={<h1>Not Found, Sorry 😒</h1>} />

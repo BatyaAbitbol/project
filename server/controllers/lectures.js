@@ -1,4 +1,5 @@
 const dal = require('../dal/lectures');
+const course_dal = require('../dal/courses');
 const course_student_dal = require('../dal/course_students')
 
 exports.create = async (req, res) => {
@@ -36,28 +37,29 @@ exports.findByNum = async (req, res) => {
 }
 // שיעורים מקורס מסויים לתלמיד עד מספר השיעור הבא של התלמיד בקורס הזה
 exports.findUntilNum = async (req, res) => {
-    const courseStudentId = req.body.courseStudentId;
+    const courseStudentId = req.params.id;
     await course_student_dal.findOneById(courseStudentId)
-        .then(async (data) => {
-            if (data) {
-                const course_student = data.dataValues;
-                const num = course_student.nextLectureNum + 1;
-                console.log(num);
-                course_student.nextLectureNum = num;
-                console.log(course_student);
-                // await course_student_dal.update(data, courseStudentId);
-                console.log(num);
-                await dal.findAllInCourseUntilLectureNum(course_student.courseId, num)
-                    .then(data => {
-                        if (data)
-                            res.send(data);
-                        else res.send('Error findAll UntilNum')
+        .then(async courseStudent => {
+            if (!courseStudent) {
+                res.send({ message: `No course for student found to courseStudentId ${courseStudentId}` })
+            };
+            console.log(courseStudent);
+            const num = courseStudent.nextLectureNum + 1;            
+
+            courseStudent.nextLectureNum = num;
+            course_student_dal.update(courseStudent, courseStudentId);
+            console.log(num);
+
+            await dal.findAllInCourseUntilLectureNum(courseStudent.courseId, num)
+                .then(async lecturesUntilNum => {
+                    console.log(lecturesUntilNum);
+                    res.send(lecturesUntilNum)
+                }).catch(err => {
+                        res.send({ message: `No Lectures found to courseID ${courseStudent.courseId}` || err.message })
                     })
 
-            }
-            else res.status(500).send('Error findUntilNum')
+        });
 
-        })
 }
 exports.findById = async (req, res) => {
     const id = req.params.id;
@@ -90,3 +92,16 @@ exports.delete = async (req, res) => {
         })
 }
 
+// exports.getLecturesByCourseStudentId = async (req, res) => {
+//     const courseStudentId = req.params.id;
+//     if(!courseStudentId){
+//         res.send({message: 'CourseStudentID is required!'});
+//     }
+//     const courseStudent = await dal.findOneById(courseStudentId);
+//     const course = await courses_dal.findOneById(courseStudent.courseId);
+//     const lectures = await lectures_dal.findAllByCourseId(course.id);
+//     if(!lectures) {
+//         res.send({message: 'No Lectures found'});
+//     }
+//     res.send(lectures);
+// }

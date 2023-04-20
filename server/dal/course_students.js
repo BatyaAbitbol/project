@@ -26,3 +26,29 @@ exports.update = async (courseStudent, id) => {
 exports.delete = async (id) => {
     return await CourseStudents.destroy({ where: { id: id } });
 }
+
+exports.joinByCourseId = async (id) => {
+    return await CourseStudents.findAll({
+        include: [{
+            model: db.Courses,
+            attributes: [
+                `id`,
+                `name`,
+                `teacherId`,
+                `description`,
+                `categoryId`,
+                `accessPeriod`,
+                `price`,
+                `image`
+            ]
+        }],
+        where: { courseId: id },
+        attributes: [
+            `id`,
+            `studentId`,
+            `courseId`,
+            `registerDate`,
+            `nextLectureNum`
+        ]
+    })
+}
