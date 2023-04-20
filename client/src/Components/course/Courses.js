@@ -1,4 +1,4 @@
-import  {UseGetAll,UseGetPrice}  from "../../Hooks/useGetAxios"
+import { UseGetAll, UseGetPrice } from "../../Hooks/useGetAxios"
 import React, { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
@@ -6,25 +6,25 @@ import { Rating } from 'primereact/rating';
 import { Tag } from 'primereact/tag';
 import learnImg from '../../images/learning.jpg'
 import linearImg from '../../images/linear.jpg'
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const Courses =(props)=> {
-   
+const Courses = (props) => {
+
     const [layout, setLayout] = useState('grid');
-    const [products,setProducts]=useState(null)
+    const [products, setProducts] = useState(null)
 
-    useEffect(()=>{
-        const fetchData=async()=>{
+    useEffect(() => {
+        const fetchData = async () => {
             const res = await UseGetAll('courses');
             console.log(res.data);
             setProducts(res.data);
         }
-    fetchData()
-    },[]);
+        fetchData()
+    }, []);
     const navigate = useNavigate();
 
     const listItem = (product) => {
-        return (                       
+        return (
             <div className="col-12">
                 <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
                     <img className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={linearImg} alt={product.name} />
@@ -41,8 +41,8 @@ const Courses =(props)=> {
                             </div>
                         </div>
                         <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-                        <span className="text-2xl font-semibold">{product.price} $</span>
-                            <Button icon="pi pi-tag" className="p-button-rounded" label="Buy It!" onClick={(e) => {navigate('/course/payment')}}></Button>
+                            <span className="text-2xl font-semibold">{product.price} $</span>
+                            <Button icon="pi pi-tag" className="p-button-rounded" label="Buy It!" onClick={(e) => { navigate('/course/payment') }}></Button>
                         </div>
                     </div>
                 </div>
@@ -61,14 +61,14 @@ const Courses =(props)=> {
                         </div>
                     </div>
                     <div className="flex flex-column align-items-center gap-3 py-5">
-                    
+
                         <img className="w-9 shadow-2 border-round" src={linearImg} alt={product.name} />
                         <div className="text-2xl font-bold">{product.name}</div>
                         <div className="text-2xl font-bold">{product.description}</div>
                     </div>
                     <div className="flex align-items-center justify-content-between">
                         <span className="text-2xl font-semibold">{product.price} $</span>
-                        <Button icon="pi pi-tag" className="p-button-rounded" label="Buy It!" onClick={(e) => {navigate('/course/payment'); console.log((e));}}></Button>
+                        <Button icon="pi pi-tag" className="p-button-rounded" label="Buy It!" onClick={(e) => { navigate('/course/payment'); console.log((e)); }}></Button>
                     </div>
                 </div>
             </div>
@@ -94,9 +94,9 @@ const Courses =(props)=> {
 
     return (
         <div className="card">
-          <div  style={{textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold'}}>Our Courses</div>
+            <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>Our Courses</div>
             <DataView value={products} itemTemplate={itemTemplate} layout={layout} header={header()} />
         </div>
     )
-    }
+}
 export default Courses;

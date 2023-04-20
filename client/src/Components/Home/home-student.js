@@ -11,6 +11,7 @@ import profil from '../../images/profil.JPG';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { Button } from 'primereact/button';
+import {useNavigate} from 'react-router-dom';
 
 /*export default function Home() {
   const items = [
@@ -21,11 +22,15 @@ import { Button } from 'primereact/button';
     // { label: 'Sign In', icon: 'pi pi-user' }
   ];
 */
+
+export default function ButtonBases() {
+
+  const navigate = useNavigate();
 const items = [
-  { label: 'Home', icon: 'pi pi-fw pi-home' },
-  { label: 'Courses', icon: 'pi pi-bookmark' },
-  { label: 'Tests', icon: 'pi pi-fw pi-pencil' },
-  { label: 'Tasks', icon: 'pi pi-fw pi-file' },
+  { label: 'Home', icon: 'pi pi-fw pi-home'},
+  { label: 'Courses', icon: 'pi pi-bookmark', command:()=>{ navigate('/courses')} },
+  { label: 'Tests', icon: 'pi pi-fw pi-pencil' , command:()=>{ navigate('/tests')}},
+  { label: 'Tasks', icon: 'pi pi-fw pi-file' , command:()=>{ navigate('/tasks')}},
   // { label: 'Sign In', icon: 'pi pi-user' }
 ];
 
@@ -118,7 +123,7 @@ const ImageMarked = styled('span')(({ theme }) => ({
 
 );
 
-export default function ButtonBases() {
+
   return (
     <div >
       <div style={{ display: 'flex' }}>

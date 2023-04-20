@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { useNavigate } from 'react-router-dom';
-import { Lectures } from "../lecture/Lecture";
+import Lectures from "../lecture/Lecture";
 
 export function CoursesForStudent(props) {
 
@@ -74,13 +74,19 @@ export function CoursesForStudent(props) {
         );
     };
 
+    let display;
+    if (course != -1) {
+        display = <Lectures courseId={course} />;
+    }
+    else {
+        display = <div className="card">
+            <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>My Courses</div>
+            <DataView value={data} itemTemplate={itemTemplate} layout={layout} header={header()} />
+        </div>
+    }
     return (
         <>
-            {course != -1 && <Lectures courseId={course} />}
-            <div className="card">
-                <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>My Courses</div>
-                <DataView value={data} itemTemplate={itemTemplate} layout={layout} header={header()} />
-            </div>
+            {display}
         </>
     )
 }
