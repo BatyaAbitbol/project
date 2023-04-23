@@ -11,7 +11,7 @@ import profil from '../../images/profil.JPG';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { Button } from 'primereact/button';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 /*export default function Home() {
   const items = [
@@ -26,102 +26,102 @@ import {useNavigate} from 'react-router-dom';
 export default function ButtonBases() {
 
   const navigate = useNavigate();
-const items = [
-  { label: 'Home', icon: 'pi pi-fw pi-home'},
-  { label: 'Courses', icon: 'pi pi-bookmark', command:()=>{ navigate('/courses')} },
-  { label: 'Tests', icon: 'pi pi-fw pi-pencil' , command:()=>{ navigate('/tests')}},
-  { label: 'Tasks', icon: 'pi pi-fw pi-file' , command:()=>{ navigate('/tasks')}},
-  // { label: 'Sign In', icon: 'pi pi-user' }
-];
+  const items = [
+    { label: 'Courses', icon: 'pi pi-bookmark', command: () => { navigate('/courses') } },
+    { label: 'Tests', icon: 'pi pi-fw pi-pencil', command: () => { navigate('/tests') } },
+    { label: 'Tasks', icon: 'pi pi-fw pi-file', command: () => { navigate('/tasks') } }
+  ];
 
-const images = [
+  const images = [
 
-  {
-    url: examImg,
-    title: 'exam',
-    width: '33%',
-  },
-  {
-    url: learnImg,
-    title: 'Learning',
-    width: '34%',
-  },
-  {
-    url: courseImg,
-    title: 'Courses',
-    width: '33%',
-  },
-];
-
-const ImageButton = styled(ButtonBase)(({ theme }) => ({
-  position: 'relative',
-  height: 200,
-  [theme.breakpoints.down('sm')]: {
-    width: '100% !important', // Overrides inline-style
-    height: 100,
-
-  },
-  '&:hover, &.Mui-focusVisible': {
-    zIndex: 1,
-    '& .MuiImageBackdrop-root': {
-      opacity: 0.15,
+    {
+      url: examImg,
+      title: 'Exam',
+      width: '33%',
     },
-    '& .MuiImageMarked-root': {
-      opacity: 0,
+    {
+      url: learnImg,
+      title: 'Learning',
+      width: '34%',
     },
-    '& .MuiTypography-root': {
-      border: '4px solid currentColor',
+    {
+      url: courseImg,
+      title: 'Courses',
+      width: '33%',
+      onclick: () => { navigate('/courses') }
+      // command: () => { navigate('/courses') }
     },
-  },
-}));
+  ];
 
-const ImageSrc = styled('span')({
-  position: 'absolute',
-  left: 0,
-  right: 0,
-  top: 0,
-  bottom: 0,
-  backgroundSize: 'cover',
-  backgroundPosition: 'center 40%',
-});
+  const ImageButton = styled(ButtonBase)(({ theme }) => ({
+    position: 'relative',
+    height: 200,
+    [theme.breakpoints.down('sm')]: {
+      width: '100% !important', // Overrides inline-style
+      height: 100,
 
-const Image = styled('span')(({ theme }) => ({
-  position: 'absolute',
-  left: 0,
-  right: 0,
-  top: 0,
-  bottom: 0,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  color: theme.palette.common.white,
-}));
+    },
+    '&:hover, &.Mui-focusVisible': {
+      zIndex: 1,
+      '& .MuiImageBackdrop-root': {
+        opacity: 0.15,
+      },
+      '& .MuiImageMarked-root': {
+        opacity: 0,
+      },
+      '& .MuiTypography-root': {
+        border: '4px solid currentColor',
+      },
+    },
+  }));
 
-const ImageBackdrop = styled('span')(({ theme }) => ({
-  position: 'absolute',
-  left: 0,
-  right: 0,
-  top: 0,
-  bottom: 0,
-  backgroundColor: theme.palette.common.black,
-  opacity: 0.4,
-  transition: theme.transitions.create('opacity'),
-}));
+  const ImageSrc = styled('span')({
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center 40%',
+  });
 
-const ImageMarked = styled('span')(({ theme }) => ({
-  height: 3,
-  width: 18,
-  backgroundColor: theme.palette.common.white,
-  position: 'absolute',
-  bottom: -2,
-  left: 'calc(50% - 9px)',
-  transition: theme.transitions.create('opacity'),
-})
+  const Image = styled('span')(({ theme }) => ({
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: theme.palette.common.white,
+  }));
+
+  const ImageBackdrop = styled('span')(({ theme }) => ({
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundColor: theme.palette.common.black,
+    opacity: 0.4,
+    transition: theme.transitions.create('opacity'),
+  }));
+
+  const ImageMarked = styled('span')(({ theme }) => ({
+    height: 3,
+    width: 18,
+    backgroundColor: theme.palette.common.white,
+    position: 'absolute',
+    bottom: -2,
+    left: 'calc(50% - 9px)',
+    transition: theme.transitions.create('opacity'),
+  })
 
 
 
 
-);
+  );
 
 
   return (
@@ -180,8 +180,6 @@ const ImageMarked = styled('span')(({ theme }) => ({
     </div>
   );
 }
-
-
 
 /* return (
    <div className="card">

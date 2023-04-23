@@ -74,6 +74,7 @@ exports.update = async (req, res) => {
     const id = req.body.id;
     await dal.update(req.body, id)
         .then(num => {
+            console.log(num);
             if (num == 1)
                 res.send({ message: "Lecture was updated successfully." });
             else res.send({ message: `Cannot update lecture with id ${id}. Maybe lecture was not found or req.body is empty!` });
