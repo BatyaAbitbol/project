@@ -61,6 +61,18 @@ exports.findUntilNum = async (req, res) => {
         });
 
 }
+
+exports.findAllByCourseId = async (req, res) => {
+    const courseId = req.params.id;
+    if(! courseId) {
+        res.status(400).send({message: 'CourseID is required!'})
+    }
+    const lectures = await dal.findAllByCourseId(courseId);
+    if(lectures){
+        res.status(200).send(lectures)
+    }
+    else res.status(204).send({message: 'No lectures for this course'})
+}
 exports.findById = async (req, res) => {
     const id = req.params.id;
     await dal.findOneById(id)

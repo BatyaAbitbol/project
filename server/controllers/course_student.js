@@ -9,8 +9,13 @@ exports.create = async (req, res) => {
     if (!studentId || !courseId || !registerDate)
         return res.status(400).json({ message: "All fields are required" });
 
+    const duplicate = await dal.findDuplicate(studentId, courseId);
+    if (duplicate) {
+        res.status(400).send({message: 'Already registered.'})
+    }
+    else
     await dal.create(req.body)
-        .then(data => res.send(data))
+        .then(data => res.status(201).send(data))
         .catch(err => res.status(500).send({ message: err.message || "Some error occurred while creating the question." }))
 
 }

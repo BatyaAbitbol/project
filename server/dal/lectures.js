@@ -11,6 +11,9 @@ exports.findAllByCourseId = async (courseId) => {
 exports.findAllInCourseUntilLectureNum = async (courseId, nextLectureNum) => {
     return await Lectures.findAll({ where: { courseId: courseId, lectureNum: { [Op.lt]: nextLectureNum } } });
 }
+exports.findAllByCourseId = async (courseId) => {
+    return await Lectures.findAll({where: {courseId: courseId}});
+}
 exports.findOneById = async (id) => {
     return await Lectures.findOne({ where: { id: id } })
 }

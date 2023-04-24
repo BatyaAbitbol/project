@@ -18,6 +18,11 @@ import { SignUp } from './Components/sign-up/SignUp';
 import { SignIn } from './Components/sign-in/SignIn';
 import Lectures from './Components/lecture/Lecture';
 import { CoursesForStudent } from './Components/course_student/CoursesForStudent';
+import { Task } from './Components/task/Task';
+import AddCourse  from './Components/course/addCourse';
+import UploadLectures   from './Components/lecture/uploadLectures';
+import { Payment } from './Components/payment/Payment';
+
 
 
 function App() {
@@ -33,15 +38,23 @@ function App() {
           <Route exact path='home/home-student' element={<HomeStudent />} />
           <Route exact path='home/home-teacher' element={<HomeTeacher />} />
 
+          <Route exact path='/addCourse' element={<AddCourse/>} />
           <Route exact path='/sign-up/teacher' element={<SignUpTeachers />} />
           <Route exact path='/sign-up/student' element={<SignUpStudents />} />
           <Route exact path='/courses' element={<Courses />} />
           <Route exact path='/lectures' element={<Lectures />} />
+          <Route exact path='/uploadLectures' element={<UploadLectures />} />
+
+          <Route exact path='/payment/:courseId' element={<Payment />} />
+
           <Route exact path='/student/courses' element={<CoursesForStudent />} />
           <Route exact path='/student/courses/Math' element={<h1>Math</h1>} />
+    
+
 
           <Route exact path='/course/payment' element={<h1>Buy a course & Pay</h1>} />
-          {/* <Route exact path='/task' element={<Task/>}/> */}
+          <Route exact path='/task' element={<Task />} />
+
           <Route exact path='/*' element={<h1>Not Found, Sorry 😒</h1>} />
 
         </Routes>

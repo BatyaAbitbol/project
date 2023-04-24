@@ -3,12 +3,19 @@ import ReactPlayer from 'react-player';
 import { Button } from 'primereact/button';
 import { Badge } from 'primereact/badge';
 import { Carousel } from 'primereact/carousel';
+import { Dialog } from 'primereact/dialog';
 import { useNavigate } from 'react-router-dom';
-import { UseGetAllById, UseGetOneById } from "../../Hooks/useGetAxios"
+import { UseGetAll, UseGetAllById, UseGetOneById } from "../../Hooks/useGetAxios";
+import { Task } from '../task/Task';
 
 const Lectures = (props) => {
     const [lectures, setLectures] = useState(null);
     const [course, setCourse] = useState();
+    const [visible, setVisible] = useState(false);
+    const [lectureId, setLectureId] = useState(null);
+    const [next, setNext] = useState(0);
+    // const [task, setTask] = useState(null);
+
     const responsiveOptions = [
         {
             breakpoint: '1199px',
@@ -37,24 +44,37 @@ const Lectures = (props) => {
             const resCourse = await UseGetOneById('courses', courseId);
             const coursesForStudent = res.data;
             const courseStudent = coursesForStudent.filter((x) => x.courseId = courseId)[0];
-            const resLectures = await UseGetAllById('lectures/student', courseStudent.id);
+            // const resLectures = await UseGetAllById('lectures/student', courseStudent.id);
+            const resLectures = await UseGetAllById('lectures/course', courseId);
+            setNext(courseStudent.nextLectureNum);
             setLectures(resLectures.data);
             setCourse(resCourse.data);
         }
         fetchData();
     }, []);
 
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         const res = await UseGetOneById('tasks/lecture', lectureId);
+    //         console.log(res);
+    //         if(res.data)
+    //             setTask(res.data)
+    //     }
+    //     fetchData();
+    // }, [lectureId])
     const navigate = useNavigate();
 
     const productTemplate = (lectureByCourse) => {
+        console.log(lectureByCourse.lectureNum);
+        console.log(lectureByCourse.lectureNum <= next);
         return (
             <div className="border-1 surface-border border-round m-2 text-center py-5 px-3">
                 <div className="card flex flex-wrap justify-content-center align-items-end gap-2">
                     <Badge value={lectureByCourse.lectureNum} size="xlarge" severity="secondary" />
+                    {lectureByCourse.lectureNum <= next && <Badge value={<i className="pi pi-check-circle" style={{ fontSize: '2rem', color: 'white' }}></i>} size="xlarge" severity="success" />}
                 </div>
                 <video
-                    defaultValue={lectureByCourse.video}
-                    value={lectureByCourse.video}
+                    value="https://www.w3schools.com/html/mov_bbb.mp4"//{lectureByCourse.video}
                     player='mp4'
                     controls={true}
                     width="420"
@@ -63,7 +83,16 @@ const Lectures = (props) => {
                     onPause={() => console.log('MP4 Stopped Playing')}
                 ></video>
                 <div className="mt-5 flex flex-wrap gap-2 justify-content-center">
-                    <Button icon="pi pi-file" className="p-button p-button-rounded" label="task" severity="info" onClick={(e) => { console.log("TASK"); }} />
+                    <Button id={lectureByCourse.id} icon="pi pi-file" className="p-button p-button-rounded" label="task" severity="info"
+                        onClick={(e) => {
+                            setLectureId(lectureByCourse.id);
+                            console.log(lectureId);
+                            setVisible(true);
+                            // navigate('/task')
+                        }} />
+                    <Dialog visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
+                        <Task lectureId={lectureId} />
+                    </Dialog>
                 </div>
             </div>
         );

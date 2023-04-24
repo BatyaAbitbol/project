@@ -197,6 +197,6 @@ exports.findAllCoursesByStudentId = async (req, res) => {
     console.log(courses);
 
     if(courses.length > 0)
-        res.send(courses)
-    else res.send({message: 'NO courses found - ERROR'})
+        res.status(200).send(courses)
+    else res.status(204).send({message: 'NO courses found - ERROR'})
 }

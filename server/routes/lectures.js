@@ -4,8 +4,12 @@ const lecture = require('../controllers/lectures');
 const router = express.Router();
 
 router.use(verifyJWT);
+
 router.route('/student/:id')
     .get(lecture.findUntilNum)
+
+router.route('/course/:id')
+    .get(lecture.findAllByCourseId)
 
 router.route('/number')
     .get(lecture.findByNum);

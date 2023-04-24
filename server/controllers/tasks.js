@@ -20,8 +20,10 @@ exports.findByLectureId = async (req, res) => {
         .then(data => {
             if (data)
                 res.send(data);
-            else res.status(404).send({ message: `Cannot find task by lectureId ${id}` });
-        })
+            else res.status(204).send({ message: `Cannot find task by lectureId ${id}` });
+        }).catch(err => {
+            res.status(400).send({message: err.message})
+        });
 }
 exports.findOne = async (req, res) => {
     const id = req.params.id;

@@ -1,13 +1,13 @@
 import axios from "axios";
 
 const URL = `http://localhost:8000`;
-const headerAuthorization = {headers:{Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`}}
+const headerAuthorization = {headers:{Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`}};
+
 export async function GetAllCourses(url){
     try {
         const res = await axios.get(`${URL}/${url}`, headerAuthorization)
         return res;
     } catch(err) {
-        console.log(err);
         return err;
     }
 }
@@ -15,10 +15,8 @@ export async function GetAllCourses(url){
 export async function UseGetAll(url){
     try {
         const res = await axios.get(`${URL}/${url}`, headerAuthorization)
-        console.log(res);
         return res;
     } catch(err) {
-        console.log(err);
         return err;
     }
 }
@@ -50,11 +48,3 @@ export async function UseGetOneById(url, id) {
         return error;
     }
 }
-
-// export async function UseGetAllByCourseId(url, courseId){
-//     try {
-//         return await axios.get(`${URL}/${url}/${courseId}`)
-//     } catch (error) {
-//         return error;
-//     }
-// }

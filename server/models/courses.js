@@ -30,7 +30,8 @@ module.exports = (sequelize, Sequelize) => {
             accessPeriod: Sequelize.INTEGER,
             price: {
                 type: Sequelize.FLOAT
-            }
+            },
+            image: Sequelize.STRING(255)
         },
         {
             freezeTableName: true,
