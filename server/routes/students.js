@@ -13,6 +13,7 @@ router.route('/login')
     .get(student.login);
 
 router.route('/:id')
+    .get(verifyJWT, student.findOne)
     .delete(verifyJWT, student.delete)
 
 router.route('/')

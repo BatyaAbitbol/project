@@ -1,9 +1,10 @@
 import { UseGetAll, UseGetAllById, UseGetOneById } from "../../Hooks/useGetAxios";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Button } from 'primereact/button';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { useNavigate } from 'react-router-dom';
 import Lectures from "../lecture/Lecture";
+import UserContext from "../UserContext";
 
 export function CoursesForStudent(props) {
 
@@ -11,11 +12,15 @@ export function CoursesForStudent(props) {
     const [course, setCourse] = useState(-1);
     const [layout, setLayout] = useState('grid');
 
-    const id = JSON.parse(localStorage.getItem('studentInfo')).id;
+    const user = useContext(UserContext);
+    console.log(user);
+    const id = user.id;
+    console.log(id);
 
     useEffect(() => {
         const fetchData = async () => {
             const res = await UseGetAllById('students/courses', id);
+            console.log(res)
             if (res.status != 204)
                 setData(res.data);
             else setData(res.statusText)
@@ -53,10 +58,11 @@ export function CoursesForStudent(props) {
                     {/* ? איך אני יכולה לקבל מידע על איזה קורס לחצתי ולרנדר לפי זה קורס מתאים */}
                     <div data-custom-id={course.id} className="flex flex-column align-items-center gap-3 py-5" onClick={(e) => {
                         console.log(course.id);
-                        
+
                         const courseId = course.id;
                         setCourse(courseId);
                     }}>
+
                         <img data-custom-id={course.id} className="w-9 shadow-2 border-round" src={course.image} alt={course.name} />
                         <div data-custom-id={course.id} className="text-2xl font-bold">{course.name}</div>
                     </div>
@@ -84,7 +90,8 @@ export function CoursesForStudent(props) {
 
     let display;
     if (course != -1) {
-        display = <Lectures courseId={course} />;
+        navigate(`/lectures/${course}`)
+        // display = <Lectures courseId={course} />;
     }
     else {
         if (typeof data !== 'string') {

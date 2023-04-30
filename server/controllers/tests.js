@@ -56,6 +56,7 @@ exports.delete = async (req, res) => {
 
 exports.createTest = async (req, res) => {
     const courseStudentId = req.body.courseStudentId;
+    console.log(courseStudentId);
     if (!courseStudentId) {
         return res.status(400).json({ message: "All fields are required" });
     }
@@ -68,6 +69,9 @@ exports.createTest = async (req, res) => {
     const questions = await question_dal.findAll({ where: { courseId: courseId } })
     if (!questions) return res.status(500).send('No questions found');
     const testCourse = await test_course_dal.findOne({ where: { courseId: courseId } });
+    if (! testCourse) {
+        res.send('error')
+    }
     const numOfQuestions = testCourse.numOfQuestions;
     let rand = 0;
     let idx = [];

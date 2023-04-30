@@ -11,12 +11,12 @@ exports.create = async (req, res) => {
 
     const duplicate = await dal.findDuplicate(studentId, courseId);
     if (duplicate) {
-        res.status(400).send({message: 'Already registered.'})
+        res.status(400).send({ message: 'Already registered.' })
     }
     else
-    await dal.create(req.body)
-        .then(data => res.status(201).send(data))
-        .catch(err => res.status(500).send({ message: err.message || "Some error occurred while creating the question." }))
+        await dal.create(req.body)
+            .then(data => res.status(201).send(data))
+            .catch(err => res.status(500).send({ message: err.message || "Some error occurred while creating the question." }))
 
 }
 exports.findAll = async (req, res) => {
@@ -30,10 +30,22 @@ exports.findAll = async (req, res) => {
 // According to studentID
 exports.findAllByStudentId = async (req, res) => {
     const studentId = req.params.id;
-    if(!studentId) {
-        res.status(401).send({message: 'StudentID is required!'})
+    if (!studentId) {
+        res.status(401).send({ message: 'StudentID is required!' })
     }
     await dal.findAllByStudentId(studentId)
+        .then(data => { res.send(data); })
+        .catch(err => {
+            res.status(404).send({ message: err.message || "Failed retrieving courses for students." })
+        })
+}
+exports.findByStudentAndCourseId = async (req, res) => {
+    const courseId = req.query.courseId;
+    const studentId = req.params.id;
+    if (!studentId || !courseId) {
+        res.status(401).send({ message: 'StudentID & CourseID are required!' })
+    }
+    await dal.findByStudentAndCourseId(studentId, courseId)
         .then(data => { res.send(data); })
         .catch(err => {
             res.status(404).send({ message: err.message || "Failed retrieving courses for students." })

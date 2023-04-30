@@ -1,22 +1,23 @@
 import axios from "axios";
 
 const URL = `http://localhost:8000`;
-const headerAuthorization = {headers:{Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`}};
+const headerAuthorization = { headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}` } };
 
-export async function GetAllCourses(url){
+export async function GetAllCourses(url) {
     try {
         const res = await axios.get(`${URL}/${url}`, headerAuthorization)
         return res;
-    } catch(err) {
+    } catch (err) {
         return err;
     }
 }
 
-export async function UseGetAll(url){
+export async function UseGetAll(url) {
     try {
-        const res = await axios.get(`${URL}/${url}`, headerAuthorization)
+        const res = await axios.get(`${URL}/${url}`, headerAuthorization);
+        console.log(res);
         return res;
-    } catch(err) {
+    } catch (err) {
         return err;
     }
 }
@@ -40,9 +41,12 @@ export async function UseGetAllById(url, id) {
     }
 }
 
-export async function UseGetOneById(url, id) {
+export async function UseGetOneById(url, id, params) {
     try {
-        const res = await axios.get(`${URL}/${url}/${id}`, headerAuthorization);
+        let res;
+        if (params)
+            res = await axios.get(`${URL}/${url}/${id}`, headerAuthorization, params);
+        else res = await axios.get(`${URL}/${url}/${id}`, headerAuthorization);
         return res;
     } catch (error) {
         return error;

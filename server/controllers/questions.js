@@ -19,7 +19,7 @@ exports.findAll = async (req, res) => {
             res.status(500).send({ message: err.message || "Some errors occured while retrieving questions." }))
 }
 exports.findAllByCourseId = async (req, res) => {
-    const courseId = req.body.courseId;
+    const courseId = req.params.id;
     await dal.findAllByCourseId(courseId)
         .then(data => { res.send(data) })
         .catch(err =>

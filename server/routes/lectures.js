@@ -11,6 +11,9 @@ router.route('/student/:id')
 router.route('/course/:id')
     .get(lecture.findAllByCourseId)
 
+router.route('/teacher/:id')
+    .get(lecture.findAllByTeacherId)
+
 router.route('/number')
     .get(lecture.findByNum);
 

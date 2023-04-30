@@ -34,8 +34,8 @@ exports.register = async (req, res) => {
                 return res.status(500).send('Failed to send email');
             });
 
-        const studentInfo = { id: student.id, firstName: student.firstName, lastName: student.lastName, idNumber: student.idNumber, email: student.email };
-        const accessToken = jwt.sign(studentInfo, process.env.ACCESS_TOKEN_SECRET);
+        const userInfo = { id: student.id, firstName: student.firstName, lastName: student.lastName, idNumber: student.idNumber, email: student.email, status: 'students' };
+        const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET);
         
         return res.status(201).json({
             message: `New student ${firstName} ${lastName} created`,

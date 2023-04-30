@@ -1,20 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ReactPlayer from 'react-player';
 import { Button } from 'primereact/button';
 import { Badge } from 'primereact/badge';
 import { Carousel } from 'primereact/carousel';
 import { Dialog } from 'primereact/dialog';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { UseGetAll, UseGetAllById, UseGetOneById } from "../../Hooks/useGetAxios";
 import { Task } from '../task/Task';
+import { ProgressBar } from 'primereact/progressbar';
+import UserContext from '../UserContext';
 
 const Lectures = (props) => {
+
+    const { courseId } = useParams();
+    const user = useContext(UserContext);
+    const status = user.status;
+    const id = user.id;
+
+    console.log(user);
+
     const [lectures, setLectures] = useState(null);
     const [course, setCourse] = useState();
     const [visible, setVisible] = useState(false);
     const [lectureId, setLectureId] = useState(null);
     const [next, setNext] = useState(0);
-    // const [task, setTask] = useState(null);
+    const [numOfLectures, setNumOfLectures] = useState(0);
 
     const responsiveOptions = [
         {
@@ -37,41 +47,32 @@ const Lectures = (props) => {
     //מביא את ההרצאות של הקורס תלמיד המסוים
     useEffect(() => {
         const fetchData = async () => {
-            let id;
-            const studentId = JSON.parse(localStorage.getItem('studentInfo')).id;
-            const courseId = props.courseId;
-            const res = await UseGetAllById('course_students/student', studentId);
+
+            const res = await UseGetOneById('course_students/student/course', id, {parms: {courseId: courseId}})
+            const courseStudent = res.data;
             const resCourse = await UseGetOneById('courses', courseId);
-            const coursesForStudent = res.data;
-            const courseStudent = coursesForStudent.filter((x) => x.courseId = courseId)[0];
+            // const courseStudent = coursesForStudent.filter((x) => x.courseId = courseId)[0];
             // const resLectures = await UseGetAllById('lectures/student', courseStudent.id);
             const resLectures = await UseGetAllById('lectures/course', courseId);
-            setNext(courseStudent.nextLectureNum);
+            // setNext(courseStudent.nextLectureNum);
+            console.log(res);
+            console.log(resLectures);
+
             setLectures(resLectures.data);
             setCourse(resCourse.data);
+            setNumOfLectures(resLectures.data.length);
         }
         fetchData();
     }, []);
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         const res = await UseGetOneById('tasks/lecture', lectureId);
-    //         console.log(res);
-    //         if(res.data)
-    //             setTask(res.data)
-    //     }
-    //     fetchData();
-    // }, [lectureId])
     const navigate = useNavigate();
 
     const productTemplate = (lectureByCourse) => {
-        console.log(lectureByCourse.lectureNum);
-        console.log(lectureByCourse.lectureNum <= next);
         return (
             <div className="border-1 surface-border border-round m-2 text-center py-5 px-3">
                 <div className="card flex flex-wrap justify-content-center align-items-end gap-2">
                     <Badge value={lectureByCourse.lectureNum} size="xlarge" severity="secondary" />
-                    {lectureByCourse.lectureNum <= next && <Badge value={<i className="pi pi-check-circle" style={{ fontSize: '2rem', color: 'white' }}></i>} size="xlarge" severity="success" />}
+                    {lectureByCourse.lectureNum < next && <Badge value={<i className="pi pi-check-circle" style={{ fontSize: '2rem', color: 'white' }}></i>} size="xlarge" severity="success" />}
                 </div>
                 <video
                     value="https://www.w3schools.com/html/mov_bbb.mp4"//{lectureByCourse.video}
@@ -88,7 +89,6 @@ const Lectures = (props) => {
                             setLectureId(lectureByCourse.id);
                             console.log(lectureId);
                             setVisible(true);
-                            // navigate('/task')
                         }} />
                     <Dialog visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
                         <Task lectureId={lectureId} />
@@ -99,10 +99,14 @@ const Lectures = (props) => {
     };
 
     return (
+
         <>{lectures &&
             <>
                 <div className="card">
                     <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold', color: 'gray' }}>Lectures Of {course.name} Course</div>
+                    <div className="card">
+                        {next > 1 && <ProgressBar value={(next - 1) / numOfLectures * 100}></ProgressBar>}
+                    </div>
                     <Carousel value={lectures} numVisible={3} numScroll={3} responsiveOptions={responsiveOptions} itemTemplate={productTemplate} />
                 </div>
             </>

@@ -2,18 +2,22 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { classNames } from "primereact/utils";
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Form, Field } from "react-final-form";
 import { Password } from 'primereact/password';
 import { UseSignIn } from "../../Hooks/UseGetStudent";
 import { useNavigate } from 'react-router-dom';
+import UserContext from '../UserContext';
 
 export function SignInByProfile(props) {
+
     const [showMessage, setShowMessage] = useState(false);
     const [message, setMessage] = useState(<></>);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState(<></>);
     const [formData, setFormData] = useState({});
+    const [user, setUser] = useState({});
+
     const validate = (data) => {
         let errors = {};
         if (!data.idNumber) {
@@ -30,6 +34,7 @@ export function SignInByProfile(props) {
         }
         return errors;
     };
+
     const onSubmit = async (data, form) => {
         setFormData(data);
         setShowMessage(true);
@@ -37,28 +42,32 @@ export function SignInByProfile(props) {
         await HandleClick(data);
         form.restart();
     }
-
     const isFormFieldValid = (meta) => !!(meta.touched && meta.error);
     const getFormErrorMessage = (meta) => {
         return isFormFieldValid(meta) && <small className="p-error">{meta.error}</small>;
     };
     const navigate = useNavigate();
-    const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => {  setShowErrorMessage(false); setShowMessage(false);navigate('/home/home-student'); }} /></div>;
+    const dialogFooter =
+        <div className="flex justify-content-center">
+            <Button label="OK" className="p-button-text" autoFocus
+                onClick={() => {
+                    setShowErrorMessage(false);
+                    setShowMessage(false);
+                    navigate(`/home-${props.status}`);
+                }} />
+        </div>;
     const errorDialogFooter = <div className="flex justify-content-center"></div>
     async function HandleClick(data) {
         const obj = {
             idNumber: data.idNumber,
             password: data.password
         }
-        let url;
-        if (props.profile === 'Student') url = 'students';
-        else if (props.profile === 'Teacher') url = 'teachers';
         try {
-            const res = await UseSignIn(url, obj);
-            console.log(res);
+            const res = await UseSignIn(props.status, obj);
             if (res.status && res.status === 200) {
                 localStorage.setItem('token', JSON.stringify(res.data.accessToken));
-                localStorage.setItem('studentInfo', JSON.stringify(res.data.studentInfo));
+                localStorage.setItem('userInfo', JSON.stringify(res.data.studentInfo));
+                setUser(res.data.studentInfo);
                 setMessage(<>
                     <i className="pi pi-check-circle" style={{ fontSize: '5rem', color: 'var(--green-500)' }}></i>
                     <h5>You are in!</h5>
@@ -73,10 +82,14 @@ export function SignInByProfile(props) {
                         <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
                             {res.response.data.message}, you can sign up.
                         </p>
-                        <Button label="Sign Up" className="p-button-text" autoFocus onClick={() => {  setShowErrorMessage(false); setShowMessage(false);navigate('/sign-up'); }} />
+                        <Button label="Sign Up" className="p-button-text" autoFocus
+                            onClick={() => {
+                                setShowErrorMessage(false);
+                                setShowMessage(false);
+                                navigate('/sign-up');
+                            }} />
                     </div>
                 </>)
-                console.log(res.response.data);
             }
             else if (res.response.status && res.response.status === 402) {
                 setShowErrorMessage(true);
@@ -87,23 +100,34 @@ export function SignInByProfile(props) {
                         <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
                             {res.response.data.message}, you can try again.
                         </p>
-                        <Button label="OK" className="p-button-text" autoFocus onClick={() => { setShowErrorMessage(false);setShowMessage(false); }} />
+                        <Button label="OK" className="p-button-text" autoFocus
+                            onClick={() => {
+                                setShowErrorMessage(false);
+                                setShowMessage(false);
+                            }} />
                     </div>
                 </>)
-                console.log(res.response.data);
             }
             else {
                 setShowErrorMessage(true);
                 setErrorMessage(<>
                     <i className="pi pi-undo" style={{ fontSize: '5rem', color: 'var(--red-500)' }}></i>
                     <h5>Incorrect details.</h5>
-                    <Button label="OK" className="p-button-text" autoFocus onClick={() => { setShowErrorMessage(false);setShowMessage(false); }} />
+                    <Button label="OK" className="p-button-text" autoFocus
+                        onClick={() => {
+                            setShowErrorMessage(false);
+                            setShowMessage(false);
+                        }} />
                 </>)
             }
         } catch (error) {
             console.log(error);
         }
     }
+    props.setUserId(user.id);
+    props.setStatus(props.status);
+
+    console.log(user);
     return (
         <>
             <div className="form-demo">

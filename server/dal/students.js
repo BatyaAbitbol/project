@@ -10,7 +10,7 @@ exports.findAll = async () => {
 exports.findOne = async (condition) => {
     return await Students.findOne(condition);
 }
-exports.findOne = async (id) => {
+exports.findOneById = async (id) => {
     return await Students.findOne({ where: { id: id } });
 }
 exports.findOneByIDNumber = async (idNumber) => {

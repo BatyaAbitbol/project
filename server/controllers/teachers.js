@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 
 exports.register = async (req, res) => {
 
-    const { name, idNumber, email, password } = req.body
+    const { name, idNumber, email, password } = req.query;
     if (!idNumber || !email || !password) {
         return res.status(400).json({ message: "All fields are required" });
     }
@@ -37,7 +37,7 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
 
-    const { idNumber, password } = req.body;
+    const { idNumber, password } = req.query;
     if (!idNumber || !password) {
         return res.status(400).send({ message: "All fields are required" })
     }
@@ -51,11 +51,14 @@ exports.login = async (req, res) => {
     if (!match) {
         return res.status(401).send({ message: 'The password is mistake' });
     }
-    const teacherInfo = {
-        id: finduser.id, name: finduser.name,
-        idNumber: finduser.idNumber, email: finduser.email
+    const userInfo = {
+        id: finduser.id,
+        name: finduser.name,
+        idNumber: finduser.idNumber,
+        email: finduser.email,
+        status: 'teachers'
     };
-    const accessToken = jwt.sign(teacherInfo, process.env.ACCESS_TOKEN_SECRET);
+    const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET);
     res.json({ accessToken: accessToken });
 }
 

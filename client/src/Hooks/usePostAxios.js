@@ -26,6 +26,7 @@ export async function useSignUp(url, obj) {
 }
 
 export async function UseCreate(url, obj) {
+    console.log(obj);
     try {
         const res = await axios.post(`${URL}/${url}`, obj, headersAuthorization)
         return res;

@@ -91,7 +91,7 @@ const Courses = (props) => {
         <div className="card">
             <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>Our Courses</div>
             <DataView value={products} itemTemplate={itemTemplate} layout={layout} header={header()} />
-            <Button label="My Courses" onClick={(e) => navigate('/student/courses')}/>
+            <Button label="My Courses" onClick={(e) => navigate('/student/courses')} />
         </div>
     )
 }
