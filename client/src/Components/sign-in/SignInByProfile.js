@@ -18,6 +18,8 @@ export function SignInByProfile(props) {
     const [formData, setFormData] = useState({});
     const [user, setUser] = useState({});
 
+    const navigate = useNavigate();
+
     const validate = (data) => {
         let errors = {};
         if (!data.idNumber) {
@@ -34,7 +36,7 @@ export function SignInByProfile(props) {
         }
         return errors;
     };
-
+  
     const onSubmit = async (data, form) => {
         setFormData(data);
         setShowMessage(true);
@@ -46,7 +48,6 @@ export function SignInByProfile(props) {
     const getFormErrorMessage = (meta) => {
         return isFormFieldValid(meta) && <small className="p-error">{meta.error}</small>;
     };
-    const navigate = useNavigate();
     const dialogFooter =
         <div className="flex justify-content-center">
             <Button label="OK" className="p-button-text" autoFocus
@@ -66,8 +67,8 @@ export function SignInByProfile(props) {
             const res = await UseSignIn(props.status, obj);
             if (res.status && res.status === 200) {
                 localStorage.setItem('token', JSON.stringify(res.data.accessToken));
-                localStorage.setItem('userInfo', JSON.stringify(res.data.studentInfo));
-                setUser(res.data.studentInfo);
+                localStorage.setItem('userInfo', JSON.stringify(res.data.userInfo));
+                setUser(res.data.userInfo);
                 setMessage(<>
                     <i className="pi pi-check-circle" style={{ fontSize: '5rem', color: 'var(--green-500)' }}></i>
                     <h5>You are in!</h5>
@@ -124,10 +125,8 @@ export function SignInByProfile(props) {
             console.log(error);
         }
     }
-    props.setUserId(user.id);
-    props.setStatus(props.status);
-
-    console.log(user);
+    // props.setUserId(user.id);
+    // props.setStatus(props.status);
     return (
         <>
             <div className="form-demo">

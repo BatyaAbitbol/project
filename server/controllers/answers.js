@@ -6,7 +6,7 @@ exports.create = async (req, res) => {
         return;
     }
     await dal.create(req.body)
-        .then(data => { res.send(data); })
+        .then(data => { res.status(201).send(data); })
         .catch(err => {
             res.status(500).send({ message: err.message || "Some error occurred while creating the Answer." })
         });

@@ -8,6 +8,7 @@ const Courses = (props) => {
 
     const [layout, setLayout] = useState('grid');
     const [products, setProducts] = useState(null)
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -16,7 +17,6 @@ const Courses = (props) => {
         }
         fetchData()
     }, []);
-    const navigate = useNavigate();
 
     const listItem = (product) => {
         return (
@@ -42,7 +42,7 @@ const Courses = (props) => {
                     </div>
                 </div>
             </div>
-        );
+        )
     };
 
     const gridItem = (product) => {
@@ -63,7 +63,7 @@ const Courses = (props) => {
                     </div>
                     <div className="flex align-items-center justify-content-between">
                         <span className="text-2xl font-semibold">{product.price} $</span>
-                        <Button icon="pi pi-tag" className="p-button-rounded" label="Buy It!" onClick={(e) => { navigate(`/payment/${product.id}`); console.log((e)); }}></Button>
+                        <Button icon="pi pi-tag" className="p-button-rounded" label="Buy It!" onClick={(e) => { navigate(`/payment/${product.id}`); }}></Button>
                     </div>
                 </div>
             </div>
@@ -74,9 +74,10 @@ const Courses = (props) => {
         if (!product) {
             return;
         }
-
-        if (layout === 'list') return listItem(product);
-        else if (layout === 'grid') return gridItem(product);
+        if (layout === 'list')
+            return listItem(product);
+        else if (layout === 'grid')
+            return gridItem(product);
     };
 
     const header = () => {
@@ -91,7 +92,7 @@ const Courses = (props) => {
         <div className="card">
             <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>Our Courses</div>
             <DataView value={products} itemTemplate={itemTemplate} layout={layout} header={header()} />
-            <Button label="My Courses" onClick={(e) => navigate('/student/courses')} />
+            <Button label="My Courses" onClick={(e) => navigate('my-courses')} />
         </div>
     )
 }

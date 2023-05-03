@@ -1,134 +1,178 @@
-import React from 'react';
-import { Menubar } from 'primereact/menubar';
-import { InputText } from 'primereact/inputtext';
-import { CgUserList } from 'react-icons/cg';
-export default function TemplateDemo() {
-    const items = [
-        {
-            label: 'Courses',
-            icon: 'pi pi-bookmark',
-            items: [
-                {
-                    label: 'All Courses',
-                    icon: 'pi pi-list'
-                },
-                {
-                    label: 'My Courses',
-                    icon: CgUserList
-                },
-                {
-                    label: 'New',
-                    icon: 'pi pi-fw pi-plus',
-                    // items: [
-                    //     {
-                    //         label: 'Bookmark',
-                    //         icon: 'pi pi-fw pi-bookmark'
-                    //     },
-                    //     {
-                    //         label: 'Video',
-                    //         icon: 'pi pi-fw pi-video'
-                    //     },
+import { TabMenu } from 'primereact/tabmenu';
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import ButtonBase from '@mui/material/ButtonBase';
+import Typography from '@mui/material/Typography';
+import courseImg from '../../images/course.jpg'
+import examImg from '../../images/exam.jpg'
+import learnImg from '../../images/learning.jpg'
+import profil from '../../images/profil.JPG';
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import { Button } from 'primereact/button';
+import { useNavigate } from 'react-router-dom';
 
-                    // ]
-                },
-                {
-                    separator: true
-                }
-            ]
-        },
-        {
-            label: 'Tests',
-            icon: 'pi pi-file',
-            items: [
-                {
-                    label: 'New',
-                    icon: 'pi pi-fw pi-plus'
-                },
-                {
-                    label: 'View Tests',
-                    icon: 'pi pi-eye'
-                },
-                {
-                    label: 'Check',
-                    icon: 'pi pi-check-circle'
-                }
+/*export default function Home() {
+  const items = [
+    { label: 'Home', icon: 'pi pi-fw pi-home' },
+    { label: 'Courses', icon: 'pi pi-bookmark' },
+    { label: 'Tests', icon: 'pi pi-fw pi-pencil' },
+    { label: 'Tasks', icon: 'pi pi-fw pi-file' },
+    // { label: 'Sign In', icon: 'pi pi-user' }
+  ];
+*/
 
-            ]
-        },
-        {
-            label: 'Students',
-            icon: 'pi pi-fw pi-user',
-            items: [
-                {
-                    label: 'View List',
-                    icon: 'pi pi-list',
+export default function ButtonBases() {
 
-                },
-                {
-                    label: 'Search',
-                    icon: 'pi pi-fw pi-users',
-                    items: [
-                        {
-                            label: 'Filter',
-                            icon: 'pi pi-fw pi-filter',
-                            items: [
-                                {
-                                    label: 'Print',
-                                    icon: 'pi pi-fw pi-print'
-                                }
-                            ]
-                        },
-                        {
-                            icon: 'pi pi-fw pi-bars',
-                            label: 'List'
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            label: 'Events',
-            icon: 'pi pi-fw pi-calendar',
-            items: [
-                {
-                    label: 'Edit',
-                    icon: 'pi pi-fw pi-pencil',
-                    items: [
-                        {
-                            label: 'Save',
-                            icon: 'pi pi-fw pi-calendar-plus'
-                        },
-                        {
-                            label: 'Delete',
-                            icon: 'pi pi-fw pi-calendar-minus'
-                        }
-                    ]
-                },
-                {
-                    label: 'Archive',
-                    icon: 'pi pi-fw pi-calendar-times',
-                    items: [
-                        {
-                            label: 'Remove',
-                            icon: 'pi pi-fw pi-calendar-minus'
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            label: 'Quit',
-            icon: 'pi pi-fw pi-power-off'
-        }
-    ];
+  const navigate = useNavigate();
+  // const items = [
+  //   { label: 'Courses', icon: 'pi pi-bookmark', command: () => { navigate('/courses') } },
+  //   { label: 'Tests', icon: 'pi pi-fw pi-pencil', command: () => { navigate('/tests') } },
+  //   { label: 'Tasks', icon: 'pi pi-fw pi-file', command: () => { navigate('/tasks') } }
+  // ];
 
-    const start = <img alt="logo" src="https://primefaces.org/cdn/primereact/images/logo.png" height="40" className="mr-2"></img>;
-    const end = <InputText placeholder="Search" type="text" className="w-full" />;
+  const images = [
 
-    return (
-        <div className="card">
-            <Menubar model={items} start={start} end={end} />
-        </div>
-    )
+    {
+      url: examImg,
+      title: 'Exam for checking',
+      width: '33%',
+      nav:'/'
+    },
+    {
+      url: learnImg,
+      title: 'My Courses',
+      width: '34%',
+      nav:'/courses/teachers/my-courses'
+    },
+    {
+      url: courseImg,
+      title: 'Courses',
+      width: '33%',
+      nav:'/courses'
+    },
+  ];
+
+  const ImageButton = styled(ButtonBase)(({ theme }) => ({
+    position: 'relative',
+    height: 200,
+    [theme.breakpoints.down('sm')]: {
+      width: '100% !important', // Overrides inline-style
+      height: 100,
+
+    },
+    '&:hover, &.Mui-focusVisible': {
+      zIndex: 1,
+      '& .MuiImageBackdrop-root': {
+        opacity: 0.15,
+      },
+      '& .MuiImageMarked-root': {
+        opacity: 0,
+      },
+      '& .MuiTypography-root': {
+        border: '4px solid currentColor',
+      },
+    },
+  }));
+
+  const ImageSrc = styled('span')({
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center 40%',
+  });
+
+  const Image = styled('span')(({ theme }) => ({
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: theme.palette.common.white,
+  }));
+
+  const ImageBackdrop = styled('span')(({ theme }) => ({
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    backgroundColor: theme.palette.common.black,
+    opacity: 0.4,
+    transition: theme.transitions.create('opacity'),
+  }));
+
+  const ImageMarked = styled('span')(({ theme }) => ({
+    height: 3,
+    width: 18,
+    backgroundColor: theme.palette.common.white,
+    position: 'absolute',
+    bottom: -2,
+    left: 'calc(50% - 9px)',
+    transition: theme.transitions.create('opacity'),
+  })
+  );
+  
+  return (
+    <div >
+      <div style={{ display: 'flex' }}>
+        {/* <TabMenu model={items} /> */}
+        <Stack direction="row" spacing={2}>
+          <Avatar
+            alt="Tamar Streuss"
+            src={profil}
+            sx={{ width: 56, height: 56 }}
+          />
+          <Button style={{ display: 'flex', width: 58, height: 58 }} icon="pi pi-bell" className="p-button-rounded p-button-warning" />
+        </Stack></div>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <br></br>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
+        {images.map((image) => (
+          <ImageButton onClick={() => { navigate( `${image.nav}` )} }
+            focusRipple
+            key={image.title}
+            style={{
+              width: image.width,
+            }}
+          >
+            <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
+            <ImageBackdrop className="MuiImageBackdrop-root" />
+            <Image>
+              <Typography
+                component="span"
+                variant="subtitle1"
+                color="inherit"
+                sx={{
+                  position: 'relative',
+                  p: 4,
+                  pt: 2,
+                  pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                }}
+              >
+                {image.title}
+                <ImageMarked className="MuiImageMarked-root" />
+              </Typography>
+            </Image>
+          </ImageButton>
+        ))}
+      </Box>
+    </div>
+  );
 }
-

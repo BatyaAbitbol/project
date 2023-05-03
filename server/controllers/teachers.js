@@ -59,7 +59,7 @@ exports.login = async (req, res) => {
         status: 'teachers'
     };
     const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET);
-    res.json({ accessToken: accessToken });
+    res.json({ accessToken: accessToken, userInfo: userInfo });
 }
 
 exports.findAll = async (req, res) => {
@@ -85,6 +85,11 @@ exports.findByEmail = async (req, res) => {
                 res.send(data);
             else res.status(404).send({ message: `Cannot find teacher by email ${email}` });
         })
+}
+const courses = require('./courses');
+exports.findCoursesByTeacherId = async (req, res) => {
+    console.log('findCoursesByTeacherId');
+    return await courses.findByTeacherId(req, res);
 }
 exports.update = async (req, res) => {
     const id = req.body.id;
@@ -139,3 +144,4 @@ const activeCourses = async (id) => {
             return false;
         });
 }
+ 

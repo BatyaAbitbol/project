@@ -5,7 +5,7 @@ import { Badge } from 'primereact/badge';
 import { Carousel } from 'primereact/carousel';
 import { Dialog } from 'primereact/dialog';
 import { useNavigate, useParams } from 'react-router-dom';
-import { UseGetAll, UseGetAllById, UseGetOneById } from "../../Hooks/useGetAxios";
+import { UseGetAll, UseGetAllById, UseGetOneById, UseGetOneByIdAndBody } from "../../Hooks/useGetAxios";
 import { Task } from '../task/Task';
 import { ProgressBar } from 'primereact/progressbar';
 import UserContext from '../UserContext';
@@ -13,11 +13,13 @@ import UserContext from '../UserContext';
 const Lectures = (props) => {
 
     const { courseId } = useParams();
-    const user = useContext(UserContext);
-    const status = user.status;
-    const id = user.id;
+    // const user = useContext(UserContext);
+    // const status = user.status;
+    // const id = user.id;
 
-    console.log(user);
+    const user = JSON.parse(localStorage.getItem('userInfo'));
+    const id = user.id;
+    const status = user.status;
 
     const [lectures, setLectures] = useState(null);
     const [course, setCourse] = useState();
@@ -47,8 +49,7 @@ const Lectures = (props) => {
     //מביא את ההרצאות של הקורס תלמיד המסוים
     useEffect(() => {
         const fetchData = async () => {
-
-            const res = await UseGetOneById('course_students/student/course', id, {parms: {courseId: courseId}})
+            const res = await UseGetOneByIdAndBody('course_students/student/course', id, {courseId: courseId})
             const courseStudent = res.data;
             const resCourse = await UseGetOneById('courses', courseId);
             // const courseStudent = coursesForStudent.filter((x) => x.courseId = courseId)[0];
@@ -115,3 +116,5 @@ const Lectures = (props) => {
     )
 }
 export default Lectures;
+
+// TEST STUDENT

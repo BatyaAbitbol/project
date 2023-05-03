@@ -60,11 +60,11 @@ exports.login = async (req, res) => {
     if (!match) {
         return res.status(402).send({ message: 'The password is mistake' });
     }
-    const studentInfo = { id: finduser.id, firstName: finduser.firstName, lastName: finduser.lastName, idNumber: finduser.idNumber, email: finduser.email };
+    const userInfo = { id: finduser.id, firstName: finduser.firstName, lastName: finduser.lastName, idNumber: finduser.idNumber, email: finduser.email, status: 'students' };
 
-    const accessToken = jwt.sign(studentInfo, process.env.ACCESS_TOKEN_SECRET);
+    const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET);
 
-    res.json({ accessToken: accessToken, studentInfo: studentInfo })
+    res.json({ accessToken: accessToken, userInfo: userInfo })
 }
 
 exports.findAll = async (req, res) => {

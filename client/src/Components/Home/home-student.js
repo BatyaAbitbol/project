@@ -1,5 +1,6 @@
 import { TabMenu } from 'primereact/tabmenu';
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
+
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
@@ -8,10 +9,19 @@ import courseImg from '../../images/course.jpg'
 import examImg from '../../images/exam.jpg'
 import learnImg from '../../images/learning.jpg'
 import profil from '../../images/profil.JPG';
+import logoutImg from '../../images/logout.jpg'
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
+import { Dock } from 'primereact/dock';
+import { RadioButton } from 'primereact/radiobutton';
+export default function ButtonBases() {   
+ 
+  const logout =()=>{
+    navigate('/');
+    localStorage.clear();
+  }
 
 /*export default function Home() {
   const items = [
@@ -22,15 +32,12 @@ import { useNavigate } from 'react-router-dom';
     // { label: 'Sign In', icon: 'pi pi-user' }
   ];
 */
-
-export default function ButtonBases() {
-
   const navigate = useNavigate();
-  const items = [
-    { label: 'Courses', icon: 'pi pi-bookmark', command: () => { navigate('/courses') } },
-    { label: 'Tests', icon: 'pi pi-fw pi-pencil', command: () => { navigate('/tests') } },
-    { label: 'Tasks', icon: 'pi pi-fw pi-file', command: () => { navigate('/tasks') } }
-  ];
+  // const items = [
+  //   { label: 'Courses', icon: 'pi pi-bookmark', command: () => { navigate('/courses') } },
+  //   { label: 'Tests', icon: 'pi pi-fw pi-pencil', command: () => { navigate('/tests') } },
+  //   { label: 'Tasks', icon: 'pi pi-fw pi-file', command: () => { navigate('/tasks') } }
+  // ];
 
   const images = [
 
@@ -38,18 +45,19 @@ export default function ButtonBases() {
       url: examImg,
       title: 'Exam',
       width: '33%',
+      nav:'/courses'
     },
     {
       url: learnImg,
       title: 'Learning',
       width: '34%',
+      nav:'/student/courses'
     },
     {
       url: courseImg,
       title: 'Courses',
       width: '33%',
-      onclick: () => { navigate('/courses') }
-      // command: () => { navigate('/courses') }
+      nav:'/courses'
     },
   ];
 
@@ -117,24 +125,26 @@ export default function ButtonBases() {
     left: 'calc(50% - 9px)',
     transition: theme.transitions.create('opacity'),
   })
-
-
-
-
   );
 
 
   return (
+  
     <div >
+        {/* {BasicDemo()} */}
       <div style={{ display: 'flex' }}>
-        <TabMenu model={items} />
+        {/* <TabMenu model={items} /> */}
         <Stack direction="row" spacing={2}>
           <Avatar
-            alt="Tamar Streuss"
+            alt={localStorage.getItem("firstName")+ localStorage.getItem("lastName")}
             src={profil}
             sx={{ width: 56, height: 56 }}
           />
-          <Button style={{ display: 'flex', width: 58, height: 58 }} icon="pi pi-bell" className="p-button-rounded p-button-warning" />
+          <Avatar
+            src={logoutImg}
+            sx={{ width: 60, height: 60 }}
+            onClick={()=>{logout()}}
+          />
         </Stack></div>
       <br></br>
       <br></br>
@@ -149,7 +159,7 @@ export default function ButtonBases() {
       <br></br>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
         {images.map((image) => (
-          <ImageButton
+          <ImageButton onClick={() => { navigate( `${image.nav}` )} }
             focusRipple
             key={image.title}
             style={{
@@ -180,10 +190,3 @@ export default function ButtonBases() {
     </div>
   );
 }
-
-/* return (
-   <div className="card">
-     <TabMenu model={items} />
-   </div>
- );
-}*/

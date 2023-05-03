@@ -9,7 +9,7 @@ export function Payment(props) {
 
     const registerToCourse = () => {
         const obj = {
-            studentId: JSON.parse(localStorage.getItem('studentInfo')).id,
+            studentId: JSON.parse(localStorage.getItem('userInfo')).id,
             courseId: courseId,
             registerDate: new Date(),
             nextLectureNum: 1

@@ -56,7 +56,6 @@ exports.delete = async (req, res) => {
 
 exports.createTest = async (req, res) => {
     const courseStudentId = req.body.courseStudentId;
-    console.log(courseStudentId);
     if (!courseStudentId) {
         return res.status(400).json({ message: "All fields are required" });
     }
@@ -65,12 +64,12 @@ exports.createTest = async (req, res) => {
     const test = await dal.create({ courseStudentId: courseStudentId, date: new Date() });
     if (!test) return res.status(500).send('Failed to create a test');
     const courseStudent = await course_student_dal.findOne({ where: { id: courseStudentId } });
-    const courseId = courseStudent.id;
+    const courseId = courseStudent.courseId;
     const questions = await question_dal.findAll({ where: { courseId: courseId } })
     if (!questions) return res.status(500).send('No questions found');
     const testCourse = await test_course_dal.findOne({ where: { courseId: courseId } });
     if (! testCourse) {
-        res.send('error')
+        res.status(402).send('error')
     }
     const numOfQuestions = testCourse.numOfQuestions;
     let rand = 0;
@@ -82,12 +81,10 @@ exports.createTest = async (req, res) => {
         }
         idx.push(rand);
     }
-    console.log(idx);
-    console.log(test);
     let questionsTest = [];
     let maxScores = 0;
     for (let i = 0; i < idx.length; i++) {
-        questionsTest.push({ testId: test.id, questionId: questions[idx[i]].id });
+        questionsTest.push({ testId: test.id, question: questions[idx[i]] });
         maxScores += questions[idx[i]].scores;
         await question_test_dal.create({ testId: test.id, questionId: questions[idx[i]].id })
     }

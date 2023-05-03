@@ -14,8 +14,7 @@ export async function GetAllCourses(url) {
 
 export async function UseGetAll(url) {
     try {
-        const res = await axios.get(`${URL}/${url}`, headerAuthorization);
-        console.log(res);
+        const res = await axios.get(`${URL}/${url}`, headerAuthorization)
         return res;
     } catch (err) {
         return err;
@@ -25,6 +24,14 @@ export async function UseGetAll(url) {
 export async function UseGetOne(url) {
     try {
         const res = axios.get(`${URL}/${url}`, headerAuthorization)
+        return res;
+    } catch (error) {
+        return error;
+    }
+}
+export async function UsePutOneById(url) {
+    try {
+        const res = axios.put(`${URL}/${url}`, headerAuthorization)
         return res;
     } catch (error) {
         return error;
@@ -41,12 +48,26 @@ export async function UseGetAllById(url, id) {
     }
 }
 
-export async function UseGetOneById(url, id, params) {
+export async function UseGetOneById(url, id) {
     try {
-        let res;
-        if (params)
-            res = await axios.get(`${URL}/${url}/${id}`, headerAuthorization, params);
-        else res = await axios.get(`${URL}/${url}/${id}`, headerAuthorization);
+        const res = await axios.get(`${URL}/${url}/${id}`, headerAuthorization);
+        return res;
+    } catch (error) {
+        return error;
+    }
+}
+export async function UseGetOneByIdTeacher(url, id) {
+    try {
+        const res = await axios.get(`${URL}/${url}/${id}`, headerAuthorization);
+        return res;
+    } catch (error) {
+        return error;
+    }
+}
+
+export async function UseGetOneByIdAndBody(url, id, body) {
+    try {
+        const res = await axios.get(`${URL}/${url}/${id}`, {params: body, headers: headerAuthorization.headers});
         return res;
     } catch (error) {
         return error;

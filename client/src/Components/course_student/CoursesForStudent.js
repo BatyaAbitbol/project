@@ -6,21 +6,26 @@ import { useNavigate } from 'react-router-dom';
 import Lectures from "../lecture/Lecture";
 import UserContext from "../UserContext";
 
-export function CoursesForStudent(props) {
+export default function CoursesForStudent(props) {
 
     const [data, setData] = useState(null);
     const [course, setCourse] = useState(-1);
     const [layout, setLayout] = useState('grid');
 
-    const user = useContext(UserContext);
-    console.log(user);
+    // // UserContext
+    // const user = useContext(UserContext);
+    // console.log(user);
+    // const id = user.id;
+    // console.log(id);
+
+    // localStorage
+    const user = JSON.parse(localStorage.getItem('userInfo'));
     const id = user.id;
-    console.log(id);
+    const status = user.status;
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await UseGetAllById('students/courses', id);
-            console.log(res)
+            const res = await UseGetAllById(`${status}/courses`, id);
             if (res.status != 204)
                 setData(res.data);
             else setData(res.statusText)
@@ -37,12 +42,11 @@ export function CoursesForStudent(props) {
                     <img data-custom-id={course.id} className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={course.image} alt={course.name} />
                     <div data-custom-id={course.id} className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
                         onClick={(e) => {
-                            console.log(e.target.attributes[0].nodeValue);
-                            const courseId = e.target.attributes[0].nodeValue;
+                            const courseId = course.id; //e.target.attributes[0].nodeValue;
                             setCourse(courseId);
                         }}>
-                        <div data-custom-id={course.id} className="flex flex-column align-items-center sm:align-items-start gap-3" name={course.name} >
-                            <div data-custom-id={course.id} className="text-2xl font-bold text-900">{course.name}</div>
+                        <div className="flex flex-column align-items-center sm:align-items-start gap-3" >
+                            <div className="text-2xl font-bold text-900">{course.name}</div>
                         </div>
                     </div>
                 </div>
@@ -53,18 +57,14 @@ export function CoursesForStudent(props) {
     const gridItem = (courseJoinedCourseStudent) => {
         const course = courseJoinedCourseStudent[0].course;
         return (
-            <div data-custom-id={course.id} className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
-                <div data-custom-id={course.id} className="p-4 border-1 surface-border surface-card border-round">
-                    {/* ? איך אני יכולה לקבל מידע על איזה קורס לחצתי ולרנדר לפי זה קורס מתאים */}
-                    <div data-custom-id={course.id} className="flex flex-column align-items-center gap-3 py-5" onClick={(e) => {
-                        console.log(course.id);
-
+            <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
+                <div className="p-4 border-1 surface-border surface-card border-round">
+                    <div className="flex flex-column align-items-center gap-3 py-5" onClick={(e) => {
                         const courseId = course.id;
                         setCourse(courseId);
                     }}>
-
-                        <img data-custom-id={course.id} className="w-9 shadow-2 border-round" src={course.image} alt={course.name} />
-                        <div data-custom-id={course.id} className="text-2xl font-bold">{course.name}</div>
+                        <img className="w-9 shadow-2 border-round" src={course.image} alt={course.name} />
+                        <div className="text-2xl font-bold">{course.name}</div>
                     </div>
                 </div>
             </div>
@@ -104,13 +104,6 @@ export function CoursesForStudent(props) {
     }
     return (
         <>
-            {/* {course != -1 && <Lectures courseId={course} />}
-            {typeof data !== 'string' && <div className="card">
-                <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>My Courses</div>
-                <DataView value={data} itemTemplate={itemTemplate} layout={layout} header={header()} />
-            </div>}
-            {typeof data === 'string' && <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>{data}</div>
-            } */}
             {display}
         </>
     )

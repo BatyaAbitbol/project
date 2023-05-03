@@ -40,16 +40,18 @@ exports.findAllByStudentId = async (req, res) => {
         })
 }
 exports.findByStudentAndCourseId = async (req, res) => {
+    console.log(req.query);
     const courseId = req.query.courseId;
     const studentId = req.params.id;
     if (!studentId || !courseId) {
-        res.status(401).send({ message: 'StudentID & CourseID are required!' })
+        res.status(402).send({ message: 'StudentID & CourseID are required!' })
     }
-    await dal.findByStudentAndCourseId(studentId, courseId)
-        .then(data => { res.send(data); })
-        .catch(err => {
-            res.status(404).send({ message: err.message || "Failed retrieving courses for students." })
-        })
+    else
+        await dal.findByStudentAndCourseId(studentId, courseId)
+            .then(data => { res.send(data); })
+            .catch(err => {
+                res.status(404).send({ message: err.message || "Failed retrieving courses for students." })
+            })
 }
 exports.findOne = async (req, res) => {
     const id = req.params.id;
