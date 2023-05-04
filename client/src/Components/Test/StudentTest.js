@@ -1,65 +1,87 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
-import { Rating } from 'primereact/rating';
 import { Tag } from 'primereact/tag';
 import { Panel } from 'primereact/panel';
+
 import { UseCreate } from '../../Hooks/usePostAxios';
+import { useParams } from 'react-router-dom';
+import Answer from '../Answer';
+import { UseUpdate } from '../../Hooks/UsePutAxios';
 
 const StudentTest = (props) => {
 
+    const { courseStudentId } = useParams();
+
     const user = JSON.parse(localStorage.getItem('userInfo'));
-    const courseStudentId = props.courseStudentId;
 
     const [test, setTest] = useState({});
     const [questions, setQuestions] = useState();
-    // const [answers, setAnswers]
+    const [answers, setAnswers] = useState();
+    const [submit, setSubmit] = useState(false);
+
     useEffect(() => {
         const fetchData = async () => {
             const res = await UseCreate('tests', { courseStudentId: courseStudentId });
-            console.log(res);
             setTest(res.data);
             setQuestions(res.data.map(e => e.question));
+            localStorage.setItem('test',JSON.stringify(res.data));
         }
         fetchData();
     }, []);
 
-    console.log(questions);
+    useEffect(() => {
+        const fetchData = async () => {
+            const obj = {
+                test : {
+                    testId: test.id,
+                    
+                }
+            }
+            const res = await UseUpdate(`tests/submit`, )
+        }
+        fetchData();
+    }, [submit])
+    const getSeverity = (question) => {
+        if (question.scores <= 5)
+            return 'success';
+        if (question.scores <= 10)
+            return 'warning';
+        if (question.scores > 10)
+            return 'danger';
+        else return null;
+    };
 
-    const itemTemplate = (product) => {
+    const setAnswersCallBack = (ans) => {
+        let arr;
+        if(!answers)
+            arr = []
+        else arr = [...answers];
+        arr.push(ans);       
+        setAnswers([...arr]);
+    }
+    let count = 0;        
+
+    const itemTemplate = (question) => {
         return (
+
             <div className="col-12">
-                <Panel header={`Question #${1}`} toggleable>
-                    <p className="m-0">{product.name}</p>
+                <Panel header={`Question #${count}`} toggleable>
+                    <p className="m-0">{question.text}</p>
+                    <Tag
+                        value={question.scores}
+                        severity={getSeverity(question)}
+                    ></Tag>
+                    <Answer questionId={question.id} setAnswersCallBack={setAnswersCallBack} />
                 </Panel>
-                <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
-                    <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-                        <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-                            <div className="text-2xl font-bold text-900">{product.name}</div>
-                            <Rating value={product.rating} readOnly cancel={false}></Rating>
-                            <div className="flex align-items-center gap-3">
-                                <span className="flex align-items-center gap-2">
-                                    <i className="pi pi-tag"></i>
-                                    <span className="font-semibold">{product.category}</span>
-                                </span>
-                                <Tag
-                                    value={product.inventoryStatus}
-                                ></Tag>
-                            </div>
-                        </div>
-                        <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-                            <span className="text-2xl font-semibold">${product.price}</span>
-                            <Button
-                                icon="pi pi-shopping-cart"
-                                className="p-button-rounded"
-                                disabled={product.inventoryStatus === 'OUTOFSTOCK'}
-                            ></Button>
-                        </div>
-                    </div>
-                </div>
             </div>
         );
     };
+
+    const submitTest = () => {
+        console.log(answers);
+        setSubmit(true);
+    }
 
     return (
         <div className="card">
@@ -69,6 +91,10 @@ const StudentTest = (props) => {
                 paginator
                 rows={5}
             />
+            <br />
+            <div className="card flex justify-content-center">
+                <Button label='Submit' icon='pi pi-submit' onClick={submitTest}/>
+            </div>
         </div>
     );
 }

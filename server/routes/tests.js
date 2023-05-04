@@ -5,7 +5,9 @@ const router = express.Router();
 
 router.use(verifyJWT);
 
-router.route('/submit/:id')
+router.get('/canTest/:id', test.canTest)
+
+router.route('/submit')
     .put(test.submitTest);
 
 router.route('/checkTest/:id')

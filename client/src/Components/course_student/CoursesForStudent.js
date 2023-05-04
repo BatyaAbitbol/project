@@ -26,9 +26,10 @@ export default function CoursesForStudent(props) {
     useEffect(() => {
         const fetchData = async () => {
             const res = await UseGetAllById(`${status}/courses`, id);
+            console.log(res.data);
             if (res.status != 204)
                 setData(res.data);
-            else setData(res.statusText)
+            else setData(res.statusText);
         }
         fetchData();
     }, [])

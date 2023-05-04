@@ -120,7 +120,10 @@ exports.canTest = async (courseStudentId) => {
     const courseStudent = await dal.findOne({ where: { id: courseStudentId } });
     if (courseStudent) {
         const nextLectureNum = courseStudent.nextLectureNum;
-        const lectures = lectures_dal.findAllByCourseId(courseStudent.courseId);
+        const lectures = await lectures_dal.findAllByCourseId(courseStudent.courseId);
+        console.log(lectures);
+        console.log(nextLectureNum);
+        console.log(lectures.length);
         if (lectures) {
             if (nextLectureNum > lectures.length)
                 return true;

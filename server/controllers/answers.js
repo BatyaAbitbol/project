@@ -18,13 +18,15 @@ exports.findAll = async (req, res) => {
             res.status(500).send({ message: err.message || `Some Errors occured while retriving answers.` })
         });
 }
-exports.findAllByQestionId = async (req, res) => {
+exports.findAllByQuestionId = async (req, res) => {
     const questionId = req.params.id;
-    await dal.findAllByQestionId(questionId)
+    dal.joinByQuestionId(questionId)
         .then(data => { res.send(data); })
         .catch(err => {
             res.status(500).send({ message: err.message || `Some Errors occured while retriving answers for questionId ${questionId}` })
         });
+    // await dal.findAllByQuestionId(questionId)
+
 }
 exports.findOne = async (req, res) => {
     const id = req.params.id;

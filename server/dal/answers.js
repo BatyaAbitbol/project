@@ -9,7 +9,7 @@ exports.findAll = async (condition) => {
         return await Answers.findAll();
     return await Answers.findAll(condition);
 }
-exports.findALlByQuestionId = async (questionId) => {
+exports.findAllByQuestionId = async (questionId) => {
     return await Answers.findAll({ where: { questionId: questionId } })
 }
 exports.findOne = async (condition) => {
@@ -27,4 +27,25 @@ exports.update = async (answer, id) => {
 
 exports.delete = async (id) => {
     return await Answers.destroy({ where: { id: id } });
+}
+exports.joinByQuestionId = async (id) => {
+    return await Answers.findAll({
+        include: [{
+            model: db.Questions,
+            attributes: [
+                `id`,
+                `courseId`,
+                `text`,
+                `scores`,
+                `isClosed`
+            ]
+        }], where: { questionId: id },
+        attributes: [
+            `id`,
+            `questionId`,
+            `text`,
+            `isCorrect`
+
+        ]
+    })
 }

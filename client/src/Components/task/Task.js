@@ -13,6 +13,7 @@ export function Task(props) {
     const [error, setError] = useState(false);
     const [message, setMessage] = useState(<></>);
     const [showMessage, setShowMessage] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -21,6 +22,9 @@ export function Task(props) {
         }
         fetchData();
     }, [])
+
+    // לשנות אם הוגשה המטלה שהאדיטור יהיה רק לקריאה
+    // ושיהיה איקון של וי
 
     const validate = () => {
         if (text === '') {

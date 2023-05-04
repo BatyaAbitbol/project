@@ -63,7 +63,7 @@ function App() {
           <Route exact path='/student/courses/Math' element={<h1>Math</h1>} />
           <Route exact path='/course/payment' element={<h1>Buy a course & Pay</h1>} />
           <Route exact path='/task' element={<Task />} />
-          <Route exact path='/test' element={<StudentTest courseStudentId={3} />} />
+          <Route exact path='/test/:courseStudentId' element={<StudentTest />} />
           <Route exact path='/*' element={<h1>Not Found, Sorry 😒</h1>} />
 
         </Routes>

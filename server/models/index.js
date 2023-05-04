@@ -37,4 +37,5 @@ db.TestCourse = require('./test_courses')(sequelize, DataTypes);
 db.TaskCourseStudent = require('./task_course_students')(sequelize, DataTypes);
 
 db.CourseStudents.belongsTo(db.Courses, { foreignKey: 'courseId' });
+db.Answers.belongsTo(db.Questions, { foreignKey: 'questionId' });
 module.exports = db;

@@ -29,11 +29,9 @@ exports.update = async (courseStudent, id) => {
 exports.delete = async (id) => {
     return await CourseStudents.destroy({ where: { id: id } });
 }
-
 exports.findDuplicate = async (studentId, courseId) => {
     return await CourseStudents.findOne({ where: { studentId: studentId, courseId: courseId } })
 }
-
 exports.joinByCourseId = async (id) => {
     return await CourseStudents.findAll({
         include: [{

@@ -98,19 +98,19 @@ export default function Test(props) {
         const res = await UseCreate('questions', questionToCreate);
         console.log(res);
         const idQuestion = res.data.id;
-        if (isClosed == 0)//close
+        if (isClosed == 1)//close
         {
             const objAns = {
                 questionId: idQuestion,
                 text: value1,
-                isCorrect: 0
+                isCorrect: 1
             }
             const res1 = await UseCreate('answers', objAns);
             console.log(res1);
             const objAns2 = {
                 questionId: idQuestion,
                 text: value2,
-                isCorrect: 1
+                isCorrect: 0
             }
             const res2 = await UseCreate('answers', objAns2);
             console.log(res2);
@@ -118,7 +118,7 @@ export default function Test(props) {
             const objAns3 = {
                 questionId: idQuestion,
                 text: value3,
-                isCorrect: 1
+                isCorrect: 0
             }
             const res3 = await UseCreate('answers', objAns3);
             console.log(res3);
@@ -126,7 +126,7 @@ export default function Test(props) {
             const objAns4 = {
                 questionId: idQuestion,
                 text: value4,
-                isCorrect: 1
+                isCorrect: 0
             }
             const res4 = await UseCreate('answers', objAns4);
             console.log(res4);
@@ -135,7 +135,7 @@ export default function Test(props) {
             const objAns = {
                 questionId: idQuestion,
                 text: value1,
-                isCorrect: 0
+                isCorrect: 1
             }
             const res4 = await UseCreate('answers', objAns);
             console.log(res4);

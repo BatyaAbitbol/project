@@ -23,10 +23,12 @@ const Lectures = (props) => {
 
     const [lectures, setLectures] = useState(null);
     const [course, setCourse] = useState();
+    const [courseStudent, setCourseStudent] = useState({});
     const [visible, setVisible] = useState(false);
     const [lectureId, setLectureId] = useState(null);
     const [next, setNext] = useState(0);
     const [numOfLectures, setNumOfLectures] = useState(0);
+    const [canTest, setCanTest] = useState(false);
 
     const responsiveOptions = [
         {
@@ -49,23 +51,26 @@ const Lectures = (props) => {
     //מביא את ההרצאות של הקורס תלמיד המסוים
     useEffect(() => {
         const fetchData = async () => {
-            const res = await UseGetOneByIdAndBody('course_students/student/course', id, {courseId: courseId})
-            const courseStudent = res.data;
+            const resCourseStudent = await UseGetOneByIdAndBody('course_students/student/course', id, { courseId: courseId })
             const resCourse = await UseGetOneById('courses', courseId);
-            // const courseStudent = coursesForStudent.filter((x) => x.courseId = courseId)[0];
-            // const resLectures = await UseGetAllById('lectures/student', courseStudent.id);
             const resLectures = await UseGetAllById('lectures/course', courseId);
-            // setNext(courseStudent.nextLectureNum);
-            console.log(res);
-            console.log(resLectures);
 
-            setLectures(resLectures.data);
+            setCourseStudent(resCourseStudent.data);
             setCourse(resCourse.data);
+            setLectures(resLectures.data);
             setNumOfLectures(resLectures.data.length);
         }
         fetchData();
     }, []);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const resCanTest = await UseGetOneById('tests/canTest', courseStudent.id);
+            setCanTest(resCanTest.data);
+            setNext(courseStudent.nextLectureNum);
+        }
+        fetchData();
+    }, [courseStudent])
     const navigate = useNavigate();
 
     const productTemplate = (lectureByCourse) => {
@@ -99,14 +104,20 @@ const Lectures = (props) => {
         );
     };
 
+    console.log(canTest);
     return (
 
         <>{lectures &&
             <>
                 <div className="card">
-                    <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold', color: 'gray' }}>Lectures Of {course.name} Course</div>
+                    <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold', color: 'gray' }}>
+                        Lectures Of {course.name} Course
+                        <br />
+                        {canTest && <Button label='TEST' onClick={(e) => { navigate(`/test/${courseStudent.id}`) }} />}
+                    </div>
                     <div className="card">
-                        {next > 1 && <ProgressBar value={(next - 1) / numOfLectures * 100}></ProgressBar>}
+                        {next > 1 && (next - 1) / numOfLectures * 100 < 100 && <ProgressBar value={(next - 1) / numOfLectures * 100}></ProgressBar>}
+
                     </div>
                     <Carousel value={lectures} numVisible={3} numScroll={3} responsiveOptions={responsiveOptions} itemTemplate={productTemplate} />
                 </div>

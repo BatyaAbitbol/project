@@ -63,7 +63,12 @@ const Courses = (props) => {
                     </div>
                     <div className="flex align-items-center justify-content-between">
                         <span className="text-2xl font-semibold">{product.price} $</span>
-                        <Button icon="pi pi-tag" className="p-button-rounded" label="Buy It!" onClick={(e) => { navigate(`/payment/${product.id}`); }}></Button>
+                        <Button
+                            icon="pi pi-shopping-cart"
+                            className="p-button-rounded"
+                            onClick={(e) => { navigate(`/payment/${product.id}`); }}
+                        ></Button>
+                        {/* <Button icon="pi pi-tag" className="p-button-rounded" label="Buy It!" onClick={(e) => { navigate(`/payment/${product.id}`); }}></Button> */}
                     </div>
                 </div>
             </div>

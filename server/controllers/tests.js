@@ -68,7 +68,7 @@ exports.createTest = async (req, res) => {
     const questions = await question_dal.findAll({ where: { courseId: courseId } })
     if (!questions) return res.status(500).send('No questions found');
     const testCourse = await test_course_dal.findOne({ where: { courseId: courseId } });
-    if (! testCourse) {
+    if (!testCourse) {
         res.status(402).send('error')
     }
     const numOfQuestions = testCourse.numOfQuestions;
@@ -125,7 +125,6 @@ const autoCheckTest = async (req, res) => {
             else res.send(`error in Checking this test`);
         })
 }
-
 
 exports.submitTest = async (req, res) => {
     const secureVideo = req.body.secureVideo;
@@ -229,3 +228,13 @@ exports.getTestsToCheck = async (req, res) => {
     console.log(questions);
     res.send(arrTest);//מחזיר את מערך המבחנים של הקורס 
 };
+
+exports.canTest = async (req, res) => {
+    const courseStudentId = req.params.id;
+    try {
+        const can = await course_student_ctrl.canTest(courseStudentId);
+        res.send(can);
+    } catch (err) {
+        res.status(500).send({ message: err.message })
+    }
+}

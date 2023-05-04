@@ -6,7 +6,7 @@ const router = express.Router();
 router.use(verifyJWT);
 
 router.route('/questionId/:id')
-    .get(answer.findAllByQestionId);
+    .get(answer.findAllByQuestionId);
 
 router.route('/:id')
     .get(answer.findOne)
