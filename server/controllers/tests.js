@@ -88,8 +88,10 @@ exports.createTest = async (req, res) => {
         maxScores += questions[idx[i]].scores;
         await question_test_dal.create({ testId: test.id, questionId: questions[idx[i]].id })
     }
-    await dal.update({ id: test.id, courseStudentId: test.courseStudentId, date: test.date, scores: test.scores, maxScores: maxScores, secureVideo: test.secureVideo, isSubmitted: test.isSubmitted }, test.id);
-    res.send(questionsTest);
+    // עדכון המבחן שנוצר בניקוד המקסימלי
+    const testUpdateMaxScores = await dal.update({ id: test.id, courseStudentId: test.courseStudentId, date: test.date, scores: test.scores, maxScores: maxScores, secureVideo: test.secureVideo, isSubmitted: test.isSubmitted }, test.id);
+    if (!testUpdateMaxScores) res.status(401).send({ message: `Failed update during creation test.` })
+    else res.send(questionsTest);
 }
 
 const autoCheckTest = async (req, res) => {
@@ -127,9 +129,12 @@ const autoCheckTest = async (req, res) => {
 }
 
 exports.submitTest = async (req, res) => {
+    console.log(req.body.test);
     const secureVideo = req.body.secureVideo;
     const questionsTest = req.body.test; // מערך שאלות של מבחן של תלמיד
     const testId = questionsTest[0].testId; // קוד רשומת המבחן לקורס לתלמיד
+    if (!questionsTest)
+        res.status(402).send({ message: `Cannot submit test.` })
     for (let i = 0; i < questionsTest.length; i++) {
         question_test_dal.update(questionsTest[i], questionsTest[i].id)
     }

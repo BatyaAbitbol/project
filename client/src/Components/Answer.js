@@ -22,13 +22,6 @@ const Answer = (props) => {
         }
         fetchData();
     }, [])
-    // const _answers = [
-    //     { name: 'Accounting', key: 'A' },
-    //     { name: 'Marketing', key: 'M' },
-    //     { name: 'Production', key: 'P' },
-    //     { name: 'Research', key: 'R' }
-    // ];
-
 
     const [selectedAnswer, setSelectedAnswer] = useState(null);
 
@@ -37,11 +30,15 @@ const Answer = (props) => {
         const fetchData = async () => {
             const resAnswers = await UseGetAllById('answers/questionId', questionId);
             if (resAnswers.status && resAnswers.status === 200) {
-                setAnswers(resAnswers.data.map(e => { return { text: e.text, id: e.id } }));
+                setAnswers(resAnswers.data.map(e => { return { text: e.text, id: e.id, questionId: questionId } }));
             }
         }
         fetchData();
     }, [])
+    useEffect(()=>{
+        if(answer)
+        props.setAnswersCallBack(answer)
+    }, [answer])
 
     return (
         <>
@@ -51,7 +48,6 @@ const Answer = (props) => {
                         value={answer}
                         onTextChange={(e) => {
                             setAnswer(e.htmlValue);
-                            props.setAnswersCallBack(e.htmlValue)
                         }}
                         style={{ height: '320px' }}
                     />
@@ -67,10 +63,8 @@ const Answer = (props) => {
                                         inputId={ans.id}
                                         value={ans}
                                         onChange={(e) => {
-                                            console.log('ON CHANGE');
                                             setAnswer(e.value);
                                             props.setAnswersCallBack(e.value);
-                                            console.log(e);
                                         }}
                                         checked={answer && answer.id === ans.id}
                                     />
@@ -79,8 +73,7 @@ const Answer = (props) => {
                             );
                         })}
                     </div>
-                </div>
-            }
+                </div>}
         </>
     )
 }
