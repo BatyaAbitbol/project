@@ -37,7 +37,7 @@ export default function HomeStudent() {
       url: learnImg,
       title: 'Learning',
       width: '34%',
-      nav:'/courses/my-courses'
+      nav:'/courses/students/my-courses'
     },
     {
       url: courseImg,

@@ -23,8 +23,6 @@ const Answer = (props) => {
         fetchData();
     }, [])
 
-    const [selectedAnswer, setSelectedAnswer] = useState(null);
-
     useEffect(() => {
 
         const fetchData = async () => {
@@ -35,11 +33,13 @@ const Answer = (props) => {
         }
         fetchData();
     }, [])
-    useEffect(()=>{
-        if(answer)
-        props.setAnswersCallBack(answer)
-    }, [answer])
 
+    useEffect(() => {
+        if (answer)
+            props.setAnswersCallBack(answer)
+    }, [])
+
+    console.log(answer);
     return (
         <>
             {question && !question.isClosed &&
@@ -47,7 +47,7 @@ const Answer = (props) => {
                     <Editor
                         value={answer}
                         onTextChange={(e) => {
-                            setAnswer(e.htmlValue);
+                            setAnswer(e.textValue);
                         }}
                         style={{ height: '320px' }}
                     />

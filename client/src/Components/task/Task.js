@@ -6,6 +6,8 @@ import { Field, Form } from 'react-final-form';
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 import { UseCreate } from "../../Hooks/usePostAxios";
+import { isDoneTask } from "../../Hooks/useGetAxios";
+
 export function Task(props) {
 
     const [task, setTask] = useState(null);
@@ -15,6 +17,8 @@ export function Task(props) {
     const [showMessage, setShowMessage] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         const fetchData = async () => {
             const res = await UseGetOneById('tasks/lecture', props.lectureId);
@@ -23,8 +27,13 @@ export function Task(props) {
         fetchData();
     }, [])
 
-    // לשנות אם הוגשה המטלה שהאדיטור יהיה רק לקריאה
-    // ושיהיה איקון של וי
+    useEffect(() => {
+        const fetchData = async () => {
+            const res = await isDoneTask('task_course_student/isDone', props.courseStudentId, task.id);
+            setIsSubmitted(res.data)
+        }
+        fetchData();
+    }, [task])
 
     const validate = () => {
         if (text === '') {
@@ -34,20 +43,21 @@ export function Task(props) {
     };
 
     const submitTask = () => {
+        console.log(props.courseStudentId);
         const fetchData = async () => {
             const obj = {
                 courseStudentId: props.courseStudentId,
                 taskId: task.id,
                 isDone: true,
-                submitDate: new Date().toLocaleDateString()
+                submitDate: new Date()
             }
-            const res = await UseCreate('tasks', task.id)
+            const res = await UseCreate('task_course_student', obj);
+            console.log(res);
         }
         fetchData();
+        props.setVisible(false);
     }
-    const navigate = useNavigate();
     const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => { setShowMessage(false); navigate(''); }} /></div>;
-
     return (
         <>
             {showMessage &&
@@ -58,22 +68,28 @@ export function Task(props) {
                 </Dialog>}
             <div className="flex justify-content-center">
                 <div className="card">
-                    <h3 className="text-center">Task - Let's Exercise</h3>
-                    <p className="m-0">
-                        {task && task.taskFile}
-                    </p>
-                    <br />
-                    <Editor value={text} onTextChange={(e) => { setText(e.htmlValue) }} style={{ height: '320px' }} />
-                    {error && <small className="p-error">You can not submit empty file.</small>}
-                    <div className="card flex flex-wrap justify-content-center gap-3">
-                        <Button type="submit" label="Submit" className="mt-2" icon="pi pi-check" onClick={(e) => {
-                            validate(text);
-                            !error && submitTask();
-                        }} />
-                        <Button label="Try it later" className="mt-2" icon="pi pi-paperclip" onClick={(e) => {
-                            navigate('/home/home-student')
-                        }} />
-                    </div>
+                    {isSubmitted && <div className="flex align-items-center flex-column pt-6 px-3"><i className="pi pi-check-circle" style={{ fontSize: '5rem', color: 'var(--green-500)' }}></i>
+                        <h3>This task is done already!</h3>
+                    </div>}
+                    {!isSubmitted && <>
+                        <h3 className="text-center">Task - Let's Exercise</h3>
+                        <p className="m-0">
+                            {task && task.taskFile}
+                        </p>
+                        <br />
+
+                        <Editor value={text} onTextChange={(e) => { setText(e.htmlValue) }} style={{ height: '320px' }} />
+                        {error && <small className="p-error">You can not submit empty file.</small>}
+                        <div className="card flex flex-wrap justify-content-center gap-3">
+                            <Button type="submit" label="Submit" className="mt-2" icon="pi pi-check" onClick={(e) => {
+                                validate(text);
+                                !error && submitTask();
+                            }} />
+                            <Button label="Try it later" className="mt-2" icon="pi pi-paperclip" onClick={(e) => {
+                                navigate('/home/home-student')
+                            }} />
+                        </div>
+                    </>}
                 </div>
             </div>
         </>

@@ -12,25 +12,22 @@ import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
+import logoutImg from '../../images/logout.jpg';
 
-/*export default function Home() {
-  const items = [
-    { label: 'Home', icon: 'pi pi-fw pi-home' },
-    { label: 'Courses', icon: 'pi pi-bookmark' },
-    { label: 'Tests', icon: 'pi pi-fw pi-pencil' },
-    { label: 'Tasks', icon: 'pi pi-fw pi-file' },
-    // { label: 'Sign In', icon: 'pi pi-user' }
-  ];
-*/
+export default function HomeTeacher(props) {   
+  const logout =()=>{
+    navigate('/');
+    localStorage.clear();
+  }
 
-export default function ButtonBases() {
 
-  const navigate = useNavigate();
+ 
   // const items = [
   //   { label: 'Courses', icon: 'pi pi-bookmark', command: () => { navigate('/courses') } },
   //   { label: 'Tests', icon: 'pi pi-fw pi-pencil', command: () => { navigate('/tests') } },
   //   { label: 'Tasks', icon: 'pi pi-fw pi-file', command: () => { navigate('/tasks') } }
   // ];
+const navigate = useNavigate(); 
 
   const images = [
 
@@ -126,11 +123,15 @@ export default function ButtonBases() {
         {/* <TabMenu model={items} /> */}
         <Stack direction="row" spacing={2}>
           <Avatar
-            alt="Tamar Streuss"
+            alt={localStorage.getItem("name")}
             src={profil}
             sx={{ width: 56, height: 56 }}
           />
-          <Button style={{ display: 'flex', width: 58, height: 58 }} icon="pi pi-bell" className="p-button-rounded p-button-warning" />
+          <Avatar
+            src={logoutImg}
+            sx={{ width: 60, height: 60 }}
+            onClick={()=>{logout()}}
+          />
         </Stack></div>
       <br></br>
       <br></br>

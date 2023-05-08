@@ -7,15 +7,17 @@ import { useNavigate } from 'react-router-dom';
 const Courses = (props) => {
 
     const [layout, setLayout] = useState('grid');
-    const [products, setProducts] = useState(null)
+    const [products, setProducts] = useState([])
     const navigate = useNavigate();
+
+    const status = JSON.parse(localStorage.getItem('userInfo')).status;
 
     useEffect(() => {
         const fetchData = async () => {
             const res = await UseGetAll('courses');
             setProducts(res.data);
         }
-        fetchData()
+        fetchData();
     }, []);
 
     const listItem = (product) => {
@@ -68,7 +70,6 @@ const Courses = (props) => {
                             className="p-button-rounded"
                             onClick={(e) => { navigate(`/payment/${product.id}`); }}
                         ></Button>
-                        {/* <Button icon="pi pi-tag" className="p-button-rounded" label="Buy It!" onClick={(e) => { navigate(`/payment/${product.id}`); }}></Button> */}
                     </div>
                 </div>
             </div>
@@ -97,7 +98,7 @@ const Courses = (props) => {
         <div className="card">
             <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>Our Courses</div>
             <DataView value={products} itemTemplate={itemTemplate} layout={layout} header={header()} />
-            <Button label="My Courses" onClick={(e) => navigate('my-courses')} />
+            <Button label="My Courses" onClick={(e) => navigate(`${status}/my-courses`)} />
         </div>
     )
 }

@@ -5,8 +5,10 @@ exports.create = async (req, res) => {
         res.status(400).send({ message: 'Content can not be empty!' });
         return;
     }
+    const duplicate = await dal.findByCourseStudentIdAndTaskId(req.body.courseStudentId, req.body.taskId);
+    if (duplicate) return res.send({message: `Exist already`});
     await dal.create(req.body)
-        .then(data => { res.send(data) })
+        .then(data => { res.status(201).send(data) })
         .catch(err => { res.status(500).send(err.message) });
 }
 exports.findAll = async (req, res) => {
@@ -22,6 +24,17 @@ exports.findByCourseStudentId = async (req, res) => {
                 res.send(data);
             else res.status(404).send({ message: `Cannot find task student by course student ${id}` });
         })
+}
+exports.isDone = async (req, res) => {
+    const courseStudentId = req.query.courseStudentId;
+    const taskId = req.query.taskId;
+    if (!courseStudentId || !taskId) {
+        res.status(400).send({ message: 'Content can not be empty!' });
+        return;
+    }
+    const isDone = await dal.findByCourseStudentIdAndTaskId(courseStudentId, taskId);
+    if (!isDone) return res.send(false);
+    return res.send(true);
 }
 exports.findOne = async (req, res) => {
     const id = req.params.id;

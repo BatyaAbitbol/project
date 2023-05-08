@@ -73,3 +73,12 @@ export async function UseGetOneByIdAndBody(url, id, body) {
         return error;
     }
 }
+
+export async function isDoneTask(url, courseStudentId, taskId) {
+    try {
+        const res = await axios.get(`${URL}/${url}?courseStudentId=${courseStudentId}&taskId=${taskId}`, headerAuthorization);
+        return res;
+    } catch (error) {
+        return error;
+    }
+}

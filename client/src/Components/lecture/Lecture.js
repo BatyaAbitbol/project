@@ -73,6 +73,9 @@ const Lectures = (props) => {
     }, [courseStudent])
     const navigate = useNavigate();
 
+    const setVisibleCallBack = (visible) => {
+        setVisible(visible);
+    }
     const productTemplate = (lectureByCourse) => {
         return (
             <div className="border-1 surface-border border-round m-2 text-center py-5 px-3">
@@ -97,14 +100,12 @@ const Lectures = (props) => {
                             setVisible(true);
                         }} />
                     <Dialog visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-                        <Task lectureId={lectureId} />
+                        <Task lectureId={lectureId} courseStudentId={courseStudent.id} setVisible={setVisibleCallBack} />
                     </Dialog>
                 </div>
             </div>
         );
     };
-
-    console.log(canTest);
     return (
 
         <>{lectures &&

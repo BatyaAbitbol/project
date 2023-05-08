@@ -24,23 +24,23 @@ export default function CoursesForteacher(props) {
     const navigate = useNavigate();
     const id = JSON.parse(localStorage.getItem('userInfo')).id;
     const toast = useRef(null);
-    
+
     const accept = () => {
         setVisible1(true);
+        {/* // <Dialog header="num. questions" visible={visible1} style={{ width: '50vw' }} onHide={() => setVisible1(false)} footer={footerContent}> */ }
+        {/* <InputNumber value={numQue} onValueChange={(e) => setnumQue(e.value)} showButtons buttonLayout="vertical" style={{ width: '4rem' }}
+                    decrementButtonClassName="p-button-secondary" incrementButtonClassName="p-button-secondary" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" /> */}
+        {/* // </Dialog> */ }
         return (
-        <Dialog header="num. questions" visible={visible1} style={{ width: '50vw' }} onHide={() => setVisible1(false)} footer={footerContent}> 
-         <InputNumber value={numQue} onValueChange={(e) => setnumQue(e.value)} showButtons buttonLayout="vertical" style={{ width: '4rem' }}
-                    decrementButtonClassName="p-button-secondary" incrementButtonClassName="p-button-secondary" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" /> 
-         </Dialog>) }
-        {/* return (
             <div className="card flex justify-content-center">
                 <Button label="Show" icon="pi pi-external-link" onClick={() => setVisible(true)} />
                 <Dialog header="Header" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)} footer={footerContent}>
                     <p className="mb-5">
                     </p>
                 </Dialog>
-            </div>) */}
-            
+            </div>
+        )
+    }
     const footerContent = (
         <div>
             {/* <Button label="No" icon="pi pi-times" onClick={() => setVisible(false)} className="p-button-text" /> */}
@@ -48,15 +48,14 @@ export default function CoursesForteacher(props) {
                 autoFocus />
         </div>);
     const reject = () => {
-        toast.current.show({ severity: 'warn', summary: 'Rejected', detail
-        : 'You have rejected', life: 3000 });
+        toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
     }
 
     const message = (id) => {
         async function mess(id) {
             const res = await UseGetOneById('test_courses/course', id);
             const numOfQuestions = res.data.numOfQuestions;
-           setnumOfQuestion(numOfQuestions);
+            setnumOfQuestion(numOfQuestions);
         }
         mess(id);
     }
@@ -69,7 +68,7 @@ export default function CoursesForteacher(props) {
     }
     useEffect(() => {
         const fetchData = async () => {
-            const res = await UseGetOneById('courses/teacher', id);
+            const res = await UseGetAllById('teachers/course', id);
             if (res.status != 204)
                 setData(res.data);
             else setData(res.statusText)
@@ -86,7 +85,6 @@ export default function CoursesForteacher(props) {
                     <div data-custom-id={course.id} className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
                         <Button label="lectures" severity="secondary" text />
                         <Button label="questions" severity="info" text />
-                        <Button label="add lecture" severity="info" text onClick={ navigate(`/uploadLectures/${course.id}`)}/>
                         {/* <Button label="exam" severity="success" text /> */}
                         <Toast ref={toast} />
                         <ConfirmDialog visible={visible} onHide={() => setVisible(false)} message="Are you sure you want to proceed?"
@@ -113,17 +111,15 @@ export default function CoursesForteacher(props) {
                         <img data-custom-id={course.id} className="w-9 shadow-2 border-round" src={englishImg} alt={course.name} />
                         <div data-custom-id={course.id} className="text-2xl font-bold">{course.name}</div>
                         <div className="card flex flex-wrap justify-content-center gap-3">
-                            <Button label="lectures" severity="info" text onClick={() => navigate(`/lectures/${course.id}`)} />
-                            <Button label="add lecture" severity="info" text onClick={()=>navigate(`/uploadLectures/${course.id}`)}/>
-                            <Button label="questions" severity="info" text onClick={() => navigate(`/teacher/viewQuestion/${course.id}`)} />
+                            <Button label="lectures" severity="secondary" text onClick={() => navigate(`/lectures/${course.id}`)} />
                             <Button label="add questions" severity="info" text onClick={() => { addQuestion(course.id) }} />
+                            <Button label="questions" severity="info" text />
                         </div>
-                       
                         <ConfirmDialog visible={visible} onHide={() => setVisible(false)} message={`There are ${numOfQuestion} questions. Do you want to add?`}
                             header="Confirmation" icon="pi pi-exclamation-triangle" accept={accept} reject={reject} />
-                        <Button onClick={() => {message(course.id); setVisible(true)}} label="num questions in test" />
+                        <Button onClick={() => setVisible(true)} label="num questions in test" />
                         <Toast ref={toast} />
-                       
+                        {message(course.id)}
                     </div>
                 </div>
             </div>
@@ -155,7 +151,6 @@ export default function CoursesForteacher(props) {
             display = <div className="card">
                 <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>My Courses</div>
                 <DataView value={data} itemTemplate={itemTemplate} layout={layout} header={header()} />
-                <Button label="open new course" severity="info" text onClick={() => navigate(`/addCourse`)} />
             </div>
         }
         else display = <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>{data}</div>

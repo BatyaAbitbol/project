@@ -5,8 +5,6 @@ const router = express.Router();
 
 router.use(verifyJWT);
 
-router.get('/test/:cou')
-
 router.get('/student/course/:id', courseStudent.findByStudentAndCourseId)
 
 router.get('/student/:id', courseStudent.findAllByStudentId)

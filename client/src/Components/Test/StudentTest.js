@@ -38,7 +38,6 @@ const StudentTest = (props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            debugger;
             let questionTest = [];
             for (let i = 0; i < test.length; i++) {
                 console.log(test[i]);
@@ -49,11 +48,12 @@ const StudentTest = (props) => {
             console.log(test)
             const res = await UseUpdate(`tests/submit`, { test: questionTest });
             console.log(res);
-            navigate('/home-students');
+            setSubmit(false);
+            // navigate('/home-students');
         }
         if (submit)
             fetchData();
-    }, []);
+    }, [submit]);
 
     const getSeverity = (question) => {
         if (question.scores <= 5)
@@ -105,7 +105,7 @@ const StudentTest = (props) => {
         </div>
     </div>
 
-
+    console.log(answers);
     return (
 
         <div className="card">
@@ -132,9 +132,7 @@ const StudentTest = (props) => {
                 <Toast ref={toast} />
                 <Toast ref={toastBC} position="bottom-center" />
                 <Button type="button" onClick={() => { setShowMessage(true); }} label="Submit" />
-                <Button type="button" onClick={confirm} label="Submit" />
             </div>
-
         </div>
     );
 }
