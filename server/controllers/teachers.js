@@ -43,7 +43,6 @@ exports.login = async (req, res) => {
     }
     console.log(idNumber, password);
     const finduser = await dal.findOne({ where: { idNumber: idNumber } })
-    console.log(finduser, "fineuser");
     if (!finduser) {
         return res.status(401).send({ message: 'Unauthorized' });
     }
@@ -88,7 +87,6 @@ exports.findByEmail = async (req, res) => {
 }
 const courses = require('./courses');
 exports.findCoursesByTeacherId = async (req, res) => {
-    console.log('findCoursesByTeacherId');
     return await courses.findByTeacherId(req, res);
 }
 exports.update = async (req, res) => {

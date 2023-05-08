@@ -16,28 +16,14 @@ import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
 import { Dock } from 'primereact/dock';
 import { RadioButton } from 'primereact/radiobutton';
-export default function ButtonBases() {   
+
+export default function HomeStudent() {   
  
   const logout =()=>{
     navigate('/');
     localStorage.clear();
   }
-
-/*export default function Home() {
-  const items = [
-    { label: 'Home', icon: 'pi pi-fw pi-home' },
-    { label: 'Courses', icon: 'pi pi-bookmark' },
-    { label: 'Tests', icon: 'pi pi-fw pi-pencil' },
-    { label: 'Tasks', icon: 'pi pi-fw pi-file' },
-    // { label: 'Sign In', icon: 'pi pi-user' }
-  ];
-*/
   const navigate = useNavigate();
-  // const items = [
-  //   { label: 'Courses', icon: 'pi pi-bookmark', command: () => { navigate('/courses') } },
-  //   { label: 'Tests', icon: 'pi pi-fw pi-pencil', command: () => { navigate('/tests') } },
-  //   { label: 'Tasks', icon: 'pi pi-fw pi-file', command: () => { navigate('/tasks') } }
-  // ];
 
   const images = [
 
@@ -45,13 +31,13 @@ export default function ButtonBases() {
       url: examImg,
       title: 'Exam',
       width: '33%',
-      nav:'/courses'
+      nav:'/test'
     },
     {
       url: learnImg,
       title: 'Learning',
       width: '34%',
-      nav:'/student/courses'
+      nav:'/courses/my-courses'
     },
     {
       url: courseImg,
@@ -136,7 +122,7 @@ export default function ButtonBases() {
         {/* <TabMenu model={items} /> */}
         <Stack direction="row" spacing={2}>
           <Avatar
-            alt={localStorage.getItem("firstName")+ localStorage.getItem("lastName")}
+            // alt={localStorage.getItem("firstName")+ localStorage.getItem("lastName")}
             src={profil}
             sx={{ width: 56, height: 56 }}
           />

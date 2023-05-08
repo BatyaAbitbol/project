@@ -10,7 +10,6 @@ const jwt = require('jsonwebtoken')
 exports.register = async (req, res) => {
 
     const { firstName, lastName, idNumber, email, password, image } = req.body;
-    console.log(req.body);
     //confirm data
     if (!idNumber || !email || !password) {
         return res.status(400).json({ message: "all fields are required" });
@@ -47,7 +46,6 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-    console.log(req.query);
     const { password, idNumber } = req.query;
     if (!idNumber || !password) {
         return res.status(400).send({ message: "All fields are required" })
@@ -134,7 +132,6 @@ exports.update = async (req, res) => {
     await dal.update(userObject, id)
 
         .then(num => {
-            console.log(req.body, id);
             if (num == 1) {
                 res.send({
                     message: "Student was updated successfully."
@@ -182,7 +179,6 @@ exports.findAllCoursesByStudentId = async (req, res) => {
         res.status(401).send({message: 'studentId is required!'});
     }
     const coursesStudent = await course_student_dal.findAllByStudentId(studentId);
-    console.log(coursesStudent);
 
     if(!coursesStudent) {
         res.send({message: `No courses found for studentID: ${studentId}.`})
@@ -194,7 +190,6 @@ exports.findAllCoursesByStudentId = async (req, res) => {
         if(joinedCourse)
             courses.push(joinedCourse)
     }
-    console.log(courses);
 
     if(courses.length > 0)
         res.status(200).send(courses)

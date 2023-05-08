@@ -6,7 +6,7 @@ const router = express.Router();
 router.use(verifyJWT);
 
 router.get('/canTest/:id', test.canTest)
-
+router.get('/student/:id', test.findAllByStudentId)
 router.route('/submit')
     .put(test.submitTest);
 

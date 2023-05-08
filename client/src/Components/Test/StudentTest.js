@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from 'primereact/button';
 import { DataView } from 'primereact/dataview';
 import { Tag } from 'primereact/tag';
 import { Panel } from 'primereact/panel';
-
+import { Toast } from 'primereact/toast';
+import { Dialog } from 'primereact/dialog';
 import { UseCreate } from '../../Hooks/usePostAxios';
 import { useParams } from 'react-router-dom';
 import Answer from '../Answer';
 import { UseUpdate } from '../../Hooks/UsePutAxios';
-
+import Stopwatch from './Stopwatch';
 const StudentTest = (props) => {
 
     const { courseStudentId } = useParams();
@@ -19,6 +21,10 @@ const StudentTest = (props) => {
     const [questions, setQuestions] = useState();
     const [answers, setAnswers] = useState({});
     const [submit, setSubmit] = useState(false);
+    const toast = useRef(null);
+    const toastBC = useRef(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,21 +38,22 @@ const StudentTest = (props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            let questionsOfTest = [];
+            debugger;
+            let questionTest = [];
             for (let i = 0; i < test.length; i++) {
-                questionsOfTest[i] = test[i];
-                questionsOfTest[i].question.answerText = answers[questionsOfTest[i].question.id];
+                console.log(test[i]);
+                questionTest[i] = test[i].questionTest;
+                questionTest[i].answerText = answers[test[i].question.id];
             }
-            const obj = {
-                test: {
-                    questionsOfTest
-                }
-            }
-            const res = await UseUpdate(`tests/submit`, {test: {questionsOfTest}});
+            console.log(questionTest);
+            console.log(test)
+            const res = await UseUpdate(`tests/submit`, { test: questionTest });
+            console.log(res);
+            navigate('/home-students');
         }
         if (submit)
             fetchData();
-    }, [submit]);
+    }, []);
 
     const getSeverity = (question) => {
         if (question.scores <= 5)
@@ -59,12 +66,6 @@ const StudentTest = (props) => {
     };
 
     const setAnswersCallBack = (ans) => {
-        // let arr;
-        // if(!answers)
-        //     arr = []
-        // else arr = [...answers];
-        // arr.push(ans);       
-        // setAnswers([...arr]);
         let _answers = answers;
         _answers[ans.questionId] = ans.text;
         setAnswers(_answers);
@@ -91,9 +92,35 @@ const StudentTest = (props) => {
         console.log(answers);
         setSubmit(true);
     }
+    const confirm = () => {
+        submitTest();
+        setShowMessage(false);
+    }
+
+    const [showMessage, setShowMessage] = useState(false);
+    const dialogFooter = <div className="flex flex-column align-items-center" style={{ flex: '1' }}>
+        <div className="flex gap-2">
+            <Button onClick={confirm} type="button" label="Confirm" className="p-button-success w-6rem" />
+            <Button onClick={(e) => setShowMessage(false)} type="button" label="Cancel" className="p-button-warning w-6rem" />
+        </div>
+    </div>
+
 
     return (
+
         <div className="card">
+            {/* <Stopwatch /> */}
+            {showMessage &&
+                <Dialog visible={showMessage} onHide={() => setShowMessage(false)} position="top" footer={dialogFooter} showHeader={false} breakpoints={{ '960px': '80vw' }} style={{ width: '30vw' }}>
+                    <div className="flex align-items-center flex-column pt-6 px-3">
+                        <i className="pi pi-exclamation-triangle" style={{ fontSize: '5rem', color: 'var(--red-400)' }}></i>
+                        <h3>Pay Attention!</h3>
+                        <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
+                            After submitting the test it would be impossible to try it again.
+                            <br />Are you sure you want to submit?
+                        </p>
+                    </div>
+                </Dialog>}
             <DataView
                 value={questions}
                 itemTemplate={itemTemplate}
@@ -102,8 +129,12 @@ const StudentTest = (props) => {
             />
             <br />
             <div className="card flex justify-content-center">
-                <Button label='Submit' icon='pi pi-submit' onClick={submitTest} />
+                <Toast ref={toast} />
+                <Toast ref={toastBC} position="bottom-center" />
+                <Button type="button" onClick={() => { setShowMessage(true); }} label="Submit" />
+                <Button type="button" onClick={confirm} label="Submit" />
             </div>
+
         </div>
     );
 }

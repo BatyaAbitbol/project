@@ -96,7 +96,6 @@ export default function AddCourse(props) {
             numOfLecture: data.numOfLecture
         }
         const res = await UseCreate('courses', obj);
-        console.log(res);
         if (res.status && res.status === 201) {
             // localStorage.setItem('token', JSON.stringify(res.data.accessToken));
             // localStorage.setItem('course', JSON.stringify(res.data.data));

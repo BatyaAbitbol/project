@@ -10,11 +10,8 @@ const UserProvider = ({ children, status, userId }) => {
         if(userId) {
             UseGetOneById(`${status}`, userId)
             .then(res => {
-                console.log(res);
                 const user = res.data;
-                console.log(user);
                 setUser(user);
-                console.log(user);
             });
         }
     }, [userId])

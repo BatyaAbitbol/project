@@ -5,7 +5,6 @@ exports.create = async (req, res) => {
         res.status(400).send({ message: "Content can not be empty!" });
         return;
     }
-    console.log(req.body);
     await dal.create(req.body)
         .then(data => { res.status(201).send(data); })
         .catch(err => {

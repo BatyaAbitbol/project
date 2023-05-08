@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { UseGetAllById, UseGetOneById } from '../Hooks/useGetAxios';
 import { UseCreate } from '../Hooks/usePostAxios';
 
 const Test = (props) => {
 
+    // const { studentId } = useParams();
     const [test, setTest] = useState(null);
 
     useEffect(() => {
         const obj = { courseStudentId: props.courseStudentId };
         UseCreate('tests', obj)
             .then(res => {
-                console.log(res);
                 setTest(res);
             })
     }, [])
