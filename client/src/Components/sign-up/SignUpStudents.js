@@ -9,7 +9,7 @@ import { Dialog } from 'primereact/dialog';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
 import { useNavigate } from 'react-router-dom';
-import { useSignUp } from '../../Hooks/usePostAxios';
+import { useSignUp } from '../../services/usePostAxios';
 import './signup.css';
 
 export default function SignUpStudents(props) {

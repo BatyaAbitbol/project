@@ -6,10 +6,10 @@ import { Tag } from 'primereact/tag';
 import { Panel } from 'primereact/panel';
 import { Toast } from 'primereact/toast';
 import { Dialog } from 'primereact/dialog';
-import { UseCreate } from '../../Hooks/usePostAxios';
+import { UseCreate } from '../../services/usePostAxios';
 import { useParams } from 'react-router-dom';
 import Answer from '../Answer';
-import { UseUpdate } from '../../Hooks/UsePutAxios';
+import { UseUpdate } from '../../services/UsePutAxios';
 import Stopwatch from './Stopwatch';
 const StudentTest = (props) => {
 

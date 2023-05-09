@@ -75,6 +75,7 @@ exports.findOne = async (req, res) => {
 }
 exports.update = async (req, res) => {
     const id = req.body.id;
+    if(! id) return res.status(400).send({message: 'Required field is empty'})
     await dal.update(req.body, id)
         .then(num => {
             if (num == 1)

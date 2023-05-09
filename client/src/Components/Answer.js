@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { UseGetOneById, UseGetAllById } from "../Hooks/useGetAxios";
+import { UseGetOneById, UseGetAllById } from "../services/useGetAxios";
 import { Editor } from "primereact/editor";
 import { RadioButton } from "primereact/radiobutton";
 

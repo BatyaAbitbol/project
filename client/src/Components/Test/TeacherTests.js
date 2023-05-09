@@ -4,7 +4,7 @@ import {Tag} from 'primereact/tag';
 import { DataView } from 'primereact/dataview';
 import { Panel } from 'primereact/panel';
 import { Ripple } from 'primereact/ripple';
-import { UseGetAllById } from '../../Hooks/useGetAxios';
+import { UseGetAllById } from '../../services/useGetAxios';
 
 const TeacherTests = (props) => {
 

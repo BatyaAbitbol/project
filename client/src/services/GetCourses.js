@@ -1,4 +1,4 @@
-import { useGetAll } from "../Hooks/useGetAxios";
+import { useGetAll } from "./useGetAxios";
 
 export async function GetAllCourses() {
     try {

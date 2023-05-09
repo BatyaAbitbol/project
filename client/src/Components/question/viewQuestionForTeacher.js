@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { UseGetAllById } from '../../Hooks/useGetAxios'
+import { UseGetAllById } from '../../services/useGetAxios'
 import { useParams } from 'react-router-dom';
 
 export default function ViewQuestionForTeacher() {

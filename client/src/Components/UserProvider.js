@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { UseGetOneById } from "../Hooks/useGetAxios";
+import { UseGetOneById } from "../services/useGetAxios";
 import UserContext from "./UserContext";
 
 const UserProvider = ({ children, status, userId }) => {

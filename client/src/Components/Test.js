@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { UseGetAllById, UseGetOneById } from '../Hooks/useGetAxios';
-import { UseCreate } from '../Hooks/usePostAxios';
+import { UseGetAllById, UseGetOneById } from '../services/useGetAxios';
+import { UseCreate } from '../services/usePostAxios';
 
 const Test = (props) => {
 

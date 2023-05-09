@@ -1,4 +1,4 @@
-import { UseGetAll, UseGetAllById, UsePutOneById, UseGetOneByIdTeacher, UseGetOneById } from "../../Hooks/useGetAxios";
+import { UseGetAll, UseGetAllById, UsePutOneById, UseGetOneByIdTeacher, UseGetOneById } from "../../services/useGetAxios";
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';

@@ -14,7 +14,11 @@ module.exports = (sequelize, Sequelize) => {
                 },
                 allowNulls: false
             },
-            numOfQuestions: Sequelize.INTEGER
+            numOfQuestions: Sequelize.INTEGER,
+            hoursOfTest: {
+                type: Sequelize.TIME,
+                defaultValue: 3
+            }
         },
         {
             freezeTableName: true,

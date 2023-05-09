@@ -9,8 +9,8 @@ import { Dialog } from 'primereact/dialog';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
 import { useNavigate, useParams } from 'react-router-dom';
-import { UseCreate } from '../../Hooks/usePostAxios';
-import { UseGetOneByParmas } from '../../Hooks/useGetAxios';
+import { UseCreate } from '../../services/usePostAxios';
+import { UseGetOneByParmas } from '../../services/useGetAxios';
 import '../lecture/uploadLectures'
 
 

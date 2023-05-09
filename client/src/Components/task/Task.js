@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { UseGetOneById } from "../../Hooks/useGetAxios";
+import { UseGetOneById } from "../../services/useGetAxios";
 import { Dialog } from "primereact/dialog";
 import { Editor } from "primereact/editor";
 import { Field, Form } from 'react-final-form';
 import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
-import { UseCreate } from "../../Hooks/usePostAxios";
-import { isDoneTask } from "../../Hooks/useGetAxios";
+import { UseCreate } from "../../services/usePostAxios";
+import { isDoneTask } from "../../services/useGetAxios";
 
 export function Task(props) {
 

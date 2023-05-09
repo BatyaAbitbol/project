@@ -5,10 +5,12 @@ import { Badge } from 'primereact/badge';
 import { Carousel } from 'primereact/carousel';
 import { Dialog } from 'primereact/dialog';
 import { useNavigate, useParams } from 'react-router-dom';
-import { UseGetAll, UseGetAllById, UseGetOneById, UseGetOneByIdAndBody } from "../../Hooks/useGetAxios";
+import { UseGetAll, UseGetAllById, UseGetOneById, UseGetOneByIdAndBody } from "../../services/useGetAxios";
 import { Task } from '../task/Task';
 import { ProgressBar } from 'primereact/progressbar';
 import UserContext from '../UserContext';
+import Video from '../../Video';
+import { UseUpdate } from '../../services/UsePutAxios';
 
 const Lectures = (props) => {
 
@@ -47,8 +49,6 @@ const Lectures = (props) => {
             numScroll: 1
         }
     ];
-    //indByLectureId לרוץ על רשימת ההרצאות ובכל איטרציה לשלוח לשרת עם הקורססטודנט 
-    //מביא את ההרצאות של הקורס תלמיד המסוים
     useEffect(() => {
         const fetchData = async () => {
             const resCourseStudent = await UseGetOneByIdAndBody('course_students/student/course', id, { courseId: courseId })
@@ -63,6 +63,7 @@ const Lectures = (props) => {
         fetchData();
     }, []);
 
+
     useEffect(() => {
         const fetchData = async () => {
             const resCanTest = await UseGetOneById('tests/canTest', courseStudent.id);
@@ -70,45 +71,81 @@ const Lectures = (props) => {
             setNext(courseStudent.nextLectureNum);
         }
         fetchData();
-    }, [courseStudent])
+    }, [courseStudent]);
+    useEffect(() => {
+        const fetchData = async () => {
+            const obj = courseStudent;
+            obj.nextLectureNum = next;
+            const updateNext = await UseUpdate('course_students', obj);
+        };
+        if(next > 1)
+            fetchData();
+    }, [next])
     const navigate = useNavigate();
 
     const setVisibleCallBack = (visible) => {
         setVisible(visible);
     }
-    const productTemplate = (lectureByCourse) => {
+    const setNextCallBack = () => {
+        if (next <= nextLectureNum)
+        setNext(next + 1);
+    }
+    const LectureTemplate = (lectureByCourse) => {
+        const [hasTask, setHasTask] = useState(false);
+
+        useEffect(() => {
+            const fetchData = async () => {
+                const resHasTask = await UseGetOneById('tasks/lecture', lectureByCourse.id);
+                if (resHasTask.status && resHasTask.status === 204) setHasTask(false);
+                else setHasTask(true);
+            }
+            fetchData();
+        }, [])
+        let sourceUrl = "";
+        try {
+            sourceUrl = URL.createObjectURL('C:/Users/יאיר\Desktop/project/client/src/video/useContext.mp4');
+        } catch (error) {
+        }
         return (
             <div className="border-1 surface-border border-round m-2 text-center py-5 px-3">
                 <div className="card flex flex-wrap justify-content-center align-items-end gap-2">
                     <Badge value={lectureByCourse.lectureNum} size="xlarge" severity="secondary" />
                     {lectureByCourse.lectureNum < next && <Badge value={<i className="pi pi-check-circle" style={{ fontSize: '2rem', color: 'white' }}></i>} size="xlarge" severity="success" />}
                 </div>
-                <video
+                {/* <Video src={URL.createObjectURL(lectureByCourse.video)} courseStudentId={courseStudent.id} setNext={setNextCallBack} controls={lectureByCourse.lectureNum <= next} /> */}
+                <Video src={sourceUrl} courseStudentId={courseStudent.id} setNext={setNextCallBack} controls={lectureByCourse.lectureNum <= next} />
+
+                {/* <video
                     value="https://www.w3schools.com/html/mov_bbb.mp4"//{lectureByCourse.video}
                     player='mp4'
-                    controls={true}
+                    controls={lectureByCourse.lectureNum <= next}
                     width="420"
                     height="250"
                     onPlay={() => console.log('MP4 Started Playing')}
                     onPause={() => console.log('MP4 Stopped Playing')}
-                ></video>
-                <div className="mt-5 flex flex-wrap gap-2 justify-content-center">
-                    <Button id={lectureByCourse.id} icon="pi pi-file" className="p-button p-button-rounded" label="task" severity="info"
-                        onClick={(e) => {
-                            setLectureId(lectureByCourse.id);
-                            console.log(lectureId);
-                            setVisible(true);
-                        }} />
-                    <Dialog visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-                        <Task lectureId={lectureId} courseStudentId={courseStudent.id} setVisible={setVisibleCallBack} />
-                    </Dialog>
-                </div>
+                ></video> */}
+                {hasTask &&
+                    <div className="mt-5 flex flex-wrap gap-2 justify-content-center">
+                        <Button id={lectureByCourse.id} icon="pi pi-file" className="p-button p-button-rounded" label="task" severity="info"
+                            onClick={(e) => {
+                                setLectureId(lectureByCourse.id);
+                                console.log(lectureId);
+                                setVisible(true);
+                            }} />
+                        <Dialog visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
+                            <Task lectureId={lectureId} courseStudentId={courseStudent.id} setVisible={setVisibleCallBack} />
+                        </Dialog>
+                    </div>}
             </div>
         );
     };
+    useEffect(() => {
+        console.log('NEXT **********************');
+        console.log(next);
+    }, [next])
     return (
 
-        <>{lectures &&
+        <>{numOfLectures !== 0 &&
             <>
                 <div className="card">
                     <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold', color: 'gray' }}>
@@ -120,7 +157,7 @@ const Lectures = (props) => {
                         {next > 1 && (next - 1) / numOfLectures * 100 < 100 && <ProgressBar value={(next - 1) / numOfLectures * 100}></ProgressBar>}
 
                     </div>
-                    <Carousel value={lectures} numVisible={3} numScroll={3} responsiveOptions={responsiveOptions} itemTemplate={productTemplate} />
+                    <Carousel value={lectures} numVisible={3} numScroll={3} responsiveOptions={responsiveOptions} itemTemplate={LectureTemplate} />
                 </div>
             </>
         }

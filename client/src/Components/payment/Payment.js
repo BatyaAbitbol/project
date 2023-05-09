@@ -1,6 +1,6 @@
 import { Button } from "primereact/button";
 import { useNavigate, useParams } from "react-router-dom";
-import { UseCreate } from "../../Hooks/usePostAxios";
+import { UseCreate } from "../../services/usePostAxios";
 
 export function Payment(props) {
     

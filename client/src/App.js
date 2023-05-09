@@ -29,6 +29,7 @@ import Test from './Components/Test/test'
 import PaymentTeacher from './Components/payment/paymentTeacher';
 import ViewQuestionForTeacher from './Components/question/viewQuestionForTeacher';
 import TeacherTests from './Components/Test/TeacherTests';
+import Video from './Video';
 function App() {
 
   // const [status, setStatus] = useState('');
@@ -71,6 +72,7 @@ function App() {
           <Route exact path='/*' element={<h1>Not Found, Sorry 😒</h1>} />
 
         </Routes>
+        
       </div>
     </Router>
     // </UserProvider>

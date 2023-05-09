@@ -5,7 +5,7 @@ import { classNames } from "primereact/utils";
 import { useContext, useEffect, useState } from "react"
 import { Form, Field } from "react-final-form";
 import { Password } from 'primereact/password';
-import { UseSignIn } from "../../Hooks/UseGetStudent";
+import { UseSignIn } from "../../services/useGetStudent";
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../UserContext';
 

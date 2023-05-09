@@ -83,6 +83,7 @@ const navigate = useNavigate();
                     <Button type="submit" label="Save" onClick={(e) => { navigate('/addCourse') }}/>
 
 
+                    {/* {status === 'teachers' && numOfLectures === 0 && <Video setNext={setNextCallBack}/>} */}
 
 
                 </div>

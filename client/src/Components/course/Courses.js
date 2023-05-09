@@ -1,4 +1,4 @@
-import { UseGetAll, UseGetPrice } from "../../Hooks/useGetAxios"
+import { UseGetAll, UseGetPrice } from "../../services/useGetAxios"
 import React, { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
