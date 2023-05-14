@@ -25,6 +25,20 @@ exports.findByCourseStudentId = async (req, res) => {
             else res.status(404).send({ message: `Cannot find task student by course student ${id}` });
         })
 }
+exports.findByCourseStudentIdAndTaskId = async (req, res) => {
+    const courseStudentId = req.query.courseStudentId;
+    const taskId = req.query.taskId;
+    if (!courseStudentId || !taskId) {
+        res.status(400).send({ message: 'Content can not be empty!' });
+        return;
+    }
+    await dal.findByCourseStudentIdAndTaskId(courseStudentId, taskId)
+        .then(data => {
+            if (data)
+                res.send(data);
+            else res.status(404).send({ message: `Cannot find task student` });
+        })
+}
 exports.isDone = async (req, res) => {
     const courseStudentId = req.query.courseStudentId;
     const taskId = req.query.taskId;

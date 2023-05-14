@@ -1,13 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { UseGetAllById } from '../../services/useGetAxios'
 import { useParams } from 'react-router-dom';
+import { Button } from 'primereact/button';
+import { Messages } from 'primereact/messages';
+import questionImage from '../../images/questions.jpg';//client\src\images\questions.jpg
+import Menu from '../menu/menu';
+import { Image } from 'primereact/image';
 
 export default function ViewQuestionForTeacher() {
+    
+    const msgs = useRef(null);
+
+    const msg1 =
+        <div >
+            In order to produce tests, you need to create a sufficiently large pool of questions,
+            so that the randomization of producing a test for each student will carried out with maximum efficiency.
+        </div>;
+
+    useEffect(() => {
+        msgs.current.show([
+            {sticky: true, severity: 'info', summary: '', detail: 'In order to produce tests, you need to create a sufficiently large pool of questions, that the randomization of producing a test for each student will carried out with maximum efficiency.', closable: false},
+            {sticky: true, severity: 'warn', summary: '', detail: 'Maximum number of questions per course is limited to 100.', closable: false}        ]);
+    }, []);
+
     const [questions, setQuestions] = useState([]);
     const columns = [
-        { field: 'course_Id', header: 'course_Id' },
+        // { field: 'course_Id', header: 'course_Id' },
         { field: 'Open_Close', header: 'Oepn_Close' },
         { field: 'Question', header: 'Question' },
         { field: 'scores', header: 'score' },
@@ -18,6 +39,7 @@ export default function ViewQuestionForTeacher() {
 
     ];
     const { courseId } = useParams();
+    const navigate = useNavigate();
     useEffect(() => {
 
         const table = [];
@@ -69,13 +91,28 @@ export default function ViewQuestionForTeacher() {
         };
         fetchData();
     }, []);
+
+    console.log(questions.length != 0);
     return (
-        <div className="card">
-            <DataTable value={questions} tableStyle={{ minWidth: '50rem' }}>
-                {columns.map((col, i) => (
-                    <Column key={col.field} field={col.field} header={col.header} />
-                ))}
-            </DataTable>
-        </div>
+        <>
+            <div className='card'>
+                <Menu />
+                {questions.length > 0 &&
+                    <div className="card">
+                        <DataTable value={questions} tableStyle={{ minWidth: '50rem' }}>
+                            {columns.map((col, i) => (
+                                <Column key={col.field} field={col.field} header={col.header} onClick={() => {navigate('edit')}} />
+                            ))}
+                        </DataTable>
+                    </div>}
+                <div className="card flex justify-content-center">
+                    <Messages ref={msgs} />
+                </div>
+                <div className="card flex justify-content-center">
+                    <Image src={questionImage} width="80%" />
+                </div>
+                <Button label="Add Question" onClick={() => navigate(`/questions/add/${courseId}`)} />
+            </div>
+        </>
     );
 }

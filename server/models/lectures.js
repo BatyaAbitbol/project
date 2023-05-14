@@ -13,8 +13,11 @@ module.exports = (sequelize, Sequelize) => {
                     key: 'id'
                 }
             },
-            video: {
-                type: Sequelize.STRING(100)
+            videoName: {
+                type: Sequelize.STRING(255)
+            },
+            videoPath: {
+                type: Sequelize.STRING(255)
             },
             lectureNum: {
                 type: Sequelize.INTEGER

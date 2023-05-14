@@ -1,33 +1,17 @@
-import { TabMenu } from 'primereact/tabmenu';
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
-import courseImg from '../../images/course.jpg'
-import examImg from '../../images/exam.jpg'
-import learnImg from '../../images/learning.jpg'
-import profil from '../../images/profil.JPG';
-import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
-import { Button } from 'primereact/button';
-import { useNavigate } from 'react-router-dom';
-import logoutImg from '../../images/logout.jpg';
+import Menu from '../menu/menu'
+import coursesImage from '../../images/courses_2.jpg';
+import teachImage from '../../images/courses_3.jpg';
+import examImg from '../../images/exam_2.jpg'
 
-export default function HomeTeacher(props) {   
-  const logout =()=>{
-    navigate('/');
-    localStorage.clear();
-  }
+export default function HomeTeacher(props) {
 
-
- 
-  // const items = [
-  //   { label: 'Courses', icon: 'pi pi-bookmark', command: () => { navigate('/courses') } },
-  //   { label: 'Tests', icon: 'pi pi-fw pi-pencil', command: () => { navigate('/tests') } },
-  //   { label: 'Tasks', icon: 'pi pi-fw pi-file', command: () => { navigate('/tasks') } }
-  // ];
-const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const images = [
 
@@ -35,19 +19,19 @@ const navigate = useNavigate();
       url: examImg,
       title: 'Exam for checking',
       width: '33%',
-      nav:'/'
+      nav: '/'
     },
     {
-      url: learnImg,
-      title: 'My Courses',
+      url: teachImage,
+      title: 'Teach My Courses',
       width: '34%',
-      nav:'/courses/teachers/my-courses'
+      nav: '/courses/teachers/my-courses'
     },
     {
-      url: courseImg,
+      url: coursesImage,
       title: 'Courses',
       width: '33%',
-      nav:'/courses'
+      nav: '/courses'
     },
   ];
 
@@ -102,7 +86,7 @@ const navigate = useNavigate();
     top: 0,
     bottom: 0,
     backgroundColor: theme.palette.common.black,
-    opacity: 0.4,
+    opacity: 0,
     transition: theme.transitions.create('opacity'),
   }));
 
@@ -116,64 +100,43 @@ const navigate = useNavigate();
     transition: theme.transitions.create('opacity'),
   })
   );
-  
+
   return (
-    <div >
-      <div style={{ display: 'flex' }}>
-        {/* <TabMenu model={items} /> */}
-        <Stack direction="row" spacing={2}>
-          <Avatar
-            alt={localStorage.getItem("name")}
-            src={profil}
-            sx={{ width: 56, height: 56 }}
-          />
-          <Avatar
-            src={logoutImg}
-            sx={{ width: 60, height: 60 }}
-            onClick={()=>{logout()}}
-          />
-        </Stack></div>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
-        {images.map((image) => (
-          <ImageButton onClick={() => { navigate( `${image.nav}` )} }
-            focusRipple
-            key={image.title}
-            style={{
-              width: image.width,
-            }}
-          >
-            <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
-            <ImageBackdrop className="MuiImageBackdrop-root" />
-            <Image>
-              <Typography
-                component="span"
-                variant="subtitle1"
-                color="inherit"
-                sx={{
-                  position: 'relative',
-                  p: 4,
-                  pt: 2,
-                  pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
-                }}
-              >
-                {image.title}
-                <ImageMarked className="MuiImageMarked-root" />
-              </Typography>
-            </Image>
-          </ImageButton>
-        ))}
-      </Box>
-    </div>
+    <div className='card'>
+      <Menu />
+      <div className='card' style={{marginTop: '10%'}}>
+        {/* <br></br><br></br> <br></br> <br></br> <br></br><br></br> <br></br>  <br></br><br></br><br></br><br></br><br></br><br></br><br></br> */}
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }} >
+          {images.map((image) => (
+            <ImageButton onClick={() => { navigate(`${image.nav}`) }}
+              focusRipple
+              key={image.title}
+              style={{
+                width: image.width,
+              }}
+            >
+              <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
+              <ImageBackdrop className="MuiImageBackdrop-root" />
+              <Image>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  sx={{
+                    position: 'relative',
+                    p: 4,
+                    pt: 2,
+                    pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                  }}
+                >
+                  {image.title}
+                  <ImageMarked className="MuiImageMarked-root" />
+                </Typography>
+              </Image>
+            </ImageButton>
+          ))}
+        </Box>
+        </div>
+      </div>
   );
 }

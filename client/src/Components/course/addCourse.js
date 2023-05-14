@@ -90,13 +90,13 @@ export default function AddCourse(props) {
             categoryId: data.categoryId,
             accessPeriod: data.accessPeriod,
             price: data.price,
-            numOfLecture: data.numberoflecture
+            numOfLecture: data.numOfLecture
         }
         if (JSON.parse(localStorage.getItem('userInfo')).status) {
             const res = await UseCreate('courses', obj);
             console.log(res);
             const courseId = res.data.id;
-            const numLectures = data.numberoflectures;
+            const numLectures = data.numOfLecture;
             console.log(numLectures);
             if (res.status && res.status === 201) {
                 setMessage(<>

@@ -10,6 +10,7 @@ import { Task } from '../task/Task';
 import { ProgressBar } from 'primereact/progressbar';
 import UserContext from '../UserContext';
 import Video from '../../Video';
+import Menu from '../menu/menu';
 import { UseUpdate } from '../../services/UsePutAxios';
 
 const Lectures = (props) => {
@@ -31,6 +32,11 @@ const Lectures = (props) => {
     const [next, setNext] = useState(0);
     const [numOfLectures, setNumOfLectures] = useState(0);
     const [canTest, setCanTest] = useState(false);
+    const [addLectures, setAddLectures] = useState(<></>);
+    const [visibleTest, setVisibleTest] = useState(false);
+    const [timeToTest, setTimeToTest] = useState(0);
+
+    const navigate = useNavigate();
 
     const responsiveOptions = [
         {
@@ -49,6 +55,7 @@ const Lectures = (props) => {
             numScroll: 1
         }
     ];
+
     useEffect(() => {
         const fetchData = async () => {
             const resCourseStudent = await UseGetOneByIdAndBody('course_students/student/course', id, { courseId: courseId })
@@ -63,7 +70,6 @@ const Lectures = (props) => {
         fetchData();
     }, []);
 
-
     useEffect(() => {
         const fetchData = async () => {
             const resCanTest = await UseGetOneById('tests/canTest', courseStudent.id);
@@ -76,20 +82,38 @@ const Lectures = (props) => {
         const fetchData = async () => {
             const obj = courseStudent;
             obj.nextLectureNum = next;
-            const updateNext = await UseUpdate('course_students', obj);
+            // const updateNext = await UseUpdate('course_students', obj);
         };
-        if(next > 1)
+        if (next > 1)
             fetchData();
-    }, [next])
-    const navigate = useNavigate();
+    }, [next]);
 
-    const setVisibleCallBack = (visible) => {
-        setVisible(visible);
+    useEffect(() => {
+        if (status == 'teachers' && course && numOfLectures < course.lecturesNum) {
+            setAddLectures(<Button label='Add lectures' onClick={() => { navigate(`/upload-lectures/${courseId}`) }} />);
+        }
+        const fetchData = async () => {
+            const resTestToCourse = await UseGetOneById('test_courses/course', course.id);
+            setTimeToTest(resTestToCourse.data.hoursOfTest);
+            console.log(resTestToCourse)
+        }
+        if (course)
+            fetchData();
+    }, [course])
+
+    const confirm = () => {
+        navigate(`/test/${courseStudent.id}`);
+        localStorage.setItem('startHour', new Date().toLocaleTimeString());
+        setVisibleTest(false);
     }
-    const setNextCallBack = () => {
-        if (next <= nextLectureNum)
-        setNext(next + 1);
-    }
+
+    const dialogFooter = <div className="flex flex-column align-items-center" style={{ flex: '1' }}>
+        <div className="flex gap-2">
+            <Button onClick={() => confirm()} type="button" label="Confirm" className="p-button-success w-6rem" />
+            <Button onClick={(e) => setVisibleTest(false)} type="button" label="Cancel" className="p-button-warning w-6rem" />
+        </div>
+    </div>
+
     const LectureTemplate = (lectureByCourse) => {
         const [hasTask, setHasTask] = useState(false);
 
@@ -100,67 +124,72 @@ const Lectures = (props) => {
                 else setHasTask(true);
             }
             fetchData();
-        }, [])
-        let sourceUrl = "";
-        try {
-            sourceUrl = URL.createObjectURL('C:/Users/יאיר\Desktop/project/client/src/video/useContext.mp4');
-        } catch (error) {
-        }
+        }, []);
+
         return (
             <div className="border-1 surface-border border-round m-2 text-center py-5 px-3">
                 <div className="card flex flex-wrap justify-content-center align-items-end gap-2">
                     <Badge value={lectureByCourse.lectureNum} size="xlarge" severity="secondary" />
                     {lectureByCourse.lectureNum < next && <Badge value={<i className="pi pi-check-circle" style={{ fontSize: '2rem', color: 'white' }}></i>} size="xlarge" severity="success" />}
                 </div>
-                {/* <Video src={URL.createObjectURL(lectureByCourse.video)} courseStudentId={courseStudent.id} setNext={setNextCallBack} controls={lectureByCourse.lectureNum <= next} /> */}
-                <Video src={sourceUrl} courseStudentId={courseStudent.id} setNext={setNextCallBack} controls={lectureByCourse.lectureNum <= next} />
 
-                {/* <video
+                <video
                     value="https://www.w3schools.com/html/mov_bbb.mp4"//{lectureByCourse.video}
                     player='mp4'
-                    controls={lectureByCourse.lectureNum <= next}
+                    controls={true}//{lectureByCourse.lectureNum <= next}
                     width="420"
                     height="250"
                     onPlay={() => console.log('MP4 Started Playing')}
                     onPause={() => console.log('MP4 Stopped Playing')}
-                ></video> */}
+                ></video>
                 {hasTask &&
                     <div className="mt-5 flex flex-wrap gap-2 justify-content-center">
                         <Button id={lectureByCourse.id} icon="pi pi-file" className="p-button p-button-rounded" label="task" severity="info"
                             onClick={(e) => {
                                 setLectureId(lectureByCourse.id);
-                                console.log(lectureId);
                                 setVisible(true);
                             }} />
                         <Dialog visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-                            <Task lectureId={lectureId} courseStudentId={courseStudent.id} setVisible={setVisibleCallBack} />
+                            <Task lectureId={lectureId} courseStudentId={courseStudent.id} setVisible={setVisible} />
                         </Dialog>
                     </div>}
             </div>
         );
     };
-    useEffect(() => {
-        console.log('NEXT **********************');
-        console.log(next);
-    }, [next])
+
+    console.log(timeToTest);
     return (
-
-        <>{numOfLectures !== 0 &&
-            <>
-                <div className="card">
-                    <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold', color: 'gray' }}>
-                        Lectures Of {course.name} Course
-                        <br />
-                        {canTest && <Button label='TEST' onClick={(e) => { navigate(`/test/${courseStudent.id}`) }} />}
-                    </div>
+        <>
+            <Menu />
+            <>{numOfLectures !== 0 &&
+                <>
                     <div className="card">
-                        {next > 1 && (next - 1) / numOfLectures * 100 < 100 && <ProgressBar value={(next - 1) / numOfLectures * 100}></ProgressBar>}
+                        <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold', color: 'gray' }}>
+                            Lectures Of {course.name} Course
+                            <br />
+                            {canTest && <Button label='TEST' onClick={(e) => { setVisibleTest(true) }} />}
+                        </div>
+                        <div className="card">
+                            {next > 1 && (next - 1) / numOfLectures * 100 < 100 && <ProgressBar value={(next - 1) / numOfLectures * 100}></ProgressBar>}
 
+                        </div>
+                        <Carousel value={lectures} numVisible={3} numScroll={3} responsiveOptions={responsiveOptions} itemTemplate={LectureTemplate} />
                     </div>
-                    <Carousel value={lectures} numVisible={3} numScroll={3} responsiveOptions={responsiveOptions} itemTemplate={LectureTemplate} />
-                </div>
+                </>
+            }
+                {addLectures}
+                {visibleTest &&
+                    <Dialog visible={visibleTest} onHide={() => setVisibleTest(false)} position="top" footer={dialogFooter} showHeader={false} breakpoints={{ '960px': '80vw' }} style={{ width: '30vw' }}>
+                        <div className="flex align-items-center flex-column pt-6 px-3">
+                            <i className="pi pi-exclamation-triangle" style={{ fontSize: '5rem', color: 'var(--red-400)' }}></i>
+                            <h3>Pay Attention!</h3>
+                            <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
+                                After confirming you would move to the test and time is limited to {timeToTest}.
+                                <br />Are you ready to start?
+                            </p>
+                        </div>
+                    </Dialog>}
             </>
-        }
         </>
     )
 }

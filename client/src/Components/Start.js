@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Button } from 'primereact/button';
-import { Image } from 'primereact/image';
 import { useNavigate } from 'react-router-dom';
+import logo from '../images/logo-school.jpg';
+import { Image } from 'primereact/image'
 
 import "primereact/resources/primereact.min.css";
 import 'primereact/resources/primereact.css';
@@ -9,15 +10,21 @@ import 'primereact/resources/primereact.css';
 export default function Start(props) {
 
     const navigate = useNavigate();
+
+    const image =
+    {
+        url: logo,
+        width: '70%'
+    };
+
     return (
         <>
-            {/* <div className="card flex justify-content-center">
-                </div> */}
-                <div className="card flex flex-wrap justify-content-center gap-3">
-                    
-                    <Button onClick={() => { navigate('/sign-in') }} label="Sign In" text raised />
-                    <Button onClick={() => { navigate('/sign-up') }} label="Sign Up" text raised />
-                </div>
-        </>
-    )
+            <div className="card flex justify-content-center">
+                <Image src={logo} alt="Image" width="90%" />
+            </div>
+            <div className="card flex flex-wrap justify-content-center gap-3">
+                <Button onClick={() => { navigate('/sign-in') }} label="Sign In" text raised />
+                <Button onClick={() => { navigate('/sign-up') }} label="Sign Up" text raised />
+            </div>
+        </>)
 }

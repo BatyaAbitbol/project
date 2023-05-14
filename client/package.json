@@ -22,6 +22,7 @@
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-credit-cards": "^0.8.3",
+    "react-credit-cards-2": "^1.0.1",
     "react-dom": "^18.2.0",
     "react-final-form": "^6.5.9",
     "react-icons": "^4.8.0",
@@ -54,5 +55,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-plugin-react-hooks": "^4.6.0"
   }
 }

@@ -32,7 +32,8 @@ export function Task(props) {
             const res = await isDoneTask('task_course_student/isDone', props.courseStudentId, task.id);
             setIsSubmitted(res.data)
         }
-        fetchData();
+        if (task)
+            fetchData();
     }, [task])
 
     const validate = () => {
@@ -49,7 +50,8 @@ export function Task(props) {
                 courseStudentId: props.courseStudentId,
                 taskId: task.id,
                 isDone: true,
-                submitDate: new Date()
+                submitDate: new Date(),
+                text: text
             }
             const res = await UseCreate('task_course_student', obj);
             console.log(res);
@@ -78,7 +80,7 @@ export function Task(props) {
                         </p>
                         <br />
 
-                        <Editor value={text} onTextChange={(e) => { setText(e.htmlValue) }} style={{ height: '320px' }} />
+                        <Editor value={text} onTextChange={(e) => { console.log(e.textValue);setText(e.textValue) }} style={{ height: '320px' }} />
                         {error && <small className="p-error">You can not submit empty file.</small>}
                         <div className="card flex flex-wrap justify-content-center gap-3">
                             <Button type="submit" label="Submit" className="mt-2" icon="pi pi-check" onClick={(e) => {

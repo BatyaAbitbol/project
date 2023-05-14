@@ -19,8 +19,8 @@ import Lectures from './Components/lecture/Lecture';
 import CoursesForStudent from './Components/course_student/CoursesForStudent';
 import { Task } from './Components/task/Task';
 import AddCourse from './Components/course/addCourse';
-import UploadLectures from './Components/lecture/uploadLectures';
-import { Payment } from './Components/payment/Payment';
+import UploadLecture from './Components/lecture/UploadLecture';
+import  Payment from './Components/payment/payment';
 import UserProvider from './Components/UserProvider';
 import Check from './Components/Check';
 import StudentTest from './Components/Test/StudentTest';
@@ -29,7 +29,7 @@ import Test from './Components/Test/test'
 import PaymentTeacher from './Components/payment/paymentTeacher';
 import ViewQuestionForTeacher from './Components/question/viewQuestionForTeacher';
 import TeacherTests from './Components/Test/TeacherTests';
-import Video from './Video';
+
 function App() {
 
   // const [status, setStatus] = useState('');
@@ -60,12 +60,13 @@ function App() {
           <Route exact path='/courses/students/my-courses' element={<CoursesForStudent />} />
           <Route exact path='/courses/teachers/my-courses' element={<CoursesForTeachers />} />
           <Route exact path='/lectures/:courseId' element={<Lectures />} />
-          <Route exact path='/uploadLectures/:courseId' element={<UploadLectures />} />
+          <Route exact path='/upload-lectures/:courseId' element={<UploadLecture />} />
           <Route exact path='/payment/:courseId' element={<Payment />} />
           <Route exact path='addCourse/payment/:numLectures' element={<PaymentTeacher />} />
           <Route exact path='/teacher/viewQuestion/:courseId' element={<ViewQuestionForTeacher />} />
           <Route exact path='questions/add/:courseId' element={<Test />} />
           <Route exact path='/test/:courseStudentId' element={<StudentTest />} />
+          {/* מבחנים בדוקים ואו בתהליך בדיקה */}
           <Route exact path='/tests' element={<TeacherTests />} />
           <Route exact path='/course/payment' element={<h1>Buy a course & Pay</h1>} />
           <Route exact path='/task' element={<Task />} />

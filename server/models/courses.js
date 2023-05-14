@@ -31,7 +31,8 @@ module.exports = (sequelize, Sequelize) => {
             price: {
                 type: Sequelize.FLOAT
             },
-            image: Sequelize.STRING(255)
+            image: Sequelize.STRING(255),
+            lecturesNum : Sequelize.INTEGER
         },
         {
             freezeTableName: true,

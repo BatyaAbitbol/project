@@ -5,21 +5,14 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
-import courseImg from '../../images/course.jpg'
-import examImg from '../../images/exam.jpg'
-import learnImg from '../../images/learning.jpg'
-import profil from '../../images/profil.JPG';
-import logoutImg from '../../images/logout.jpg'
-import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
-import { Button } from 'primereact/button';
+import courses from '../../images/Courses.jpg'
+import exams from '../../images/exams.jpg'
+import learning from '../../images/learning.jpg'
 import { useNavigate } from 'react-router-dom';
-import { Dock } from 'primereact/dock';
-import { RadioButton } from 'primereact/radiobutton';
-
-export default function HomeStudent() {   
- 
-  const logout =()=>{
+import Menu from '../menu/menu'
+export default function HomeStudent() {
+  const status = JSON.parse(localStorage.getItem('userInfo')).status;
+  const logout = () => {
     navigate('/');
     localStorage.clear();
   }
@@ -28,22 +21,22 @@ export default function HomeStudent() {
   const images = [
 
     {
-      url: examImg,
+      url: exams,
       title: 'Exam',
       width: '33%',
-      nav:'/test'
+      nav: '/test'
     },
     {
-      url: learnImg,
+      url: learning,
       title: 'Learning',
       width: '34%',
-      nav:'/courses/students/my-courses'
+      nav: `/courses/${status}/my-courses`
     },
     {
-      url: courseImg,
+      url: courses,
       title: 'Courses',
       width: '33%',
-      nav:'/courses'
+      nav: '/courses'
     },
   ];
 
@@ -98,7 +91,7 @@ export default function HomeStudent() {
     top: 0,
     bottom: 0,
     backgroundColor: theme.palette.common.black,
-    opacity: 0.4,
+    opacity: 0,
     transition: theme.transitions.create('opacity'),
   }));
 
@@ -115,23 +108,9 @@ export default function HomeStudent() {
 
 
   return (
-  
+
     <div >
-        {/* {BasicDemo()} */}
-      <div style={{ display: 'flex' }}>
-        {/* <TabMenu model={items} /> */}
-        <Stack direction="row" spacing={2}>
-          <Avatar
-            // alt={localStorage.getItem("firstName")+ localStorage.getItem("lastName")}
-            src={profil}
-            sx={{ width: 56, height: 56 }}
-          />
-          <Avatar
-            src={logoutImg}
-            sx={{ width: 60, height: 60 }}
-            onClick={()=>{logout()}}
-          />
-        </Stack></div>
+      <Menu />
       <br></br>
       <br></br>
       <br></br>
@@ -143,9 +122,9 @@ export default function HomeStudent() {
       <br></br>
       <br></br>
       <br></br>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}> {/*minWidth: 300, */}
         {images.map((image) => (
-          <ImageButton onClick={() => { navigate( `${image.nav}` )} }
+          <ImageButton onClick={() => { navigate(`${image.nav}`) }}
             focusRipple
             key={image.title}
             style={{

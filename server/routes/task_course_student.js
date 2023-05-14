@@ -6,6 +6,7 @@ const router = express.Router();
 router.use(verifyJWT);
 
 router.get('/isDone', tasks_course_student.isDone)
+router.get('/task', tasks_course_student.findByCourseStudentIdAndTaskId)
 
 router.route('/courseStudentId/:id')
     .get(tasks_course_student.findByCourseStudentId);

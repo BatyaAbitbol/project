@@ -11,7 +11,7 @@ exports.create = async (req, res) => {
 
     const duplicate = await dal.findDuplicate(studentId, courseId);
     if (duplicate) {
-        res.status(400).send({ message: 'Already registered.' })
+        return res.status(400).send({ message: 'Already registered.' })
     }
     else
         await dal.create(req.body)

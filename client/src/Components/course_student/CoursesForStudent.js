@@ -5,6 +5,7 @@ import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { useNavigate } from 'react-router-dom';
 import Lectures from "../lecture/Lecture";
 import UserContext from "../UserContext";
+import Menu from "../menu/menu";
 
 export default function CoursesForStudent(props) {
 
@@ -105,7 +106,10 @@ export default function CoursesForStudent(props) {
     }
     return (
         <>
+        <div className="card">
+        <Menu />
             {display}
+            </div>
         </>
     )
 }

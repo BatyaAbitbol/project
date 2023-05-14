@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const URL = `http://localhost:8000`;
-const headersAuthorization = {headers: {Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`}}
+const headersAuthorization = {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}}
 
 export async function UseUpdate(url, obj) {
     try {

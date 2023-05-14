@@ -29,47 +29,66 @@ export default function Test(props) {
     const [showMessage, setShowMessage] = useState(false);
     const [message, setMessage] = useState(<></>);
     const [formData, setFormData] = useState({});
-    const [value, setValue] = useState('');
-    const [value1, setValue1] = useState('');
-    const [value2, setValue2] = useState('');
-    const [value3, setValue3] = useState('');
-    const [value4, setValue4] = useState('');
-    const [value5, setValue5] = useState(0);
+    const [value, setValue] = useState('');//Question
+    const [value1, setValue1] = useState('');//CORRECT
+    const [value2, setValue2] = useState('');//WRONG1
+    const [value3, setValue3] = useState('');//WRONG2
+    const [value4, setValue4] = useState('');//WRONG3
+    const [value5, setValue5] = useState(0);//score+
 
 
     const validate = (data) => {
         let errors = {};
-        if (!data.value) {
-            errors.value = 'Question is required.';
+        const isClosed = selectedCategory.name == categories[1].name ? 1 : 0;
+        if (isClosed) {
+            if (!data.value) {
+                errors.value = 'Question is required.';
+            }
+            if (!data.value1) {
+                errors.value1 = 'Answer #1 - CORRECT is required.';
+            }
+            if (!data.value2) {
+                errors.value2 = 'Answer #2 - WRONG - is required.';
+            }
+            if (!data.value3) {
+                errors.value3 = 'Answer #3 - WRONG - is required.';
+            }
+            if (!data.value4) {
+                errors.value4 = 'Answer #4 - WRONG - is required.';
+            }
+
+            console.log(data.value5);
+            if (!data.value5) {
+                errors.value5 = 'Scores field is required.';
+            }
+            return errors;
         }
-        if (!data.value1) {
-            errors.value1 = 'Answer #1 - CORRECT is required.';
-        }
-        if (!data.value2) {
-            errors.value2 = 'Answer #2 - WRONG - is required.';
-        }
-        if (!data.value3) {
-            errors.value3 = 'Answer #3 - WRONG - is required.';
-        }
-        if (!data.value4) {
-            errors.value4 = 'Answer #4 - WRONG - is required.';
+        else{
+            if (!data.value) {
+                errors.value = 'Question is required.';
+            }
+            if (!data.value1) {
+                errors.value1 = 'Answer #1 - CORRECT is required.';
+            }
+            console.log(data.value5);
+            if (!data.value5) {
+                errors.value5 = 'Scores field is required.';
+            }
+            return errors;
+
         }
 
-        console.log(data.value5);
-        if (!data.value5) {
-            errors.value5 = 'Scores field is required.';
-        }
-        return errors;
     }
 
-    let numOfQuestion = 0;
-
     const onSubmit = async (data, form) => {
+        debugger
         console.log("on submit");
         setFormData(data);
         setShowMessage(true);
-        setShowErrorMessage(false);
+        debugger
         await HandleClick(data);
+        setShowErrorMessage(false);
+
         form.restart();
     };
 
@@ -88,13 +107,14 @@ export default function Test(props) {
     const navigate = useNavigate();
 
     async function HandleClick(data) {
-        const isClosed = selectedCategory.name == categories[1].name ? 0 : 1;
+        const isClosed = selectedCategory.name == categories[1].name ? 1 : 0;
         const questionToCreate = {
             courseId: courseId,
-            text: value,
-            scores: value5,
+            text: data.value,
+            scores: data.value5.value,
             isClosed: isClosed
         }
+        console.log(questionToCreate);
         const res = await UseCreate('questions', questionToCreate);
         console.log(res);
         const idQuestion = res.data.id;
@@ -102,14 +122,14 @@ export default function Test(props) {
         {
             const objAns = {
                 questionId: idQuestion,
-                text: value1,
+                text: data.value1,
                 isCorrect: 1
             }
             const res1 = await UseCreate('answers', objAns);
             console.log(res1);
             const objAns2 = {
                 questionId: idQuestion,
-                text: value2,
+                text: data.value2,
                 isCorrect: 0
             }
             const res2 = await UseCreate('answers', objAns2);
@@ -117,7 +137,7 @@ export default function Test(props) {
 
             const objAns3 = {
                 questionId: idQuestion,
-                text: value3,
+                text: data.value3,
                 isCorrect: 0
             }
             const res3 = await UseCreate('answers', objAns3);
@@ -125,7 +145,7 @@ export default function Test(props) {
 
             const objAns4 = {
                 questionId: idQuestion,
-                text: value4,
+                text: data.value4,
                 isCorrect: 0
             }
             const res4 = await UseCreate('answers', objAns4);
@@ -134,14 +154,13 @@ export default function Test(props) {
         else {
             const objAns = {
                 questionId: idQuestion,
-                text: value1,
+                text: data.value1,
                 isCorrect: 1
             }
             const res4 = await UseCreate('answers', objAns);
             console.log(res4);
         }
         if (res.status && res.status === 201) {
-            numOfQuestion += 1;
             setMessage(<>
                 <h5>Successful!</h5>
                 <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
@@ -166,7 +185,7 @@ export default function Test(props) {
     async function closeTest() {
         const objTest = {
             courseId: courseId,
-            numOfQuestions: numOfQuestion
+            numOfQuestions: 0
         }
         const res6 = await UseCreate('test_courses', objTest);
         console.log("test");
@@ -214,7 +233,6 @@ export default function Test(props) {
                             {getFormErrorMessage(meta)}
                         </div>
                     )} />
-
                 </>
             )
         else return (
@@ -227,6 +245,7 @@ export default function Test(props) {
                     {getFormErrorMessage(meta)}
                 </div>
             )} />
+
         )
     }
     return (

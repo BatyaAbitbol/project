@@ -1,11 +1,13 @@
+// 
 import { Button } from "primereact/button";
 import { useNavigate, useParams } from "react-router-dom";
-import { UseCreate } from "../../services/usePostAxios";
-
-export function Payment(props) {
-    
-    const {courseId} = useParams();
-    const navigate = useNavigate();
+import { UseCreate } from "../../Hooks/usePostAxios";
+import Menu from '../menu/menu'
+import 'react-credit-cards-2/dist/es/styles-compiled.css'
+import React, { useState } from 'react';
+import Cards from 'react-credit-cards-2';
+const Payment = () => {
+    const { courseId } = useParams();
 
     const registerToCourse = () => {
         const obj = {
@@ -16,76 +18,92 @@ export function Payment(props) {
         }
         const register = async () => {
             const res = await UseCreate('course_students', obj);
-            if (res.status == 201){
+            if (res.status == 201) {
                 console.log('נרשמת בהצלחה');
                 navigate('/student/courses')
             }
             else {
                 console.log(res.response.data.message);
                 navigate('/courses')
+
             }
+            register();
         }
-        register();
     }
+    console.log(courseId);
+
+    const [state, setState] = useState({
+        number: '',
+        expiry: '',
+        cvc: '',
+        name: '',
+        focus: '',
+    });
+
+    const handleInputChange = (evt) => {
+        const { name, value } = evt.target;
+
+        setState((prev) => ({ ...prev, [name]: value }));
+    }
+
+    const handleInputFocus = (evt) => {
+        setState((prev) => ({ ...prev, focus: evt.target.name }));
+    }
+    const navigate = useNavigate();
+    const { numOfLecture } = useParams();
+    const status = JSON.parse(localStorage.getItem('userInfo')).status
     return (
-        <>
-            <div className="card">
-                <Button label="OK" onClick={(e) => {
+        // <h2>{numOfLecture}</h2>
+        <div className="card flex flex-column align-items-center gap-3 ">
+           <Menu></Menu>
+            <Cards
+                number={state.number}
+                expiry={state.expiry}
+                cvc={state.cvc}
+                name={state.name}
+                focused={state.focus}
+            />
+            <form>
+                <input
+                    type="tel"
+                    name="number"
+                    placeholder="Card Number"
+                    value={state.number}
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                />
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Name"
+                    value={state.name}
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                />
+                <input
+                    type="tel"
+                    name="expiry"
+                    placeholder="expiry"
+                    value={state.expiry}
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                />
+                <input
+                    type="tel"
+                    name="CVC"
+                    placeholder="CVC"
+                    value={state.cvc}
+                    onChange={handleInputChange}
+                    onFocus={handleInputFocus}
+                />
+                <Button label="pay" severity="info" raised onClick={() => {
                     registerToCourse();
-                }}/>
-            </div>
-        </>
-    )
-}
-// ---------------------------------------------------
-/*
-Install:
-npm install --save react-credit-cards
-Usage:
-import React from 'react';
-import Cards from 'react-credit-cards';
-
-export default class PaymentForm extends React.Component {
-  state = {
-    cvc: '',
-    expiry: '',
-    focus: '',
-    name: '',
-    number: '',
-  };
-
-  handleInputFocus = (e) => {
-    this.setState({ focus: e.target.name });
-  }
-  
-  handleInputChange = (e) => {
-    const { name, value } = e.target;
-    
-    this.setState({ [name]: value });
-  }
-  
-  render() {
-    return (
-      <div id="PaymentForm">
-        <Cards
-          cvc={this.state.cvc}
-          expiry={this.state.expiry}
-          focused={this.state.focus}
-          name={this.state.name}
-          number={this.state.number}
-        />
-        <form>
-            <input
-            type="tel"
-            name="number"
-            placeholder="Card Number"
-            onChange={this.handleInputChange}
-            onFocus={this.handleInputFocus}
-          />
-          ...
-        </form>
-      </div>
+                    navigate(`/courses/${status}/my-courses`)
+                }} />
+            </form>
+        </div>
     );
-  }
 }
-*/
+
+export default Payment;
+

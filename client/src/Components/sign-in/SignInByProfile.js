@@ -11,6 +11,8 @@ import UserContext from '../UserContext';
 
 export function SignInByProfile(props) {
 
+    // localStorage.clear();
+    
     const [showMessage, setShowMessage] = useState(false);
     const [message, setMessage] = useState(<></>);
     const [showErrorMessage, setShowErrorMessage] = useState(false);

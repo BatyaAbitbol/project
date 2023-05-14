@@ -24,7 +24,8 @@ module.exports = (sequelize, Sequelize) => {
         isDone: {
             type: Sequelize.TINYINT
         },
-        submitDate: Sequelize.DATE
+        submitDate: Sequelize.DATE,
+        text: Sequelize.STRING(255)
     },
     {
         freezeTableName: true,
