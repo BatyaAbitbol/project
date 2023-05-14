@@ -135,10 +135,14 @@ export default function CoursesForteacher(props) {
     };
 
     const header = () => {
+
         return (
-            <div className="flex justify-content-end">
-                <DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)} />
-            </div>
+            <>
+                <div style={{ display: 'flex', justifyContent: 'space-between', position: 'sticky', top: '0', zIndex: '9000'}}>
+                    <span className="justify-content-end"><Button label="Open new course" icon='pi pi-plus' severity="info" raised onClick={() => navigate(`/addCourse`)} /></span>
+                    <span className="justify-content-start"><DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)} /></span>
+                </div>
+            </>
         );
     };
 
@@ -150,9 +154,7 @@ export default function CoursesForteacher(props) {
         if (typeof data !== 'string') {
             display = <div className="card">
                 <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>My Courses</div>
-                <Button label="open new course" severity="info" raised onClick={() => navigate(`/addCourse`)} /><br></br>
                 <DataView value={data} itemTemplate={itemTemplate} layout={layout} header={header()} />
-                <Button label="open new course" severity="info" text onClick={() => navigate(`/addCourse`)} />
             </div>
         }
         else display = <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>{data}</div>
