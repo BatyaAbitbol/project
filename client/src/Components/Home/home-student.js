@@ -1,6 +1,5 @@
-import { TabMenu } from 'primereact/tabmenu';
-import React, { useState, useEffect } from 'react';
-
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
@@ -8,29 +7,24 @@ import Typography from '@mui/material/Typography';
 import courses from '../../images/Courses.jpg'
 import exams from '../../images/exams.jpg'
 import learning from '../../images/learning.jpg'
-import { useNavigate } from 'react-router-dom';
-import Menu from '../menu/menu'
+import Menu from '../menu/menu';
+
 export default function HomeStudent() {
-  const status = JSON.parse(localStorage.getItem('userInfo')).status;
-  const logout = () => {
-    navigate('/');
-    localStorage.clear();
-  }
+
   const navigate = useNavigate();
 
   const images = [
-
     {
       url: exams,
       title: 'Exam',
       width: '33%',
-      nav: '/test'
+      nav: '/tests'
     },
     {
       url: learning,
-      title: 'Learning',
+      title: 'Learning - My Courses',
       width: '34%',
-      nav: `/courses/${status}/my-courses`
+      nav: `/courses/students/my-courses`
     },
     {
       url: courses,
@@ -46,7 +40,6 @@ export default function HomeStudent() {
     [theme.breakpoints.down('sm')]: {
       width: '100% !important', // Overrides inline-style
       height: 100,
-
     },
     '&:hover, &.Mui-focusVisible': {
       zIndex: 1,
@@ -109,49 +102,40 @@ export default function HomeStudent() {
 
   return (
 
-    <div >
+    <div className='card'>
       <Menu />
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', width: '100%' }}> {/*minWidth: 300, */}
-        {images.map((image) => (
-          <ImageButton onClick={() => { navigate(`${image.nav}`) }}
-            focusRipple
-            key={image.title}
-            style={{
-              width: image.width,
-            }}
-          >
-            <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
-            <ImageBackdrop className="MuiImageBackdrop-root" />
-            <Image>
-              <Typography
-                component="span"
-                variant="subtitle1"
-                color="inherit"
-                sx={{
-                  position: 'relative',
-                  p: 4,
-                  pt: 2,
-                  pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
-                }}
-              >
-                {image.title}
-                <ImageMarked className="MuiImageMarked-root" />
-              </Typography>
-            </Image>
-          </ImageButton>
-        ))}
-      </Box>
+      <div className='card' style={{ marginTop: '10%' }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
+          {images.map((image) => (
+            <ImageButton onClick={() => { navigate(`${image.nav}`) }}
+              focusRipple
+              key={image.title}
+              style={{
+                width: image.width,
+              }}
+            >
+              <ImageSrc style={{ backgroundImage: `url(${image.url})` }} />
+              <ImageBackdrop className="MuiImageBackdrop-root" />
+              <Image>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  sx={{
+                    position: 'relative',
+                    p: 4,
+                    pt: 2,
+                    pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                  }}
+                >
+                  {image.title}
+                  <ImageMarked className="MuiImageMarked-root" />
+                </Typography>
+              </Image>
+            </ImageButton>
+          ))}
+        </Box>
+      </div>
     </div>
   );
 }

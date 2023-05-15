@@ -46,12 +46,11 @@ export default function CoursesForteacher(props) {
     }
 
     const message = (id) => {
-        async function mess(id) {
+        async function fetchData(id) {
             const res = await UseGetOneById('test_courses/course', id);
-            const numOfQuestions = res.data.numOfQuestions;
-            setnumOfQuestion(numOfQuestions);
+            setnumOfQuestion(res.data.numOfQuestions);
         }
-        mess(id);
+        fetchData(id);
     }
     const updateNumQuestin = (id) => {
         async function update(id) {
@@ -81,14 +80,15 @@ export default function CoursesForteacher(props) {
                             <i className="pi pi-bookmark"></i>
                             &nbsp;
                             {course.name}</div>
-                    </Tag>                    <div data-custom-id={course.id} className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
+                    </Tag>                    
+                    <div data-custom-id={course.id} className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
                         <Button label="lectures" severity="info" text onClick={() => navigate(`/lectures/${course.id}`)} />
                         <Button label="add lecture" severity="info" text onClick={() => navigate(`/upload-lectures/${course.id}`)} />
                         <Button label="questions" severity="info" text onClick={() => navigate(`/teacher/viewQuestion/${course.id}`)} />
                         <Button label="add questions" severity="info" text onClick={() => { addQuestion(course.id) }} />
                         <ConfirmDialog visible={visible} onHide={() => setVisible(false)} message={`There are ${numOfQuestion} questions. Do you want to add?`}
                             header="Confirmation" icon="pi pi-exclamation-triangle" accept={accept} reject={reject} />
-                        <Button onClick={() => { message(course.id); setVisible(true) }} label="num questions in test" />
+                        <Button onClick={() => { message(course.id); setVisible(true) }} label="Number Of Question Of Test" />
                         <Toast ref={toast} />
                     </div>
                 </div>
@@ -135,10 +135,9 @@ export default function CoursesForteacher(props) {
     };
 
     const header = () => {
-
         return (
             <>
-                <div style={{ display: 'flex', justifyContent: 'space-between', position: 'sticky', top: '0', zIndex: '9000'}}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', position: 'sticky', top: '0', zIndex: '9000' }}>
                     <span className="justify-content-end"><Button label="Open new course" icon='pi pi-plus' severity="info" raised onClick={() => navigate(`/addCourse`)} /></span>
                     <span className="justify-content-start"><DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)} /></span>
                 </div>

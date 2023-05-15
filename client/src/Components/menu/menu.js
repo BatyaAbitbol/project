@@ -58,7 +58,7 @@ export default function Menu(props) {
         {
             label: 'Exams',
             icon: 'pi pi-pencil',
-            command: () => { navigate('/test') }
+            command: () => { navigate('/tests') }
         }, {
             label: 'Logout',
             icon: 'pi pi-fw pi-sign-out',

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
-import {Tag} from 'primereact/tag';
+import { Tag } from 'primereact/tag';
 import { DataView } from 'primereact/dataview';
 import { Panel } from 'primereact/panel';
 import { Ripple } from 'primereact/ripple';
@@ -9,13 +9,17 @@ import { UseGetAllById } from '../../services/useGetAxios';
 const TeacherTests = (props) => {
 
     const [questions, setQuestions] = useState([]);
-
     const status = JSON.parse(localStorage.getItem('userInfo')).status;
     const teacherId = JSON.parse(localStorage.getItem('userInfo')).id;
+
     useEffect(() => {
         const fetchData = async () => {
-            const resQuestions = await UseGetAllById('tests/checkTest', teacherId);
-            console.log(resQuestions);
+            const resCourses = await UseGetAllById('courses/teacher', teacherId);
+            for (let i = 0; i < resCourses.data; i++) {
+                const resQuestions = await UseGetAllById('tests/checkTest', resCourses[i].id);
+                console.log(resQuestions);
+
+            }
         }
         fetchData();
     }, []);
@@ -30,7 +34,7 @@ const TeacherTests = (props) => {
                     <Tag
                         value={question.scores}
                     />
-                    <Button questionTestId={question.id} onClick={() => {}}/>
+                    <Button questionTestId={question.id} onClick={() => { }} />
                 </Panel>
             </div>
         );

@@ -91,7 +91,7 @@ export default function SignUpStudents(props) {
         console.log(res);
         if (res.status && res.status === 201) {
             localStorage.setItem('token', JSON.stringify(res.data.accessToken));
-            localStorage.setItem('studentInfo', JSON.stringify(res.data.data));
+            localStorage.setItem('userInfo', JSON.stringify(res.data.data));
             setMessage(<>
                 <h5>Registration Successful!</h5>
                 <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>

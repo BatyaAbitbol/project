@@ -44,11 +44,18 @@ const Courses = (props) => {
                                     <i className="pi pi-bookmark"></i>
                                     &nbsp;
                                     {course.name}</div>
-                            </Tag>                            {teacher && <div className="text-2xl font-bold">By {teacher.name}</div>}
+                            </Tag>
+                            {teacher && <div className="text-2xl font-bold">By {teacher.name}</div>}
                             <div className="text-2xl">{course.description}</div>
                         </div>
                         <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
                             <span className="text-2xl font-semibold">{course.price} $</span>
+                            {status == 'students' &&
+                                <Button
+                                    icon="pi pi-shopping-cart"
+                                    className="p-button-rounded"
+                                    onClick={(e) => { console.log('PayMENT'); navigate(`/payment/${course.id}`); }}
+                                />}
                         </div>
                     </div>
                 </div>
@@ -107,7 +114,9 @@ const Courses = (props) => {
 
     const header = () => {
         return (
-            <div className="flex justify-content-end">
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Button label="My Courses" onClick={(e) => navigate(`${status}/my-courses`)} />
+                <div style={{ textAlign: 'center', fontSize: '2.5rem', fontWeight: 'bold' }}>All Courses</div>
                 <DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)} />
             </div>
         );
@@ -115,12 +124,9 @@ const Courses = (props) => {
 
     return (
         <>
+            <Menu />
             <div className="card">
-                <Menu />
-                <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>All Courses</div>
-
                 <DataView value={courses} itemTemplate={itemTemplate} layout={layout} header={header()} />
-                <Button label="My Courses" onClick={(e) => navigate(`${status}/my-courses`)} />
             </div>
         </>
     )

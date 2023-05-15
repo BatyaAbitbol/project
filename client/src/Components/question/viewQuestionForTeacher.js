@@ -11,19 +11,14 @@ import Menu from '../menu/menu';
 import { Image } from 'primereact/image';
 
 export default function ViewQuestionForTeacher() {
-    
-    const msgs = useRef(null);
 
-    const msg1 =
-        <div >
-            In order to produce tests, you need to create a sufficiently large pool of questions,
-            so that the randomization of producing a test for each student will carried out with maximum efficiency.
-        </div>;
+    const msgs = useRef(null);
 
     useEffect(() => {
         msgs.current.show([
-            {sticky: true, severity: 'info', summary: '', detail: 'In order to produce tests, you need to create a sufficiently large pool of questions, that the randomization of producing a test for each student will carried out with maximum efficiency.', closable: false},
-            {sticky: true, severity: 'warn', summary: '', detail: 'Maximum number of questions per course is limited to 100.', closable: false}        ]);
+            { sticky: true, severity: 'info', summary: '', detail: 'In order to produce tests, you need to create a sufficiently large pool of questions, that the randomization of producing a test for each student will carried out with maximum efficiency.', closable: false },
+            { sticky: true, severity: 'warn', summary: '', detail: 'Maximum number of questions per course is limited to 100.', closable: false }
+        ]);
     }, []);
 
     const [questions, setQuestions] = useState([]);
@@ -101,10 +96,11 @@ export default function ViewQuestionForTeacher() {
                     <div className="card">
                         <DataTable value={questions} tableStyle={{ minWidth: '50rem' }}>
                             {columns.map((col, i) => (
-                                <Column key={col.field} field={col.field} header={col.header} onClick={() => {navigate('edit')}} />
+                                <Column key={col.field} field={col.field} header={col.header} onClick={() => { navigate('edit') }} />
                             ))}
                         </DataTable>
-                    </div>}
+                    </div>
+                }
                 <div className="card flex justify-content-center">
                     <Messages ref={msgs} />
                 </div>

@@ -1,4 +1,3 @@
-// 
 import { Button } from "primereact/button";
 import { useNavigate, useParams } from "react-router-dom";
 import { UseCreate } from "../../services/usePostAxios";
@@ -6,6 +5,7 @@ import Menu from '../menu/menu'
 import 'react-credit-cards-2/dist/es/styles-compiled.css'
 import React, { useState } from 'react';
 import Cards from 'react-credit-cards-2';
+
 const Payment = () => {
     const { courseId } = useParams();
 
@@ -53,54 +53,55 @@ const Payment = () => {
     const { numOfLecture } = useParams();
     const status = JSON.parse(localStorage.getItem('userInfo')).status
     return (
-        // <h2>{numOfLecture}</h2>
-        <div className="card flex flex-column align-items-center gap-3 ">
-           <Menu></Menu>
-            <Cards
-                number={state.number}
-                expiry={state.expiry}
-                cvc={state.cvc}
-                name={state.name}
-                focused={state.focus}
-            />
-            <form>
-                <input
-                    type="tel"
-                    name="number"
-                    placeholder="Card Number"
-                    value={state.number}
-                    onChange={handleInputChange}
-                    onFocus={handleInputFocus}
+        <div className="card">
+            <Menu />
+            <div className="card flex flex-column align-items-center gap-3 ">
+                <Cards
+                    number={state.number}
+                    expiry={state.expiry}
+                    cvc={state.cvc}
+                    name={state.name}
+                    focused={state.focus}
                 />
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="Name"
-                    value={state.name}
-                    onChange={handleInputChange}
-                    onFocus={handleInputFocus}
-                />
-                <input
-                    type="tel"
-                    name="expiry"
-                    placeholder="expiry"
-                    value={state.expiry}
-                    onChange={handleInputChange}
-                    onFocus={handleInputFocus}
-                />
-                <input
-                    type="tel"
-                    name="CVC"
-                    placeholder="CVC"
-                    value={state.cvc}
-                    onChange={handleInputChange}
-                    onFocus={handleInputFocus}
-                />
-                <Button label="pay" severity="info" raised onClick={() => {
-                    registerToCourse();
-                    navigate(`/courses/${status}/my-courses`)
-                }} />
-            </form>
+                <form>
+                    <input
+                        type="tel"
+                        name="number"
+                        placeholder="Card Number"
+                        value={state.number}
+                        onChange={handleInputChange}
+                        onFocus={handleInputFocus}
+                    />
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Name"
+                        value={state.name}
+                        onChange={handleInputChange}
+                        onFocus={handleInputFocus}
+                    />
+                    <input
+                        type="tel"
+                        name="expiry"
+                        placeholder="expiry"
+                        value={state.expiry}
+                        onChange={handleInputChange}
+                        onFocus={handleInputFocus}
+                    />
+                    <input
+                        type="tel"
+                        name="CVC"
+                        placeholder="CVC"
+                        value={state.cvc}
+                        onChange={handleInputChange}
+                        onFocus={handleInputFocus}
+                    />
+                    <Button label="pay" severity="info" raised onClick={() => {
+                        registerToCourse();
+                        navigate(`/courses/${status}/my-courses`)
+                    }} />
+                </form>
+            </div>
         </div>
     );
 }

@@ -19,7 +19,7 @@ export default function HomeTeacher(props) {
       url: examImg,
       title: 'Exam for checking',
       width: '33%',
-      nav: '/'
+      nav: '/tests'
     },
     {
       url: teachImage,
@@ -41,7 +41,6 @@ export default function HomeTeacher(props) {
     [theme.breakpoints.down('sm')]: {
       width: '100% !important', // Overrides inline-style
       height: 100,
-
     },
     '&:hover, &.Mui-focusVisible': {
       zIndex: 1,
@@ -104,8 +103,7 @@ export default function HomeTeacher(props) {
   return (
     <div className='card'>
       <Menu />
-      <div className='card' style={{marginTop: '10%'}}>
-        {/* <br></br><br></br> <br></br> <br></br> <br></br><br></br> <br></br>  <br></br><br></br><br></br><br></br><br></br><br></br><br></br> */}
+      <div className='card' style={{ marginTop: '10%' }}>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }} >
           {images.map((image) => (
             <ImageButton onClick={() => { navigate(`${image.nav}`) }}
@@ -136,7 +134,7 @@ export default function HomeTeacher(props) {
             </ImageButton>
           ))}
         </Box>
-        </div>
       </div>
+    </div>
   );
 }

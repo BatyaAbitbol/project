@@ -19,12 +19,14 @@ export default function Start(props) {
 
     return (
         <>
-            <div className="card flex justify-content-center">
-                <Image src={logo} alt="Image" width="90%" />
+            <div className="card" style={{textAlign: 'center'}}>
+                <Image src={logo} alt="Image" width="50%" />
+                <br />
+                <div className="card flex flex-wrap justify-content-center gap-3">
+                    <Button onClick={() => { navigate('/sign-in') }} label="Sign In" text raised />
+                    <Button onClick={() => { navigate('/sign-up') }} label="Sign Up" text raised />
+                </div>
             </div>
-            <div className="card flex flex-wrap justify-content-center gap-3">
-                <Button onClick={() => { navigate('/sign-in') }} label="Sign In" text raised />
-                <Button onClick={() => { navigate('/sign-up') }} label="Sign Up" text raised />
-            </div>
+
         </>)
 }

@@ -5,6 +5,7 @@ const question_test_dal = require('../dal/question_tests');
 const answer_dal = require('../dal/answers');
 const question_dal = require('../dal/questions');
 const course_student_ctrl = require('./course_student');
+const { log } = require('console');
 
 exports.findAll = async (req, res) => {
     await dal.findAll()
@@ -21,7 +22,6 @@ exports.findAllByStudentId = async (req, res) => {
         let tests = [];
         console.log(coursesForStudent);
         coursesForStudent.map(async e => {
-            console.log('************************************');
             console.log(e.id);
             dal.findOneByCourseStudentId({ where: { courseStudentId: e.id } })
                 .then(test => { console.log(test); tests.push(test); })
@@ -223,14 +223,11 @@ exports.getTestsToCheck = async (req, res) => {
     let arrTest = [];
     const courseStudents = await course_student_dal.findAllByCourseId(courseId);//מביא את כל התלמידים שרשומים לקורס המסויים
     if (!courseStudents)
-        return res.status(500).json({ message: `Courses for students for courseID: ${courseId}` })
-        
+        return res.status(500).json({ message: `Courses for students for courseID: ${courseId}` });
     for (let i = 0; i < courseStudents.length; i++) {
         const test = await dal.findOne({ where: { courseStudentId: courseStudents[i].id, isSubmitted: true } })//מביא את המבחן של התלמיד המסויים
         if (test) {
             const questionsTest = await question_test_dal.findAll({ where: { testId: test.id, isChecked: 0 } })//מחזיר את השאלות שאינן בדוקות עוד של המבחן של התלמיד
-            console.log('questionsTest ******************');
-            console.log(questionsTest);
             if (!questionsTest)
                 return res.status(204);
             console.log(questionsTest);
@@ -240,23 +237,29 @@ exports.getTestsToCheck = async (req, res) => {
                 if (question)
                     questions.push(questionsTest[i]);
             }
-            console.log(questionsTest);
             for (let i = 0; i < questions.length; i++) {
                 const question = await question_dal.findOne({ where: { id: questions[i].questionId } });
                 if (question)
                     arrTest.push(question);
                 const answer = await answer_dal.findOne({ where: { questionId: question.id, isCorrect: true } });
-                if (answer)
-                    arrTest.push(answer);
+                if (answer);
+                arrTest.push(answer);
+
+                console.log('**************question')
+                console.log(question);
             }
+
             while (i < questions.length - 1 && questions[i].questionId == questions[i + 1].questionId) {
                 arrTest.push(questions[i++]);
             }
             console.log(`ArrTest`);
             console.log(arrTest);
             arrTest.push(questions[i]);
+            return res.send(arrTest)
+
         }
     }
+    console.log('***********************questions');
     console.log(questions);
     res.send(arrTest);//מחזיר את מערך המבחנים של הקורס 
 };

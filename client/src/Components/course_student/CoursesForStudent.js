@@ -1,11 +1,10 @@
 import { UseGetAll, UseGetAllById, UseGetOneById } from "../../services/useGetAxios";
 import React, { useState, useEffect, useContext } from 'react';
-import { Button } from 'primereact/button';
+import { Image } from 'primereact/image';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { useNavigate } from 'react-router-dom';
-import Lectures from "../lecture/Lecture";
-import UserContext from "../UserContext";
 import Menu from "../menu/menu";
+import coursesImage from '../../images/OnlineCourses.jpg';
 
 export default function CoursesForStudent(props) {
 
@@ -41,10 +40,10 @@ export default function CoursesForStudent(props) {
         return (
             <div className="col-12">
                 <div data-custom-id={course.id} className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
-                    <img data-custom-id={course.id} className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={course.image} alt={course.name} />
+                    <img data-custom-id={course.id} className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={coursesImage} alt={course.name} />
                     <div data-custom-id={course.id} className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
                         onClick={(e) => {
-                            const courseId = course.id; //e.target.attributes[0].nodeValue;
+                            const courseId = course.id;
                             setCourse(courseId);
                         }}>
                         <div className="flex flex-column align-items-center sm:align-items-start gap-3" >
@@ -65,7 +64,7 @@ export default function CoursesForStudent(props) {
                         const courseId = course.id;
                         setCourse(courseId);
                     }}>
-                        <img className="w-9 shadow-2 border-round" src={course.image} alt={course.name} />
+                        <img className="w-9 shadow-2 border-round" src={coursesImage} alt={course.name} />
                         <div className="text-2xl font-bold">{course.name}</div>
                     </div>
                 </div>
@@ -77,7 +76,6 @@ export default function CoursesForStudent(props) {
         if (!course) {
             return;
         }
-
         if (layout === 'list') return listItem(course);
         else if (layout === 'grid') return gridItem(course);
     };
@@ -93,22 +91,21 @@ export default function CoursesForStudent(props) {
     let display;
     if (course != -1) {
         navigate(`/lectures/${course}`)
-        // display = <Lectures courseId={course} />;
     }
     else {
         if (typeof data !== 'string') {
             display = <div className="card">
                 <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>My Courses</div>
-                <DataView value={data} itemTemplate={itemTemplate} layout={layout} header={header()} />
+                <DataView value={data} itemTemplate={itemTemplate} layout={layout} />
             </div>
         }
         else display = <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>{data}</div>
     }
     return (
         <>
-        <div className="card">
-        <Menu />
-            {display}
+            <Menu />
+            <div className="card" style={{height: '100%'}}>
+                {display}
             </div>
         </>
     )

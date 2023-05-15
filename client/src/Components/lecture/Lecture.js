@@ -1,17 +1,20 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import { Button } from 'primereact/button';
 import { Badge } from 'primereact/badge';
 import { Carousel } from 'primereact/carousel';
 import { Dialog } from 'primereact/dialog';
+import { Image } from 'primereact/image'
 import { useNavigate, useParams } from 'react-router-dom';
-import { UseGetAll, UseGetAllById, UseGetOneById, UseGetOneByIdAndBody } from "../../services/useGetAxios";
+import { UseGetAllById, UseGetOneById, UseGetOneByIdAndBody } from "../../services/useGetAxios";
 import { Task } from '../task/Task';
 import { ProgressBar } from 'primereact/progressbar';
 import UserContext from '../UserContext';
 import Video from '../../Video';
 import Menu from '../menu/menu';
 import { UseUpdate } from '../../services/UsePutAxios';
+import lecturesImage from '../../images/OnlineLectures.gif';
+import { Messages } from 'primereact/messages';
 
 const Lectures = (props) => {
 
@@ -35,6 +38,8 @@ const Lectures = (props) => {
     const [addLectures, setAddLectures] = useState(<></>);
     const [visibleTest, setVisibleTest] = useState(false);
     const [timeToTest, setTimeToTest] = useState(0);
+    const [visibleMsg, setvisibleMsg] = useState(false);
+
 
     const navigate = useNavigate();
 
@@ -55,12 +60,16 @@ const Lectures = (props) => {
             numScroll: 1
         }
     ];
+    const msgs = useRef(null);
 
     useEffect(() => {
+        let lecturesNum = 0;
         const fetchData = async () => {
             const resCourseStudent = await UseGetOneByIdAndBody('course_students/student/course', id, { courseId: courseId })
             const resCourse = await UseGetOneById('courses', courseId);
             const resLectures = await UseGetAllById('lectures/course', courseId);
+
+            lecturesNum = resCourse.data.lecturesNum;
 
             setCourseStudent(resCourseStudent.data);
             setCourse(resCourse.data);
@@ -88,9 +97,23 @@ const Lectures = (props) => {
             fetchData();
     }, [next]);
 
+    let count = 0;
     useEffect(() => {
         if (status == 'teachers' && course && numOfLectures < course.lecturesNum) {
-            setAddLectures(<Button label='Add lectures' onClick={() => { navigate(`/upload-lectures/${courseId}`) }} />);
+            setAddLectures(<>
+                {numOfLectures == 0 && <div className='card' style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold', color: 'gray' }}>
+                    Lectures Of {course.name} Course
+                    <br />
+                    <Image src={lecturesImage} width='60%' />
+                </div>}
+                <Button label='Add lectures' onClick={() => { navigate(`/upload-lectures/${courseId}`) }} />
+            </>);
+            if (!visibleMsg)
+                msgs.current.show([
+                    { sticky: true, severity: 'info', detail: `You should upload lectures to this course.`, closeable: false },
+                    { sticky: true, severity: 'warn', detail: `This course is limited to ${course.lecturesNum} lectures. There are already ${numOfLectures} lectures in this course.` }
+                ])
+            setvisibleMsg(true);
         }
         const fetchData = async () => {
             const resTestToCourse = await UseGetOneById('test_courses/course', course.id);
@@ -157,13 +180,13 @@ const Lectures = (props) => {
         );
     };
 
-    console.log(timeToTest);
     return (
         <>
             <Menu />
-            <>{numOfLectures !== 0 &&
-                <>
-                    <div className="card">
+            <div className="card">
+
+                <>{numOfLectures !== 0 &&
+                    <>
                         <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold', color: 'gray' }}>
                             Lectures Of {course.name} Course
                             <br />
@@ -174,25 +197,27 @@ const Lectures = (props) => {
 
                         </div>
                         <Carousel value={lectures} numVisible={3} numScroll={3} responsiveOptions={responsiveOptions} itemTemplate={LectureTemplate} />
-                    </div>
+                    </>
+                }
+                    {status == 'teachers' &&
+                        <div className='card'>
+                            {addLectures}
+                            {course && <Messages ref={msgs} />}
+                        </div>}
+                    {visibleTest &&
+                        <Dialog visible={visibleTest} onHide={() => setVisibleTest(false)} position="top" footer={dialogFooter} showHeader={false} breakpoints={{ '960px': '80vw' }} style={{ width: '30vw' }}>
+                            <div className="flex align-items-center flex-column pt-6 px-3">
+                                <i className="pi pi-exclamation-triangle" style={{ fontSize: '5rem', color: 'var(--red-400)' }}></i>
+                                <h3>Pay Attention!</h3>
+                                <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
+                                    After confirming you would move to the test and time is limited to {timeToTest}.
+                                    <br />Are you ready to start?
+                                </p>
+                            </div>
+                        </Dialog>}
                 </>
-            }
-                {addLectures}
-                {visibleTest &&
-                    <Dialog visible={visibleTest} onHide={() => setVisibleTest(false)} position="top" footer={dialogFooter} showHeader={false} breakpoints={{ '960px': '80vw' }} style={{ width: '30vw' }}>
-                        <div className="flex align-items-center flex-column pt-6 px-3">
-                            <i className="pi pi-exclamation-triangle" style={{ fontSize: '5rem', color: 'var(--red-400)' }}></i>
-                            <h3>Pay Attention!</h3>
-                            <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
-                                After confirming you would move to the test and time is limited to {timeToTest}.
-                                <br />Are you ready to start?
-                            </p>
-                        </div>
-                    </Dialog>}
-            </>
+            </div>
         </>
     )
 }
 export default Lectures;
-
-// TEST STUDENT

@@ -10,6 +10,8 @@ import { isDoneTask } from "../../services/useGetAxios";
 
 export function Task(props) {
 
+    const status = JSON.parse(localStorage.getItem('userInfo')).status;
+
     const [task, setTask] = useState(null);
     const [text, setText] = useState('');
     const [error, setError] = useState(false);
@@ -32,7 +34,7 @@ export function Task(props) {
             const res = await isDoneTask('task_course_student/isDone', props.courseStudentId, task.id);
             setIsSubmitted(res.data)
         }
-        if (task)
+        if (status == 'students' && task)
             fetchData();
     }, [task])
 
@@ -79,7 +81,6 @@ export function Task(props) {
                             {task && task.taskFile}
                         </p>
                         <br />
-
                         <Editor value={text} onTextChange={(e) => { console.log(e.textValue);setText(e.textValue) }} style={{ height: '320px' }} />
                         {error && <small className="p-error">You can not submit empty file.</small>}
                         <div className="card flex flex-wrap justify-content-center gap-3">
