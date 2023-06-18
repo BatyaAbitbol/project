@@ -20,7 +20,7 @@ export default function Start(props) {
     return (
         <>
             <div className="card" style={{textAlign: 'center'}}>
-                <Image src={logo} alt="Image" width="50%" />
+                <Image src={logo} alt="Image" width="30%" />
                 <br />
                 <div className="card flex flex-wrap justify-content-center gap-3">
                     <Button onClick={() => { navigate('/sign-in') }} label="Sign In" text raised />

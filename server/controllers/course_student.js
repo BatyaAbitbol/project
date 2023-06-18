@@ -66,7 +66,7 @@ exports.findByStudentAndCourseId = async (req, res) => {
 }
 exports.findOne = async (req, res) => {
     const id = req.params.id;
-    await dal.findOne(id)
+    await dal.findOneById(id)
         .then(data => {
             if (data)
                 res.send(data);

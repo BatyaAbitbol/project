@@ -5,7 +5,6 @@ const question_test_dal = require('../dal/question_tests');
 const answer_dal = require('../dal/answers');
 const question_dal = require('../dal/questions');
 const course_student_ctrl = require('./course_student');
-const { log } = require('console');
 
 exports.findAll = async (req, res) => {
     await dal.findAll()
@@ -22,6 +21,7 @@ exports.findAllByStudentId = async (req, res) => {
         let tests = [];
         console.log(coursesForStudent);
         coursesForStudent.map(async e => {
+            console.log('************************************');
             console.log(e.id);
             dal.findOneByCourseStudentId({ where: { courseStudentId: e.id } })
                 .then(test => { console.log(test); tests.push(test); })
@@ -110,6 +110,8 @@ exports.createTest = async (req, res) => {
         console.log(questionForTest);
         questionsTest.push({ questionTest: questionForTest, question: questions[idx[i]] });
     }
+    console.log('maxScores --------------');
+    console.log(maxScores);
     // עדכון המבחן שנוצר בניקוד המקסימלי
     const testUpdateMaxScores = await dal.update({ id: test.id, courseStudentId: test.courseStudentId, date: test.date, scores: test.scores, maxScores: maxScores, secureVideo: test.secureVideo, isSubmitted: test.isSubmitted }, test.id);
     if (!testUpdateMaxScores) res.status(401).send({ message: `Failed update during creation test.` })
@@ -132,20 +134,24 @@ const autoCheckTest = async (req, res) => {
         if (question.isClosed) {
             const studentAnswer = questionsTest[i].answerText;
             const correctAnswer = await answer_dal.findCorrectAnswer(question.id);
+            console.log("correctAnswer");
+            console.log(correctAnswer);
             if (!correctAnswer)
                 return res.status(504).send({ message: `Cannot find correct answer. Failed Auto Check.` })
             else if (correctAnswer.text && correctAnswer.text == studentAnswer)
                 scores += question.scores;
-        };
+        
         await question_test_dal.update({ id: questionsTest[i].id, testId: questionsTest[i].testId, questionId: questionsTest[i].questionId, answerText: questionsTest[i].answerText, isChecked: true },
             questionsTest[i].id);
+        };
     }
-    scores = scores / test.maxScores * 100;
-    console.log(`scores: ${scores}`);
-    const update = await dal.update({ id: test.id, courseStudentId: test.courseStudentId, date: test.date, scores: scores, maxScores: test.maxScores, secureVideo: test.secureVideo, isSubmitted: test.isSubmitted },
+    console.log(scores);
+    let _scores = (scores / test.maxScores) * 100;
+    console.log(`scores: ${_scores}`);
+    const update = await dal.update({ id: test.id, courseStudentId: test.courseStudentId, date: test.date, scores: _scores, maxScores: test.maxScores, secureVideo: test.secureVideo, isSubmitted: test.isSubmitted },
         test.id);
     console.log(update.data);
-    if (update == 1) return res.send({ message: `Your scores: ${scores}` })
+    if (update == 1) return res.send({ message: `Your scores: ${_scores}` })
     else return res.status(500).send(`error in Checking this test`);
 }
 
@@ -155,7 +161,6 @@ exports.submitTest = async (req, res) => {
     if (!questionsTest)
         res.status(400).send({ message: `Cannot submit test.` })
     else {
-        console.log(questionsTest);
         const testId = questionsTest[0].testId; // קוד רשומת המבחן לקורס לתלמיד
         for (let i = 0; i < questionsTest.length; i++) {
             await question_test_dal.update(questionsTest[i], questionsTest[i].id)
@@ -164,14 +169,15 @@ exports.submitTest = async (req, res) => {
             .then(async test => {
                 await dal.update({ id: test.id, courseStudentId: test.courseStudentId, date: test.date, scores: test.scores, maxScores: test.maxScores, secureVideo: secureVideo, isSubmitted: true },
                     testId)
-                    .then(async num => {
-                        console.log(num);
-                        if (num == 1) {
+                    .then(num => {
+                        // console.log(num);
+                        // if (num == questionsTest.length) {
                             // send to service of mark honesty
                             autoCheckTest(req, res);
-                        }
-                        else return res.status(500).send(`Failed Submition`)
+                        // }
+                        // else return res.status(500).send(`Failed Submition`)
                     })
+                    .catch(err => res.status(500).send({message: err.message}));
             })
     }
 }
@@ -223,11 +229,14 @@ exports.getTestsToCheck = async (req, res) => {
     let arrTest = [];
     const courseStudents = await course_student_dal.findAllByCourseId(courseId);//מביא את כל התלמידים שרשומים לקורס המסויים
     if (!courseStudents)
-        return res.status(500).json({ message: `Courses for students for courseID: ${courseId}` });
+        return res.status(500).json({ message: `Courses for students for courseID: ${courseId}` })
+        
     for (let i = 0; i < courseStudents.length; i++) {
         const test = await dal.findOne({ where: { courseStudentId: courseStudents[i].id, isSubmitted: true } })//מביא את המבחן של התלמיד המסויים
         if (test) {
             const questionsTest = await question_test_dal.findAll({ where: { testId: test.id, isChecked: 0 } })//מחזיר את השאלות שאינן בדוקות עוד של המבחן של התלמיד
+            console.log('questionsTest ******************');
+            console.log(questionsTest);
             if (!questionsTest)
                 return res.status(204);
             console.log(questionsTest);
@@ -237,29 +246,23 @@ exports.getTestsToCheck = async (req, res) => {
                 if (question)
                     questions.push(questionsTest[i]);
             }
+            console.log(questionsTest);
             for (let i = 0; i < questions.length; i++) {
                 const question = await question_dal.findOne({ where: { id: questions[i].questionId } });
                 if (question)
                     arrTest.push(question);
                 const answer = await answer_dal.findOne({ where: { questionId: question.id, isCorrect: true } });
-                if (answer);
-                arrTest.push(answer);
-
-                console.log('**************question')
-                console.log(question);
+                if (answer)
+                    arrTest.push(answer);
             }
-
             while (i < questions.length - 1 && questions[i].questionId == questions[i + 1].questionId) {
                 arrTest.push(questions[i++]);
             }
             console.log(`ArrTest`);
             console.log(arrTest);
             arrTest.push(questions[i]);
-            return res.send(arrTest)
-
         }
     }
-    console.log('***********************questions');
     console.log(questions);
     res.send(arrTest);//מחזיר את מערך המבחנים של הקורס 
 };

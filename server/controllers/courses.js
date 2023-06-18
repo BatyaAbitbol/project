@@ -1,16 +1,12 @@
 const dal = require('../dal/courses');
-const imageService = require('../services/loadImages');
 
 exports.create = async (req, res) => {
-
     if (!req.body) {
         res.status(400).send({
             message: "Content can't be empty!"
         });
         return;
     }
-    if(req.body.img) 
-        await imageService.image(req.body.img);
     await dal.create(req.body)
         .then(data => { res.send(data); })
         .catch(err => {

@@ -2,9 +2,9 @@ import { Button } from "primereact/button";
 import { useNavigate, useParams } from "react-router-dom";
 import { UseCreate } from "../../ser/usePostAxios";
 import Menu from '../menu/menu'
-import 'react-credit-cards-2/dist/es/styles-compiled.css'
+// import 'react-credit-cards-2/dist/es/styles-compiled.css'
 import React, { useState } from 'react';
-import Cards from 'react-credit-cards-2';
+// import Cards from 'react-credit-cards-2';
 import { useParams } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 

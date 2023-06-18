@@ -20,15 +20,16 @@ import CoursesForStudent from './Components/course_student/CoursesForStudent';
 import { Task } from './Components/task/Task';
 import AddCourse from './Components/course/addCourse';
 import UploadLecture from './Components/lecture/UploadLecture';
-import  Payment from './Components/payment/payment';
+import  Payment from './Components/payment/Payment';
 import UserProvider from './Components/UserProvider';
-import Check from './Components/Check';
-import StudentTest from './Components/Test/StudentTest';
+import CreateTest from './Components/Test/CreateTest'
 import CoursesForTeachers from './Components/course_teacher/CoursesForTeacher';
 import Test from './Components/Test/test'
 import PaymentTeacher from './Components/payment/paymentTeacher';
 import ViewQuestionForTeacher from './Components/question/viewQuestionForTeacher';
 import TeacherTests from './Components/Test/TeacherTests';
+import StudentTest from './Components/Test/StudentTest';
+import TestStudent from './Components/Test/TestStudent';
 
 function App() {
 
@@ -65,7 +66,9 @@ function App() {
           <Route exact path='addCourse/payment/:numLectures' element={<PaymentTeacher />} />
           <Route exact path='/teacher/viewQuestion/:courseId' element={<ViewQuestionForTeacher />} />
           <Route exact path='questions/add/:courseId' element={<Test />} />
-          <Route exact path='/test/:courseStudentId' element={<StudentTest />} />
+          <Route exact path='/test/:courseStudentId' element={<CreateTest />} />
+          <Route exact path='/start-test/:courseStudentId' element={<TestStudent />} />
+          <Route exact path='test/start-test' element={<StudentTest />}/>
           {/* מבחנים בדוקים ואו בתהליך בדיקה */}
           <Route exact path='/tests' element={<TeacherTests />} />
           <Route exact path='/course/payment' element={<h1>Buy a course & Pay</h1>} />

@@ -36,8 +36,6 @@ const Lectures = (props) => {
     const [numOfLectures, setNumOfLectures] = useState(0);
     const [canTest, setCanTest] = useState(false);
     const [addLectures, setAddLectures] = useState(<></>);
-    const [visibleTest, setVisibleTest] = useState(false);
-    const [timeToTest, setTimeToTest] = useState(0);
     const [visibleMsg, setvisibleMsg] = useState(false);
 
 
@@ -115,27 +113,7 @@ const Lectures = (props) => {
                 ])
             setvisibleMsg(true);
         }
-        const fetchData = async () => {
-            const resTestToCourse = await UseGetOneById('test_courses/course', course.id);
-            setTimeToTest(resTestToCourse.data.hoursOfTest);
-            console.log(resTestToCourse)
-        }
-        if (course)
-            fetchData();
     }, [course])
-
-    const confirm = () => {
-        navigate(`/test/${courseStudent.id}`);
-        localStorage.setItem('startHour', new Date().toLocaleTimeString());
-        setVisibleTest(false);
-    }
-
-    const dialogFooter = <div className="flex flex-column align-items-center" style={{ flex: '1' }}>
-        <div className="flex gap-2">
-            <Button onClick={() => confirm()} type="button" label="Confirm" className="p-button-success w-6rem" />
-            <Button onClick={(e) => setVisibleTest(false)} type="button" label="Cancel" className="p-button-warning w-6rem" />
-        </div>
-    </div>
 
     const LectureTemplate = (lectureByCourse) => {
         const [hasTask, setHasTask] = useState(false);
@@ -190,7 +168,7 @@ const Lectures = (props) => {
                         <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold', color: 'gray' }}>
                             Lectures Of {course.name} Course
                             <br />
-                            {canTest && <Button label='TEST' onClick={(e) => { setVisibleTest(true) }} />}
+                            {canTest && <Button label='TEST' onClick={(e) => { navigate(`/test/${courseStudent.id}`) }} />}
                         </div>
                         <div className="card">
                             {next > 1 && (next - 1) / numOfLectures * 100 < 100 && <ProgressBar value={(next - 1) / numOfLectures * 100}></ProgressBar>}
@@ -204,17 +182,6 @@ const Lectures = (props) => {
                             {addLectures}
                             {course && <Messages ref={msgs} />}
                         </div>}
-                    {visibleTest &&
-                        <Dialog visible={visibleTest} onHide={() => setVisibleTest(false)} position="top" footer={dialogFooter} showHeader={false} breakpoints={{ '960px': '80vw' }} style={{ width: '30vw' }}>
-                            <div className="flex align-items-center flex-column pt-6 px-3">
-                                <i className="pi pi-exclamation-triangle" style={{ fontSize: '5rem', color: 'var(--red-400)' }}></i>
-                                <h3>Pay Attention!</h3>
-                                <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
-                                    After confirming you would move to the test and time is limited to {timeToTest}.
-                                    <br />Are you ready to start?
-                                </p>
-                            </div>
-                        </Dialog>}
                 </>
             </div>
         </>

@@ -8,9 +8,8 @@ router.route('/login')
 
 router.route('/course/:id')
     .get(verifyJWT, teacher.findCoursesByTeacherId);
-
+    
 router.route('/:id')
-    .get(verifyJWT, teacher.findById)
     .delete(verifyJWT, teacher.delete);
 
 router.route('/')

@@ -102,7 +102,7 @@ export default function HomeStudent() {
 
   return (
 
-    <div className='card'>
+    <div className='card' style={{height: '100%'}}>
       <Menu />
       <div className='card' style={{ marginTop: '10%' }}>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
