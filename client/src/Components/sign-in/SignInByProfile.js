@@ -7,7 +7,7 @@ import { Form, Field } from "react-final-form";
 import { Password } from 'primereact/password';
 import { UseSignIn } from "../../services/useGetStudent";
 import { useNavigate } from 'react-router-dom';
-import UserContext from '../UserContext';
+// import UserContext from '../UserContext';
 
 export function SignInByProfile(props) {
 
@@ -67,6 +67,9 @@ export function SignInByProfile(props) {
         }
         try {
             const res = await UseSignIn(props.status, obj);
+
+            console.log(res);
+
             if (res.status && res.status === 200) {
                 localStorage.setItem('token', JSON.stringify(res.data.accessToken));
                 localStorage.setItem('userInfo', JSON.stringify(res.data.userInfo));
