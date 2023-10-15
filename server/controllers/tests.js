@@ -46,7 +46,7 @@ exports.findByCourseStudent = async (req, res) => {
     await dal.findOne({ where: { courseStudentId: id } })
         .then(data => {
             if (data)
-                res.send(data);
+                res.status(200).send(data);
             else res.status(500).send({ message: `Cannot find checked_test by courseStudentId: ${id}` })
         })
 }
@@ -264,7 +264,7 @@ exports.getTestsToCheck = async (req, res) => {
         }
     }
     console.log(questions);
-    res.send(arrTest);//מחזיר את מערך המבחנים של הקורס 
+    res.send(arrTest); //מחזיר את מערך המבחנים של הקורס 
 };
 
 exports.canTest = async (req, res) => {

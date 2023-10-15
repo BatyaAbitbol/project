@@ -14,7 +14,7 @@ router.route('/question/:id')
 router.route('/:id')
     .get(question_test.findOne)
     .delete(question_test.delete)
-    .post(question_test.createTest)
+    // .post(question_test.createTest)
 
 router.route('/')
     .get(question_test.findAll)

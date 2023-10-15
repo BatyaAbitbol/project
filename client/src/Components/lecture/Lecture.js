@@ -8,6 +8,7 @@ import { Image } from 'primereact/image'
 import { useNavigate, useParams } from 'react-router-dom';
 import { UseGetAllById, UseGetOneById, UseGetOneByIdAndBody } from "../../services/useGetAxios";
 import { Task } from '../task/Task';
+import { TaskTeacher } from '../task/TaskTeacher';
 import { ProgressBar } from 'primereact/progressbar';
 import UserContext from '../UserContext';
 import Video from '../../Video';
@@ -32,6 +33,7 @@ const Lectures = (props) => {
     const [courseStudent, setCourseStudent] = useState({});
     const [visible, setVisible] = useState(false);
     const [lectureId, setLectureId] = useState(null);
+    const [lectureNum, setLectureNum] = useState(null);
     const [next, setNext] = useState(0);
     const [numOfLectures, setNumOfLectures] = useState(0);
     const [canTest, setCanTest] = useState(false);
@@ -118,14 +120,18 @@ const Lectures = (props) => {
     const LectureTemplate = (lectureByCourse) => {
         const [hasTask, setHasTask] = useState(false);
 
-        useEffect(() => {
-            const fetchData = async () => {
-                const resHasTask = await UseGetOneById('tasks/lecture', lectureByCourse.id);
-                if (resHasTask.status && resHasTask.status === 204) setHasTask(false);
-                else setHasTask(true);
-            }
-            fetchData();
-        }, []);
+        // useEffect(() => {
+        //     const fetchData = async () => {
+        //         const resHasTask = await UseGetOneById('tasks/lecture', lectureByCourse.id);
+        //         console.log(resHasTask);
+        //         if (resHasTask.response && resHasTask.response.status && resHasTask.response.status === 404) setHasTask(false);
+        //         else setHasTask(true);
+        //     }
+        //     try {
+        //         fetchData();
+        //     }
+        //     catch (err) { }
+        // }, []);
 
         return (
             <div className="border-1 surface-border border-round m-2 text-center py-5 px-3">
@@ -143,15 +149,18 @@ const Lectures = (props) => {
                     onPlay={() => console.log('MP4 Started Playing')}
                     onPause={() => console.log('MP4 Stopped Playing')}
                 ></video>
-                {hasTask &&
+
+                {//hasTask &&
                     <div className="mt-5 flex flex-wrap gap-2 justify-content-center">
                         <Button id={lectureByCourse.id} icon="pi pi-file" className="p-button p-button-rounded" label="task" severity="info"
                             onClick={(e) => {
                                 setLectureId(lectureByCourse.id);
+                                setLectureNum(lectureByCourse.lectureNum);
                                 setVisible(true);
                             }} />
-                        <Dialog visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
-                            <Task lectureId={lectureId} courseStudentId={courseStudent.id} setVisible={setVisible} />
+                        <Dialog visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)} maximizable >
+                            {status == 'students' && <Task lectureId={lectureId} courseStudentId={courseStudent.id} setVisible={setVisible} />}
+                            {status == 'teachers' && <TaskTeacher lectureId={lectureId} lectureNum={ lectureNum} courseId={courseId} setVisible={setVisible} />}
                         </Dialog>
                     </div>}
             </div>

@@ -30,6 +30,7 @@ import ViewQuestionForTeacher from './Components/question/viewQuestionForTeacher
 import TeacherTests from './Components/Test/TeacherTests';
 import StudentTest from './Components/Test/StudentTest';
 import TestStudent from './Components/Test/TestStudent';
+import { TestTeacher } from './Components/Test/TestTeacher';
 
 function App() {
 
@@ -70,7 +71,8 @@ function App() {
           <Route exact path='/start-test/:courseStudentId' element={<TestStudent />} />
           <Route exact path='test/start-test' element={<StudentTest />}/>
           {/* מבחנים בדוקים ואו בתהליך בדיקה */}
-          <Route exact path='/tests' element={<TeacherTests />} />
+          {/* <Route exact path='/tests' element={<TeacherTests />} /> */}
+          <Route exact path='/tests' element={<TestTeacher />} />
           <Route exact path='/course/payment' element={<h1>Buy a course & Pay</h1>} />
           <Route exact path='/task' element={<Task />} />
           <Route exact path='/*' element={<h1>Not Found, Sorry 😒</h1>} />

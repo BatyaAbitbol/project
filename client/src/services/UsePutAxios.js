@@ -6,7 +6,7 @@ const headersAuthorization = {headers: {Authorization: `Bearer ${JSON.parse(loca
 export async function UseUpdate(url, obj) {
     try {
         const res = await axios.put(`${URL}/${url}` , obj,  headersAuthorization)
-        console.log(res);
+        // console.log(res);
         return res;
     } catch (error) {
         return error;

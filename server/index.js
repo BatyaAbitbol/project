@@ -4,7 +4,7 @@ const cors = require("cors");
 const express = require('express');
 
 const answerRouter = require('./routes/answers');
-// const autoTestRouter = require('./routes/question_tests');
+const questionTestRouter = require('./routes/question_tests');
 const categoryRouter = require('./routes/categories');
 const testRouter = require('./routes/tests');
 const courseRouter = require('./routes/courses');
@@ -29,7 +29,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/answers', answerRouter);
-// app.use('/checked_tests', testRouter);
+app.use('/question_tests', questionTestRouter);
 app.use('/categories', categoryRouter);
 app.use('/courses', courseRouter);
 app.use('/course_students', courseStudentRouter);

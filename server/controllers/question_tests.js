@@ -31,7 +31,7 @@ exports.findAllByQuestionId = async (req, res) => {
     await dal.findAllByQuestionId(questionId)
         .then(data => {
             if (data)
-                res.send(data);
+                res.status(200).send(data);
             else res.status(500).send({ message: `Some Errors occured while retriving answers for students.` })
         })
 }

@@ -9,13 +9,14 @@ module.exports = (sequelize, Sequelize) => {
             lectureId: {
                 type: Sequelize.INTEGER,
                 allowNull: false,
+                unique: true,
                 references: {
                     model: 'lectures',
                     key: 'id'
                 }
             },
             submitLastDate: Sequelize.INTEGER, //number of days after registering to course
-            taskFile: Sequelize.STRING(255) //save file - how?
+            taskFile: Sequelize.STRING(1000) //save file - how?
         },
         {
             freezeTableName: true,

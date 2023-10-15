@@ -2,11 +2,11 @@ const dal = require('../dal/tasks');
 
 exports.create = async (req, res) => {
     if (!req.body) {
-        res.status(400).send({ message: 'Content can not be empty!' });
+        res.status(204).send({ message: 'Content can not be empty!' });
         return;
     }
     await dal.create(req.body)
-        .then(data => { res.send(data) })
+        .then(data => { res.status(201).send(data) })
         .catch(err => { res.status(500).send(err.message) });
 }
 exports.findAll = async (req, res) => {
@@ -20,7 +20,7 @@ exports.findByLectureId = async (req, res) => {
         .then(data => {
             if (data)
                 res.send(data);
-            else res.status(204).send({ message: `Cannot find task by lectureId ${id}` });
+            else res.status(404).send({ message: `Cannot find task by lectureId ${id}` });
         }).catch(err => {
             res.status(400).send({message: err.message})
         });
@@ -40,7 +40,7 @@ exports.update = async (req, res) => {
         .then(num => {
             if (num == 1)
                 res.send({ message: "Task was updated successfully." })
-            else res.send({
+            else res.status(500).send({
                 message:
                     `Cannot update task with id ${id}. Maybe task was not found or req.body is empty!`
             })
