@@ -1,10 +1,9 @@
 import { Button } from "primereact/button";
 import { useNavigate, useParams } from "react-router-dom";
 import { UseCreate } from "../../services/usePostAxios";
-import Menu from '../menu/menu'
-// import 'react-credit-cards-2/dist/es/styles-compiled.css'
+import Menu from '../menu/menu';
 import React, { useState } from 'react';
-// import Cards from 'react-credit-cards-2';
+// import Cards from 'react-credit-cards';
 
 const Payment = () => {
     const { courseId } = useParams();
@@ -56,13 +55,13 @@ const Payment = () => {
         <div className="card">
             <Menu />
             <div className="card flex flex-column align-items-center gap-3 ">
-                <Cards
+                {/* <Cards
                     number={state.number}
                     expiry={state.expiry}
                     cvc={state.cvc}
                     name={state.name}
                     focused={state.focus}
-                />
+                /> */}
                 <form>
                     <input
                         type="tel"

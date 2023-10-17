@@ -62,7 +62,7 @@ function App() {
           <Route exact path='/courses/students/my-courses' element={<CoursesForStudent />} />
           <Route exact path='/courses/teachers/my-courses' element={<CoursesForTeachers />} />
           <Route exact path='/lectures/:courseId' element={<Lectures />} />
-          <Route exact path='/upload-lectures/:courseId' element={<UploadLecture />} />
+          <Route exact path='/lectures/create/:courseId' element={<UploadLecture />} />
           <Route exact path='/payment/:courseId' element={<Payment />} />
           <Route exact path='addCourse/payment/:numLectures' element={<PaymentTeacher />} />
           <Route exact path='/teacher/viewQuestion/:courseId' element={<ViewQuestionForTeacher />} />

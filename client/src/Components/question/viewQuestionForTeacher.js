@@ -86,12 +86,17 @@ export default function ViewQuestionForTeacher() {
         };
         fetchData();
     }, []);
+    const addQuestion = (courseId) => {
+        navigate(`/questions/add/${courseId}`)
+    }
 
     console.log(questions.length != 0);
     return (
         <>
             <div className='card'>
                 <Menu />
+                <Button label="Add questions" severity="info" text onClick={() => { addQuestion(courseId) }} />
+
                 {questions.length > 0 &&
                     <div className="card">
                         <DataTable value={questions} tableStyle={{ minWidth: '50rem' }}>

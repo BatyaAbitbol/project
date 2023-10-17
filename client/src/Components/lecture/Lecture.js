@@ -11,13 +11,15 @@ import { Task } from '../task/Task';
 import { TaskTeacher } from '../task/TaskTeacher';
 import { ProgressBar } from 'primereact/progressbar';
 import UserContext from '../UserContext';
-import Video from '../../Video';
 import Menu from '../menu/menu';
 import { UseUpdate } from '../../services/UsePutAxios';
 import lecturesImage from '../../images/OnlineLectures.gif';
 import { Messages } from 'primereact/messages';
 
+
 const Lectures = (props) => {
+
+    const base64 = require('js-base64');
 
     const { courseId } = useParams();
     // const user = useContext(UserContext);
@@ -133,6 +135,21 @@ const Lectures = (props) => {
         //     catch (err) { }
         // }, []);
 
+        // const res = base64.decode(lectureByCourse.video);
+
+
+//----
+        const src = URL.createObjectURL(lectureByCourse.video);
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            console.log(reader.result);
+            // setSrc(reader.result);
+            // const blob = window.dataURLToBlob(reader.result);
+        }
+        reader.readAsDataURL(lectureByCourse.video);
+//---
+
         return (
             <div className="border-1 surface-border border-round m-2 text-center py-5 px-3">
                 <div className="card flex flex-wrap justify-content-center align-items-end gap-2">
@@ -140,15 +157,7 @@ const Lectures = (props) => {
                     {lectureByCourse.lectureNum < next && <Badge value={<i className="pi pi-check-circle" style={{ fontSize: '2rem', color: 'white' }}></i>} size="xlarge" severity="success" />}
                 </div>
 
-                <video
-                    value="https://www.w3schools.com/html/mov_bbb.mp4"//{lectureByCourse.video}
-                    player='mp4'
-                    controls={true}//{lectureByCourse.lectureNum <= next}
-                    width="420"
-                    height="250"
-                    onPlay={() => console.log('MP4 Started Playing')}
-                    onPause={() => console.log('MP4 Stopped Playing')}
-                ></video>
+                <video src={src} controls width="80%" onPlay={console.log(lectureByCourse.video)} />
 
                 {//hasTask &&
                     <div className="mt-5 flex flex-wrap gap-2 justify-content-center">
@@ -160,7 +169,7 @@ const Lectures = (props) => {
                             }} />
                         <Dialog visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)} maximizable >
                             {status == 'students' && <Task lectureId={lectureId} courseStudentId={courseStudent.id} setVisible={setVisible} />}
-                            {status == 'teachers' && <TaskTeacher lectureId={lectureId} lectureNum={ lectureNum} courseId={courseId} setVisible={setVisible} />}
+                            {status == 'teachers' && <TaskTeacher lectureId={lectureId} lectureNum={lectureNum} courseId={courseId} setVisible={setVisible} />}
                         </Dialog>
                     </div>}
             </div>
@@ -171,12 +180,12 @@ const Lectures = (props) => {
         <>
             <Menu />
             <div className="card">
-
                 <>{numOfLectures !== 0 &&
                     <>
                         <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold', color: 'gray' }}>
                             Lectures Of {course.name} Course
                             <br />
+                            {status == 'teachers' && <Button label="Create Lecture" severity="info" text onClick={() => navigate(`/lectures/create/${course.id}`)} />}
                             {canTest && <Button label='TEST' onClick={(e) => { navigate(`/test/${courseStudent.id}`) }} />}
                         </div>
                         <div className="card">
@@ -192,6 +201,7 @@ const Lectures = (props) => {
                             {course && <Messages ref={msgs} />}
                         </div>}
                 </>
+                {status == 'teachers' && <Button label="Create Lecture" severity="info" text onClick={() => navigate(`/lectures/create/${course.id}`)} />}
             </div>
         </>
     )

@@ -1,4 +1,5 @@
 const dal = require('../dal/courses');
+const lectures_dal = require('../dal/lectures');
 
 exports.create = async (req, res) => {
     if (!req.body) {
@@ -45,7 +46,6 @@ exports.findAll = async (req, res) => {
             res.send(data);
         })
         .catch(err => {
-            console.log(err);
             res.status(500).send({ message: "Some error occurred while retrieving courses." });
         })
 }
@@ -85,4 +85,18 @@ exports.delete = async (req, res) => {
         .catch(err => {
             res.status(500).send({ message: `Could not delete course with id ${id}` })
         })
+}
+
+exports.getNextLectureNum = async (req, res) => {
+    const id = req.params.id;
+    const lectures = await lectures_dal.findAllByCourseId(id);
+    if (lectures.length < 1) {
+        return res.send({lectureNum: 1});
+    }
+    const sorted = lectures.sort((l1, l2) => {
+        return l1.lectureNum - l2.lectureNum
+    })
+    const lastLectureNum = sorted[sorted.length - 1].lectureNum;
+    res.send({lectureNum: lastLectureNum + 1});
+
 }

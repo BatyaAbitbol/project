@@ -14,6 +14,9 @@ router.route('/teacher/:id')
 router.route('/category/:id')
     .get(course.findByCategoryId)
     
+router.route('/lecture_num/:id')
+    .get(course.getNextLectureNum)
+    
 router.route('/:id')
     .get(course.findById)
     .delete(course.delete)

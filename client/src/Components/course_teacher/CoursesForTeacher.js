@@ -48,6 +48,7 @@ export default function CoursesForteacher(props) {
     const message = (id) => {
         async function fetchData(id) {
             const res = await UseGetOneById('test_courses/course', id);
+            console.log(res);
             setnumOfQuestion(res.data.numOfQuestions);
         }
         fetchData(id);
@@ -55,7 +56,8 @@ export default function CoursesForteacher(props) {
     const updateNumQuestin = (id) => {
         async function update(id) {
             const res = await UsePutOneById('test_courses/update', id);
-            console.log(res);
+            if (res && res.status && res.status >= 200)
+                console.log(res);
         }
         update(id)
     }
@@ -79,13 +81,12 @@ export default function CoursesForteacher(props) {
                         <div className="text-2xl font-bold">
                             <i className="pi pi-bookmark"></i>
                             &nbsp;
-                            {course.name}</div>
-                    </Tag>                    
+                            {course.name}
+                        </div>
+                    </Tag>
                     <div data-custom-id={course.id} className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-                        <Button label="lectures" severity="info" text onClick={() => navigate(`/lectures/${course.id}`)} />
-                        <Button label="add lecture" severity="info" text onClick={() => navigate(`/upload-lectures/${course.id}`)} />
-                        <Button label="questions" severity="info" text onClick={() => navigate(`/teacher/viewQuestion/${course.id}`)} />
-                        <Button label="add questions" severity="info" text onClick={() => { addQuestion(course.id) }} />
+                        <Button label="Lectures" severity="info" text onClick={() => navigate(`/lectures/${course.id}`)} />
+                        <Button label="Questions" severity="info" text onClick={() => navigate(`/teacher/viewQuestion/${course.id}`)} />
                         <ConfirmDialog visible={visible} onHide={() => setVisible(false)} message={`There are ${numOfQuestion} questions. Do you want to add?`}
                             header="Confirmation" icon="pi pi-exclamation-triangle" accept={accept} reject={reject} />
                         <Button onClick={() => { message(course.id); setVisible(true) }} label="Number Of Question Of Test" />
@@ -95,9 +96,7 @@ export default function CoursesForteacher(props) {
             </div>
         );
     };
-    const addQuestion = (courseId) => {
-        navigate(`/questions/add/${courseId}`)
-    }
+
     const gridItem = (course) => {
         return (
             <div data-custom-id={course.id} className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
@@ -109,11 +108,10 @@ export default function CoursesForteacher(props) {
                                 <i className="pi pi-bookmark"></i>
                                 &nbsp;
                                 {course.name}</div>
-                        </Tag>                        <div className="card flex flex-wrap justify-content-center gap-3">
-                            <Button label="lectures" severity="info" text onClick={() => navigate(`/lectures/${course.id}`)} />
-                            <Button label="add lecture" severity="info" text onClick={() => navigate(`/upload-lectures/${course.id}`)} />
-                            <Button label="questions" severity="info" text onClick={() => navigate(`/teacher/viewQuestion/${course.id}`)} />
-                            <Button label="add questions" severity="info" text onClick={() => { addQuestion(course.id) }} />
+                        </Tag>
+                        <div className="card flex flex-wrap justify-content-center gap-3">
+                            <Button label="Lectures" severity="info" text onClick={() => navigate(`/lectures/${course.id}`)} />
+                            <Button label="Questions" severity="info" text onClick={() => navigate(`/teacher/viewQuestion/${course.id}`)} />
                         </div>
                         <ConfirmDialog visible={visible} onHide={() => setVisible(false)} message={`There are ${numOfQuestion} questions. Do you want to add?`}
                             header="Confirmation" icon="pi pi-exclamation-triangle" accept={accept} reject={reject} />
