@@ -12,11 +12,11 @@ exports.register = async (req, res) => {
     const { firstName, lastName, idNumber, email, password, image } = req.body;
     //confirm data
     if (!idNumber || !email || !password) {
-        return res.status(400).json({ message: "all fields are required" });
+        return res.status(204).send({ message: "all fields are required" });
     }
     const duplicate = await dal.findOne({ where: { idNumber: idNumber } })
     if (duplicate) {
-        return res.status(409).json({ message: "Duplicate student" })
+        return res.status(200).send({ message: "Duplicate student" })
     }
     //Hash password
     const hashedPwd = await bcrypt.hash(password, 10);
@@ -36,13 +36,13 @@ exports.register = async (req, res) => {
         const userInfo = { id: student.id, firstName: student.firstName, lastName: student.lastName, idNumber: student.idNumber, email: student.email, status: 'students' };
         const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET);
         
-        return res.status(201).json({
+        return res.status(201).send({
             message: `New student ${firstName} ${lastName} created`,
             data: student,
             token: accessToken
         })
     }
-    return res.status(400).json({ message: 'Invalid student data received' })
+    return res.status(400).send({ message: 'Invalid student data received' })
 };
 
 exports.login = async (req, res) => {

@@ -99,10 +99,10 @@ export default function Test(props) {
 
     const dialogFooter =
         <div className="flex justify-content-center">
-            <Button label="Add More" className="p-button-text" icon="pi pi-plus" autoFocus onClick={() => { setShowMessage(false); /*navigate('/sign-in');*/ }} />
+            <Button label="Add More" className="p-button-text" icon="pi pi-plus" autoFocus onClick={() => { setShowMessage(false); }} />
             <Button label="Finish" className="p-button-text" icon="pi pi-check" onClick={() => { closeTest(); navigate('/courses/teachers/my-courses') }} />
         </div>;
-    const errorDialodFooter = <div className='flex justify-content-center'><Button label='OK' className='p-button-text' autoFocus onClick={() => { setShowErrorMessage(false); /*navigate('/sign-in');*/ }} /></div>;
+    const errorDialodFooter = <div className='flex justify-content-center'><Button label='OK' className='p-button-text' autoFocus onClick={() => { setShowErrorMessage(false); }} /></div>;
 
     const navigate = useNavigate();
 

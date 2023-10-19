@@ -15,9 +15,9 @@ export default function UploadLecture(props) {
     const [base64data, setBase64Data] = useState("");
     const [lectureNum, setLectureNum] = useState(1);
     const [src, setSrc] = useState("");
-    
+
     const [vid, setVid] = useState();
-    
+
     useEffect(() => {
         const fetchData = async () => {
             const res = await UseGetOneById('courses/lecture_num', courseId);
@@ -53,8 +53,6 @@ export default function UploadLecture(props) {
         try {
             // Get the uploaded file
             const file = event.files[0];
-
-
 
             setVid(file)
 
@@ -107,8 +105,25 @@ export default function UploadLecture(props) {
         }
         reader.readAsDataURL(vid);
     }
-    useEffect(()=>{if (vid) tryfunc()}, [vid])
+    useEffect(() => { if (vid) tryfunc() }, [vid])
+
+// bsd
+
+const BSD = () => {
+
+    // const path = "C://Users/win/Videos/sequence 1 - white.mp4";
+    const path = 'clouds_-_16923 (540p).mp4'
+//    const fs = new FileSystemHandle();
     
+    
+    // <video id="1" alt="pic" data-src={require(`${path}`)}></video> NO
+
+
+}
+
+// bsd
+const path = '/clouds_-_16923 (540p).mp4'
+
     return (<>
         <h2>Upload Lecture #{lectureNum}</h2>
         {!uploaded && <FileUpload
@@ -124,11 +139,9 @@ export default function UploadLecture(props) {
 
         {uploaded && <video src={src} controls width="80%" onPlay={() => { console.log(lectureNum, src) }}>
             Sorry, your browser doesn't support embedded videos.
-        </video>
-
-        }
-
-        <video src={src} controls width="80%" onPlay={() => { console.log(lectureNum, src) }}>
+        </video>}
+        <video controls width="10%">
+            <source src={path} type='video/mp4'/>
             Sorry, your browser doesn't support embedded videos.
         </video>
 

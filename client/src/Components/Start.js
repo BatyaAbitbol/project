@@ -23,7 +23,7 @@ export default function Start(props) {
                 <Image src={logo} alt="Image" width="30%" />
                 <br />
                 <div className="card flex flex-wrap justify-content-center gap-3">
-                    <Button onClick={() => { navigate('/sign-in') }} label="Sign In" text raised />
+                    <Button onClick={() => { navigate('/sign-in/2') }} label="Sign In" text raised />
                     <Button onClick={() => { navigate('/sign-up') }} label="Sign Up" text raised />
                 </div>
             </div>

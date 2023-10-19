@@ -138,17 +138,17 @@ const Lectures = (props) => {
         // const res = base64.decode(lectureByCourse.video);
 
 
-//----
-        const src = URL.createObjectURL(lectureByCourse.video);
+// //----
+//         const src = URL.createObjectURL(lectureByCourse.video);
 
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            console.log(reader.result);
-            // setSrc(reader.result);
-            // const blob = window.dataURLToBlob(reader.result);
-        }
-        reader.readAsDataURL(lectureByCourse.video);
-//---
+//         const reader = new FileReader();
+//         reader.onloadend = () => {
+//             console.log(reader.result);
+//             // setSrc(reader.result);
+//             // const blob = window.dataURLToBlob(reader.result);
+//         }
+//         reader.readAsDataURL(lectureByCourse.video);
+// //---
 
         return (
             <div className="border-1 surface-border border-round m-2 text-center py-5 px-3">
@@ -157,7 +157,7 @@ const Lectures = (props) => {
                     {lectureByCourse.lectureNum < next && <Badge value={<i className="pi pi-check-circle" style={{ fontSize: '2rem', color: 'white' }}></i>} size="xlarge" severity="success" />}
                 </div>
 
-                <video src={src} controls width="80%" onPlay={console.log(lectureByCourse.video)} />
+                <video src={lectureByCourse.video} controls width="80%" onPlay={()=> {}} />
 
                 {//hasTask &&
                     <div className="mt-5 flex flex-wrap gap-2 justify-content-center">

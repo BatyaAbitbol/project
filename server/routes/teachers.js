@@ -6,6 +6,9 @@ const router = express.Router();
 router.route('/login')
     .get(teacher.login);
 
+router.route('/email')
+    .get(teacher.findByEmail);
+
 router.route('/course/:id')
     .get(verifyJWT, teacher.findCoursesByTeacherId);
     

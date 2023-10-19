@@ -8,7 +8,7 @@ import { Dialog } from 'primereact/dialog';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
 import { useNavigate } from 'react-router-dom';
-import { useSignUp } from '../../services/usePostAxios';
+import { signUp } from '../../services/usePostAxios';
 import './signup.css';
 
 export default function SignUpTeachers(props) {
@@ -52,7 +52,8 @@ export default function SignUpTeachers(props) {
         return isFormFieldValid(meta) && <small className="p-error">{meta.error}</small>;
     };
 
-    const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => {setShowMessage(false); navigate('/home/home-teacher');}} /></div>;
+    const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => {setShowMessage(false); navigate('/home-teachers');}} /></div>;
+    const dialogFooterSignIn = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => {setShowMessage(false); navigate('/sign-in/1');}} /></div>;
     const errorDialodFooter = <div className='flex justify-content-center'><Button label='OK' className='p-button-text' autoFocus onClick={() => setShowErrorMessage(false)} /></div>;
     const passwordHeader = <h6>Pick a password</h6>;
     const passwordFooter = (
@@ -75,7 +76,9 @@ export default function SignUpTeachers(props) {
             email: data.email,
             password: data.password
         }
-        const res = await useSignUp('teachers', obj);
+        debugger;
+        const res = await signUp('teachers', obj);
+        console.log(res);
         if (res.status && res.status == 201) {
             setMessage(<>
                 <h5>Registration Successful!</h5>
@@ -85,10 +88,11 @@ export default function SignUpTeachers(props) {
             </>)
             setShowMessage(true);
         }
-        else if (res.response && res.response.data.message == 'Duplicate teacher') {
+        else if (res.data && res.data.message == 'Duplicate teacher') { //res.status && res.status == 200){ // (
             setMessage(<>
                 <h5>You Are Signed Up already!</h5>
             </>)
+            setShowMessage(true);
         }
         else {
             setErrorMessage(res.response.data.message);
@@ -99,6 +103,12 @@ export default function SignUpTeachers(props) {
 
         <div className="form-demo">
             <Dialog visible={showMessage} onHide={() => setShowMessage(false)} position="top" footer={dialogFooter} showHeader={false} breakpoints={{ '960px': '80vw' }} style={{ width: '30vw' }}>
+                <div className="flex align-items-center flex-column pt-6 px-3">
+                    <i className="pi pi-check-circle" style={{ fontSize: '5rem', color: 'var(--green-500)' }}></i>
+                    {message}
+                </div>
+            </Dialog>
+            <Dialog visible={showMessage} onHide={() => setShowMessage(false)} position="top" footer={dialogFooterSignIn} showHeader={false} breakpoints={{ '960px': '80vw' }} style={{ width: '30vw' }}>
                 <div className="flex align-items-center flex-column pt-6 px-3">
                     <i className="pi pi-check-circle" style={{ fontSize: '5rem', color: 'var(--green-500)' }}></i>
                     {message}

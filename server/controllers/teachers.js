@@ -7,13 +7,16 @@ const jwt = require('jsonwebtoken')
 
 exports.register = async (req, res) => {
 
-    const { name, idNumber, email, password } = req.query;
+    console.log('register ', req.body);
+    const { name, idNumber, email, password } = req.body;
     if (!idNumber || !email || !password) {
-        return res.status(400).json({ message: "All fields are required" });
+        return res.status(200).send({ message: "All fields are required" });
     }
     const duplicate = await dal.findOne({ where: { idNumber: idNumber } })
+    console.log(duplicate);
     if (duplicate) {
-        return res.status(400).json({ message: "Duplicate teacher" })
+        console.log("duplicate");
+        return res.status(200).send({ message: "Duplicate teacher" })
     }
     const hashedPwd = await bcrypt.hash(password, 10);
     const teacherObject = { name, idNumber, email, password: hashedPwd }
@@ -32,7 +35,7 @@ exports.register = async (req, res) => {
             message: `New teacher ${name} created`
         })
     }
-    return res.status(400).json({ message: 'Invalid teacher data received' })
+    return res.status(400).send({ message: 'Invalid teacher data received' })
 }
 
 exports.login = async (req, res) => {
@@ -48,7 +51,7 @@ exports.login = async (req, res) => {
     }
     const match = await bcrypt.compare(password, finduser.password);
     if (!match) {
-        return res.status(401).send({ message: 'The password is mistake' });
+        return res.status(402).send({ message: 'The password is mistake' });
     }
     const userInfo = {
         id: finduser.id,
@@ -77,7 +80,9 @@ exports.findById = async (req, res) => {
         })
 }
 exports.findByEmail = async (req, res) => {
-    const email = req.body.email;
+    const email = req.params.email;
+    if (!email)
+        res.status(204).send({message: `email is required`});
     await dal.findOne({ where: { email: email } })
         .then(data => {
             if (data)
@@ -86,6 +91,7 @@ exports.findByEmail = async (req, res) => {
         })
 }
 const courses = require('./courses');
+const { loadavg } = require('os');
 exports.findCoursesByTeacherId = async (req, res) => {
     return await courses.findByTeacherId(req, res);
 }
