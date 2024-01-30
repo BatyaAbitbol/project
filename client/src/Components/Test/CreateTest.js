@@ -26,7 +26,10 @@ const CreateTest = (props) => {
     const [questions, setQuestions] = useState();
     const [visibleTest, setVisibleTest] = useState(false);
     const [timeToTest, setTimeToTest] = useState(0);
-
+    // const [storedStartHour, setStoredStartHour] = useState((key = 'startHour', initial = null) => {
+    //     const stored = JSON.parse(localStorage.getItem(key));
+    //     return stored ?? null;
+    // })
     useEffect(() => {
         const fetchData = async () => {
             const res = await UseCreate('tests', { courseStudentId: courseStudentId });
@@ -39,11 +42,15 @@ const CreateTest = (props) => {
         }
         fetchData();
     }, []);
-    console.log(questions);
 
     const confirm = () => {
         navigate(`/start-test/${courseStudentId}`);
-        localStorage.setItem('startHour', new Date().toLocaleTimeString());
+        const startHour = new Date();
+        // duration in miliseconds
+        const duration = timeToTest * 3600000;
+        const timeToEnd = new Date(startHour.getTime() + duration);
+        console.log(JSON.parse(timeToEnd));
+        localStorage.setItem('timeToEnd', JSON.stringify(timeToEnd));
         setVisibleTest(false);
         setStartTest(true);
     }

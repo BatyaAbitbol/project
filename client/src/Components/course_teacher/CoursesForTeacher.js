@@ -76,7 +76,7 @@ export default function CoursesForteacher(props) {
         return (
             <div className="col-12">
                 <div data-custom-id={course.id} className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
-                    <img data-custom-id={course.id} className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={coursesImage} alt={course.name} />
+                    <img data-custom-id={course.id} className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={coursesImage} alt={course.name}  onClick={() => navigate(`/lectures/${course.id}`)}/>
                     <Tag className="mr-2" severity="info">
                         <div className="text-2xl font-bold">
                             <i className="pi pi-bookmark"></i>
@@ -102,7 +102,7 @@ export default function CoursesForteacher(props) {
             <div data-custom-id={course.id} className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
                 <div data-custom-id={course.id} className="p-4 border-1 surface-border surface-card border-round">
                     <div data-custom-id={course.id} className="flex flex-column align-items-center gap-3 py-5" >
-                        <img data-custom-id={course.id} className="w-9 shadow-2 border-round" src={coursesImage} alt={course.name} />
+                        <img data-custom-id={course.id} className="w-9 shadow-2 border-round" src={coursesImage} alt={course.name} onClick={() => navigate(`/lectures/${course.id}`)}/>
                         <Tag className="mr-2" severity="info">
                             <div className="text-2xl font-bold">
                                 <i className="pi pi-bookmark"></i>
@@ -137,6 +137,8 @@ export default function CoursesForteacher(props) {
             <>
                 <div style={{ display: 'flex', justifyContent: 'space-between', position: 'sticky', top: '0', zIndex: '9000' }}>
                     <span className="justify-content-end"><Button label="Open new course" icon='pi pi-plus' severity="info" raised onClick={() => navigate(`/addCourse`)} /></span>
+                    <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>My Courses</div>
+
                     <span className="justify-content-start"><DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)} /></span>
                 </div>
             </>
@@ -150,7 +152,6 @@ export default function CoursesForteacher(props) {
     else {
         if (typeof data !== 'string') {
             display = <div className="card">
-                <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold' }}>My Courses</div>
                 <DataView value={data} itemTemplate={itemTemplate} layout={layout} header={header()} />
             </div>
         }

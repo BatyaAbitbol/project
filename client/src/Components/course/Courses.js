@@ -114,11 +114,13 @@ const Courses = (props) => {
 
     const header = () => {
         return (
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Button label="My Courses" onClick={(e) => navigate(`${status}/my-courses`)} />
-                <div style={{ textAlign: 'center', fontSize: '2.5rem', fontWeight: 'bold' }}>All Courses</div>
-                <DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)} />
-            </div>
+            <>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Button label="My Courses" onClick={(e) => navigate(`${status}/my-courses`)} />
+                    <div style={{ textAlign: 'center', fontSize: '2.5rem', fontWeight: 'bold' }}>All Courses</div>
+                    <DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)} />
+                </div>
+            </>
         );
     };
 

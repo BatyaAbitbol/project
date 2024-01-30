@@ -39,6 +39,7 @@ const Lectures = (props) => {
     const [next, setNext] = useState(0);
     const [numOfLectures, setNumOfLectures] = useState(0);
     const [canTest, setCanTest] = useState(false);
+    const [tested, setTested] = useState(false);
     const [addLectures, setAddLectures] = useState(<></>);
     const [visibleMsg, setvisibleMsg] = useState(false);
 
@@ -70,9 +71,6 @@ const Lectures = (props) => {
             const resCourseStudent = await UseGetOneByIdAndBody('course_students/student/course', id, { courseId: courseId })
             const resCourse = await UseGetOneById('courses', courseId);
             const resLectures = await UseGetAllById('lectures/course', courseId);
-
-            lecturesNum = resCourse.data.lecturesNum;
-
             setCourseStudent(resCourseStudent.data);
             setCourse(resCourse.data);
             setLectures(resLectures.data);
@@ -84,8 +82,17 @@ const Lectures = (props) => {
     useEffect(() => {
         const fetchData = async () => {
             const resCanTest = await UseGetOneById('tests/canTest', courseStudent.id);
+
+            /*
+            const isTested = await UseGetOneById('tests/course_student', courseStudent.id);
+            if (isTested && isTested.status && isTested.status == 200) {
+                // setCanTest(false);
+                setTested(true);
+            }
+            */
             setCanTest(resCanTest.data);
             setNext(courseStudent.nextLectureNum);
+
         }
         fetchData();
     }, [courseStudent]);
@@ -101,13 +108,15 @@ const Lectures = (props) => {
 
     let count = 0;
     useEffect(() => {
-        if (status == 'teachers' && course && numOfLectures < course.lecturesNum) {
+        if (status == 'teachers' && course && numOfLectures < course.numOfLectures) {
             setAddLectures(<>
-                {numOfLectures == 0 && <div className='card' style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold', color: 'gray' }}>
-                    Lectures Of {course.name} Course
-                    <br />
-                    <Image src={lecturesImage} width='60%' />
-                </div>}
+                {numOfLectures == 0 && <>
+                    <h2 style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold', color: 'gray' }}>Lectures Of {course.name} Course</h2>
+                    <div className='card' style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold', color: 'gray' }}>
+                        <br />
+                        <Image src={lecturesImage} width='60%' />
+                    </div>
+                </>}
                 <Button label='Add lectures' onClick={() => { navigate(`/upload-lectures/${courseId}`) }} />
             </>);
             if (!visibleMsg)
@@ -138,18 +147,43 @@ const Lectures = (props) => {
         // const res = base64.decode(lectureByCourse.video);
 
 
-// //----
-//         const src = URL.createObjectURL(lectureByCourse.video);
+        // //----
+        //         const src = URL.createObjectURL(lectureByCourse.video);
 
-//         const reader = new FileReader();
-//         reader.onloadend = () => {
-//             console.log(reader.result);
-//             // setSrc(reader.result);
-//             // const blob = window.dataURLToBlob(reader.result);
-//         }
-//         reader.readAsDataURL(lectureByCourse.video);
-// //---
+        //         const reader = new FileReader();
+        //         reader.onloadend = () => {
+        //             console.log(reader.result);
+        //             // setSrc(reader.result);
+        //             // const blob = window.dataURLToBlob(reader.result);
+        //         }
+        //         reader.readAsDataURL(lectureByCourse.video);
+        // //---
 
+        const handlePlay = async (lectureNum) => {
+            if (status == 'teachers')
+                return;
+            else if (courseStudent.nextLectureNum == lectureNum) {
+                console.log('handlePLay');
+                const obj = {
+                    id: courseStudent.id,
+                    studentId: courseStudent.studentId,
+                    courseId: courseId,
+                    registerDate: courseStudent.registerDate,
+                    nextLectureNum: courseStudent.nextLectureNum + 1
+                };
+
+                setNext(courseStudent.nextLectureNum + 1);
+                setCourseStudent(obj);
+                try {
+                    const res = await UseUpdate('course_students', obj);
+                    console.log(res);
+                    
+                } catch (error) {
+
+                }
+                
+            }
+        }
         return (
             <div className="border-1 surface-border border-round m-2 text-center py-5 px-3">
                 <div className="card flex flex-wrap justify-content-center align-items-end gap-2">
@@ -157,7 +191,21 @@ const Lectures = (props) => {
                     {lectureByCourse.lectureNum < next && <Badge value={<i className="pi pi-check-circle" style={{ fontSize: '2rem', color: 'white' }}></i>} size="xlarge" severity="success" />}
                 </div>
 
-                <video src={lectureByCourse.video} controls width="80%" onPlay={()=> {}} />
+                {/* <video src={lecture 
+                    ByCourse.video} controls width="80%" onPlay={() => { }} /> */}
+                <ReactPlayer
+                    className='player'
+                    url={lectureByCourse.video}
+                    width="80%"
+                    playing={false}
+                    muted={false}
+                    controls
+                    onPlay={() => {
+                        console.log(`play ${lectureByCourse.lectureNum}`);
+                        handlePlay(lectureByCourse.lectureNum);
+                    }}
+                    id={lectureByCourse.lectureNum}
+                />
 
                 {//hasTask &&
                     <div className="mt-5 flex flex-wrap gap-2 justify-content-center">
@@ -180,28 +228,28 @@ const Lectures = (props) => {
         <>
             <Menu />
             <div className="card">
-                <>{numOfLectures !== 0 &&
-                    <>
-                        <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold', color: 'gray' }}>
-                            Lectures Of {course.name} Course
-                            <br />
-                            {status == 'teachers' && <Button label="Create Lecture" severity="info" text onClick={() => navigate(`/lectures/create/${course.id}`)} />}
-                            {canTest && <Button label='TEST' onClick={(e) => { navigate(`/test/${courseStudent.id}`) }} />}
-                        </div>
-                        <div className="card">
-                            {next > 1 && (next - 1) / numOfLectures * 100 < 100 && <ProgressBar value={(next - 1) / numOfLectures * 100}></ProgressBar>}
+                <>
+                    {numOfLectures !== 0 &&
+                        <>
+                            <div style={{ textAlign: 'center', fontSize: '3.5rem', fontWeight: 'bold', color: 'gray' }}>
+                                Lectures Of {course.name} Course
+                                <br />
+                                {status == 'teachers' && <Button label="Create Lecture" severity="info" text onClick={() => navigate(`/lectures/create/${course.id}`)} />}
+                                {canTest && <Button label='TEST' onClick={(e) => { navigate(`/test/${courseStudent.id}`) }} />}
+                            </div>
+                            <div className="card">
+                                {next > 1 && (next - 1) / numOfLectures * 100 < 100 && <ProgressBar value={Math.round((next - 1) / numOfLectures * 100)}></ProgressBar>}
 
-                        </div>
-                        <Carousel value={lectures} numVisible={3} numScroll={3} responsiveOptions={responsiveOptions} itemTemplate={LectureTemplate} />
-                    </>
-                }
+                            </div>
+                            <Carousel value={lectures} numVisible={3} numScroll={3} responsiveOptions={responsiveOptions} itemTemplate={LectureTemplate} />
+                        </>
+                    }
                     {status == 'teachers' &&
                         <div className='card'>
                             {addLectures}
                             {course && <Messages ref={msgs} />}
                         </div>}
                 </>
-                {status == 'teachers' && <Button label="Create Lecture" severity="info" text onClick={() => navigate(`/lectures/create/${course.id}`)} />}
             </div>
         </>
     )

@@ -10,8 +10,8 @@ exports.findAll = async () => {
 exports.findOne = async (condition) => {
     return await TestCourse.findOne(condition);
 }
-exports.updae = async (test, id) => {
-    return await TestCourse.updae(test, { where: { id: id } });
+exports.update = async (test, id) => {
+    return await TestCourse.update(test, { where: { id: id } });
 }
 exports.delete = async (id) => {
     return await TestCourse.destroy({ where: { id: id } });

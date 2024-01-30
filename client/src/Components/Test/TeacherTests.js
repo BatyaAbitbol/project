@@ -29,7 +29,7 @@ const TeacherTests = (props) => {
         count++;
         return (
             <div className="col-12">
-                <Panel id={question.id} header={`Question #${count / 2}`} toggleable>
+                <Panel id={question.id} header={`Question #${count / 2}`} /*toggleable*/>
                     <p className="m-0">{question}</p>
                     <Tag
                         value={question.scores}

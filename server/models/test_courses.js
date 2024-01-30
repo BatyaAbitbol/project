@@ -16,7 +16,7 @@ module.exports = (sequelize, Sequelize) => {
             },
             numOfQuestions: Sequelize.INTEGER,
             hoursOfTest: {
-                type: Sequelize.TIME,
+                type: Sequelize.FLOAT,
                 defaultValue: 3
             }
         },

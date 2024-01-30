@@ -14,7 +14,7 @@ module.exports = (sequelize, Sequelize) => {
                 }
             },
             video: {
-                type: Sequelize.BLOB
+                type: Sequelize.STRING(255)
             },
             lectureNum: {
                 type: Sequelize.INTEGER

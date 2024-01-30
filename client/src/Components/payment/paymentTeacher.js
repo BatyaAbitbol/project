@@ -27,15 +27,15 @@ const PaymentForm = () => {
     const { numOfLecture } = useParams();
     const status = JSON.parse(localStorage.getItem('userInfo')).status
     return (
-            // <h2>{numOfLecture}</h2>
-            <div className="card flex flex-column align-items-center gap-3 ">
-            <Cards
+        // <h2>{numOfLecture}</h2>
+        <div className="card flex flex-column align-items-center gap-3 ">
+            {/* <Cards
                 number={state.number}
                 expiry={state.expiry}
                 cvc={state.cvc}
                 name={state.name}
                 focused={state.focus}
-            />
+            /> */}
             <form>
                 <input
                     type="tel"
@@ -69,7 +69,7 @@ const PaymentForm = () => {
                     onChange={handleInputChange}
                     onFocus={handleInputFocus}
                 />
-                   <Button label="pay" severity="info" raised  onClick={() => navigate(`/courses/${status}/my-courses`)} />
+                <Button label="pay" severity="info" raised onClick={() => navigate(`/courses/${status}/my-courses`)} />
             </form>
 
         </div>

@@ -18,7 +18,7 @@ export function TaskTeacher(props) {
     const [created, setCreated] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
     const [visibleError, setvisibleError] = useState(false);
-    
+
     // update task
     const [task, setTask] = useState(null);
     const [visible, setVisible] = useState(false);
@@ -115,6 +115,7 @@ export function TaskTeacher(props) {
 
             </div>
         </Dialog>
+       
     return (
         <div className="flex justify-content-center">
             <div className="card">
@@ -151,7 +152,7 @@ export function TaskTeacher(props) {
                                 setText(e.htmlValue);
                                 setVisible(true);
                             }}
-                            style={{ height: '320px' }} />
+                            style={{ height: '80%' }} />
                         {showMessage && <small className="p-error">{error}</small>}
                     </AccordionTab>
                     <AccordionTab
@@ -166,7 +167,7 @@ export function TaskTeacher(props) {
                             <div className="flex-auto">
                                 <label htmlFor="minmax" className="block mb-2">Set a deadline for submission this task.</label>
                                 <br />
-                                <InputNumber inputId="minmax-buttons" value={valueNumber} onValueChange={(e) => {setValueNumber(e.value); setVisible(true);}} mode="decimal" showButtons min={1} max={10} prefix="Up to " suffix=" days." />
+                                <InputNumber inputId="minmax-buttons" value={valueNumber} onValueChange={(e) => { setValueNumber(e.value); setVisible(true); }} mode="decimal" showButtons min={1} max={10} prefix="Up to " suffix=" days." />
                             </div>
                         </div>
                     </AccordionTab>
@@ -174,7 +175,7 @@ export function TaskTeacher(props) {
                 {!toUpdate && <Button label="Save" severity="secondary" icon="pi pi-save" outlined onClick={onSubmit} />}
                 {toUpdate && <Button label="Save Changes" severity="secondary" icon="pi pi-save" outlined visible={visible} onClick={onSaveChanges} />}
                 <Dialog showHeader={false} visible={(created || updated)} position='top' style={{ width: '3vm' }} footer={
-                    <Button label="OK" icon="pi pi-thumbs-up" onClick={() => props.setVisible(false)} autoFocus outlined severity="info" />} >
+                    <Button label="OK" icon="pi pi-thumbs-up" onClick={() => {if(props.setVisible) props.setVisible(false)}} autoFocus outlined severity="info" />} >
                     <div className="flex align-items-center flex-column pt-6 px-3">
                         <i className="pi pi-check-circle" style={{ fontSize: '5rem', color: 'var(--green-500)' }}></i>
                         {created && <h3>Task #{props.lectureNum} was successfully created!</h3>}

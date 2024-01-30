@@ -7,7 +7,7 @@ module.exports = (sequelize, Sequelize) => {
                 primaryKey: true
             },
             name: {
-                type: Sequelize.STRING(15),
+                type: Sequelize.STRING(30),
                 allowNull: false,
             },
             teacherId: {
@@ -31,6 +31,7 @@ module.exports = (sequelize, Sequelize) => {
             price: {
                 type: Sequelize.FLOAT
             },
+            numOfLectures: Sequelize.INTEGER,
             image: Sequelize.STRING(255)
         },
         {

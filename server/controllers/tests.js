@@ -21,13 +21,10 @@ exports.findAllByStudentId = async (req, res) => {
         let tests = [];
         console.log(coursesForStudent);
         coursesForStudent.map(async e => {
-            console.log('************************************');
-            console.log(e.id);
             dal.findOneByCourseStudentId({ where: { courseStudentId: e.id } })
                 .then(test => { console.log(test); tests.push(test); })
                 .catch(err => res.status(500).send({ message: err.message }))
         })
-        console.log(tests);
         res.send(tests);
     }
 
@@ -110,8 +107,6 @@ exports.createTest = async (req, res) => {
         console.log(questionForTest);
         questionsTest.push({ questionTest: questionForTest, question: questions[idx[i]] });
     }
-    console.log('maxScores --------------');
-    console.log(maxScores);
     // עדכון המבחן שנוצר בניקוד המקסימלי
     const testUpdateMaxScores = await dal.update({ id: test.id, courseStudentId: test.courseStudentId, date: test.date, scores: test.scores, maxScores: maxScores, secureVideo: test.secureVideo, isSubmitted: test.isSubmitted }, test.id);
     if (!testUpdateMaxScores) res.status(401).send({ message: `Failed update during creation test.` })
@@ -170,7 +165,7 @@ exports.submitTest = async (req, res) => {
                 await dal.update({ id: test.id, courseStudentId: test.courseStudentId, date: test.date, scores: test.scores, maxScores: test.maxScores, secureVideo: secureVideo, isSubmitted: true },
                     testId)
                     .then(num => {
-                        // console.log(num);
+                        console.log(num);
                         // if (num == questionsTest.length) {
                             // send to service of mark honesty
                             autoCheckTest(req, res);

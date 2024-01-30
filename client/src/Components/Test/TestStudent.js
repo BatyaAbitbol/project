@@ -9,11 +9,14 @@ import { Dialog } from 'primereact/dialog';
 import { Image } from 'primereact/image';
 import { UseCreate } from '../../services/usePostAxios';
 import { useParams } from 'react-router-dom';
+import { useInterval } from 'primereact/hooks';
 import Answer from '../Answer';
 import { UseUpdate } from '../../services/UsePutAxios';
 import Stopwatch from './Stopwatch';
 import testImage from '../../images/test.png'
 import Menu from '../menu/menu';
+import { UseGetOneById } from '../../services/useGetAxios';
+
 const StudentTest = (props) => {
 
     const { courseStudentId } = useParams();
@@ -21,19 +24,35 @@ const StudentTest = (props) => {
     const user = JSON.parse(localStorage.getItem('userInfo'));
 
     const [test, setTest] = useState({});
+    const [hoursOfTest, setHoursOfTest] = useState();
     const [storedTest, setStoredTest] = useState((key = 'test', initial = null) => {
         const stored = JSON.parse(localStorage.getItem(key));
         return stored ?? null;
     })
+
     const [answers, setAnswers] = useState({});
     const [questions, setQuestions] = useState();
     const [submit, setSubmit] = useState(false);
     const [afterTest, setAfterTest] = useState(false);
+    const [timeOut, setTimeOut] = useState(false);
 
     const toast = useRef(null);
     const toastBC = useRef(null);
+    const toastTimeOut = useRef(null);
 
     const navigate = useNavigate();
+
+    const [seconds, setSeconds] = useState(20); // initialize time for test
+
+    useInterval(() => {
+        setSeconds((prevSecond) => {
+            if (prevSecond === 0) {
+                setTimeOut(true);
+                toastTimeOut.current.show({ severity: 'error', summary: 'Your time is running off.' });
+            }
+            else return prevSecond - 1
+        });
+    }, 1000, true)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -123,7 +142,6 @@ const StudentTest = (props) => {
         </div>
     </div>
 
-    console.log(answers);
     return (
         <>
             <div className="card">
@@ -132,6 +150,7 @@ const StudentTest = (props) => {
                 </div>
                 <Divider />
                 {/* <Stopwatch /> */}
+                <Toast ref={toastTimeOut} />
                 {showMessage &&
                     <Dialog visible={showMessage} onHide={() => setShowMessage(false)} position="top" footer={dialogFooter} showHeader={false} breakpoints={{ '960px': '80vw' }} style={{ width: '30vw' }}>
                         <div className="flex align-items-center flex-column pt-6 px-3">
@@ -144,6 +163,9 @@ const StudentTest = (props) => {
                         </div>
                     </Dialog>}
                 {!afterTest && <>
+                    <div className="card flex flex-column align-items-center">
+                        <div className="mb-3 font-bold text-4xl">{seconds}</div>
+                    </div>
                     <DataView
                         value={questions}
                         itemTemplate={itemTemplate}

@@ -37,9 +37,9 @@ const Answer = (props) => {
     useEffect(() => {
         if (answer)
             props.setAnswersCallBack(answer)
-    }, [])
+        console.log(answer);
+    }, [answer])
 
-    console.log(answer);
     return (
         <>
             {question && !question.isClosed &&
@@ -47,7 +47,10 @@ const Answer = (props) => {
                     <Editor
                         value={answer}
                         onTextChange={(e) => {
-                            setAnswer(e.textValue);
+                            const ans = {};
+                            ans.questionId = questionId;
+                            ans.text = e.textValue;
+                            setAnswer(ans);
                         }}
                         style={{ height: '320px' }}
                     />

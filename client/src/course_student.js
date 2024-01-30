@@ -75,7 +75,7 @@ exports.findOne = async (req, res) => {
 }
 exports.services = async (req, res) => {
     const id = req.body.id;
-    if(! id) return res.status(400).send({message: 'Required field is empty'})
+    if (!id) return res.status(400).send({ message: 'Required field is empty' })
     await dal.services(req.body, id)
         .then(num => {
             if (num == 1)
@@ -133,13 +133,19 @@ exports.canTest = async (courseStudentId) => {
     if (courseStudent) {
         const nextLectureNum = courseStudent.nextLectureNum;
         const lectures = await lectures_dal.findAllByCourseId(courseStudent.courseId);
-        console.log(lectures);
-        console.log(nextLectureNum);
-        console.log(lectures.length);
         if (lectures) {
             if (nextLectureNum > lectures.length)
                 return true;
         }
+
+        /*
+        // can get test only if all tasks are submitted:
+        const tasks = await task_student_dal.findByCourseStudentId(courseStudentId);
+        if (lectures && tasks) {
+            if (nextLectureNum > lectures.length && tasks.lengt == lectures.length)
+                return true;
+        }
+        */
     }
     return false;
 }
