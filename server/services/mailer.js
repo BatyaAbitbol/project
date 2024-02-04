@@ -1,8 +1,9 @@
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
+    service: 'gmail',
+    // host: 'smtp.gmail.com',
+    // port: 465,
     secure: true,
     auth: {
         user: 't0533155745@gmail.com',
@@ -12,7 +13,7 @@ const transporter = nodemailer.createTransport({
 
 exports.sendEmail = (to, subject, body) => {
     const mailOptions = {
-        from: 'School 📚 <t0533155745@gmail.com>',
+        from: 'School 📚',
         to: to,
         subject: subject,
         text: body

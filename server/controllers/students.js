@@ -28,21 +28,21 @@ exports.register = async (req, res) => {
         mailer.sendEmail(email, subject, body)
             .then(info => {
                 console.log('Email sent: ', info.response);
+                const userInfo = { id: student.id, firstName: student.firstName, lastName: student.lastName, idNumber: student.idNumber, email: student.email, status: 'students' };
+                const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET);
+
+                return res.status(201).send({
+                    message: `New student ${firstName} ${lastName} created`,
+                    data: student,
+                    token: accessToken
+                })
             })
             .catch(error => {
                 return res.status(500).send('Failed to send email');
             });
 
-        const userInfo = { id: student.id, firstName: student.firstName, lastName: student.lastName, idNumber: student.idNumber, email: student.email, status: 'students' };
-        const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET);
-        
-        return res.status(201).send({
-            message: `New student ${firstName} ${lastName} created`,
-            data: student,
-            token: accessToken
-        })
     }
-    return res.status(400).send({ message: 'Invalid student data received' })
+    else return res.status(400).send({ message: 'Invalid student data received' })
 };
 
 exports.login = async (req, res) => {
@@ -93,11 +93,11 @@ exports.findOneByPassword = async (req, res) => {
 
 exports.findOneByIdNumber = async (req, res) => {
     const idNumber = req.query.idNumber;
-    if(!idNumber) {
+    if (!idNumber) {
         return res.status(400).send('ID Number is required!');
     }
     const found = await dal.findOneByIDNumber(idNumber);
-    if(!found) {
+    if (!found) {
         return res.status(401).send({
             message: `Cannot find student by idNumber = ${idNumber}`
         })
@@ -175,23 +175,23 @@ exports.delete = async (req, res) => {
 
 exports.findAllCoursesByStudentId = async (req, res) => {
     const studentId = req.params.id;
-    if(! studentId) {
-        res.status(401).send({message: 'studentId is required!'});
+    if (!studentId) {
+        res.status(401).send({ message: 'studentId is required!' });
     }
     const coursesStudent = await course_student_dal.findAllByStudentId(studentId);
 
-    if(!coursesStudent) {
-        res.send({message: `No courses found for studentID: ${studentId}.`})
+    if (!coursesStudent) {
+        res.send({ message: `No courses found for studentID: ${studentId}.` })
     }
     let courses = [];
     for (let index = 0; index < coursesStudent.length; index++) {
         const course = await course_dal.findOneById(coursesStudent[index].courseId);
-        const joinedCourse = await course_student_dal.joinByCourseId(course.id); 
-        if(joinedCourse)
+        const joinedCourse = await course_student_dal.joinByCourseId(course.id);
+        if (joinedCourse)
             courses.push(joinedCourse)
     }
 
-    if(courses.length > 0)
+    if (courses.length > 0)
         res.status(200).send(courses)
-    else res.status(204).send({message: 'NO courses found - ERROR'})
+    else res.status(204).send({ message: 'NO courses found - ERROR' })
 }

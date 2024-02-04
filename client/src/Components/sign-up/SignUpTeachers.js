@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Field } from 'react-final-form';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
@@ -79,16 +79,16 @@ export default function SignUpTeachers(props) {
         debugger;
         const res = await signUp('teachers', obj);
         console.log(res);
-        if (res.status && res.status == 201) {
+        if (res.status && res.status === 201) {
             setMessage(<>
                 <h5>Registration Successful!</h5>
                 <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
-                    Your account is registered under name <b>{formData.name}</b>.<br />Please check <b>{formData.email}</b> for activation instructions.
+                    Your account is registered under name <b>{data.name}</b>.<br />Please check <b>{data.email}</b> for activation instructions.
                 </p>
             </>)
             setShowMessage(true);
         }
-        else if (res.data && res.data.message == 'Duplicate teacher') { //res.status && res.status == 200){ // (
+        else if (res.data && res.data.message === 'Duplicate teacher') { //res.status && res.status == 200){ // (
             setMessage(<>
                 <h5>You Are Signed Up already!</h5>
             </>)
