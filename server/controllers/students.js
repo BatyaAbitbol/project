@@ -29,25 +29,18 @@ exports.register = async (req, res) => {
         mailer.sendEmail(email, subject, body)
             .then(info => {
                 console.log('Email sent: ', info.response);
-                const userInfo = { id: student.id, firstName: student.firstName, lastName: student.lastName, idNumber: student.idNumber, email: student.email, status: 'students' };
-                const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET);
-
-                return res.status(201).send({
-                    message: `New student ${firstName} ${lastName} created`,
-                    data: student,
-                    token: accessToken
-                })
             })
             .catch(error => {
-                const userInfo = { id: student.id, firstName: student.firstName, lastName: student.lastName, idNumber: student.idNumber, email: student.email, status: 'students' };
-                const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET);
-
-                return res.status(201).send({
-                    message: `New student ${firstName} ${lastName} created, but failed to send email.`,
-                    data: student,
-                    token: accessToken
-                });
+                console.log('Failed to send email');
             });
+        const userInfo = { id: student.id, firstName: student.firstName, lastName: student.lastName, idNumber: student.idNumber, email: student.email, status: 'students' };
+        const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET);
+
+        return res.status(201).send({
+            message: `New student ${firstName} ${lastName} created`,
+            data: student,
+            token: accessToken
+        })
 
     }
     else return res.status(400).send({ message: 'Invalid student data received' })

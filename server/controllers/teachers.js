@@ -29,7 +29,7 @@ exports.register = async (req, res) => {
                 console.log('Email sent: ', info.response);
             })
             .catch(error => {
-                return res.status(500).send('Failed to send email');
+                console.log('Failed to send email');
             });
         return res.status(201).json({
             message: `New teacher ${name} created`
