@@ -177,11 +177,11 @@ const Lectures = (props) => {
                 try {
                     const res = await UseUpdate('course_students', obj);
                     console.log(res);
-                    
+
                 } catch (error) {
 
                 }
-                
+
             }
         }
         return (
@@ -196,7 +196,6 @@ const Lectures = (props) => {
                 <ReactPlayer
                     className='player'
                     url={lectureByCourse.video}
-                    width="80%"
                     playing={false}
                     muted={false}
                     controls
