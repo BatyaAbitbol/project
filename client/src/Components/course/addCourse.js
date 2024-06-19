@@ -181,7 +181,7 @@ export default function AddCourse(props) {
                                     {getFormErrorMessage(meta)}
                                 </div>
                             )} />
-
+                            
                             <Field name="price" render={({ input, meta }) => (
                                 <div className="field">
                                     <span className="p-float-label">
